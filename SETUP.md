@@ -11,3 +11,19 @@
    firebase deploy --only hosting
    ```
 6. Hubungkan custom domain di Hosting → Add custom domain untuk masing-masing site
+
+## Routing (clean URLs)
+
+Site utama adalah multi-halaman statis. `firebase.json` memetakan path ke file HTML:
+
+| Route     | File          |
+| --------- | ------------- |
+| `/`       | `index.html`  |
+| `/about`  | `about.html`  |
+| `/skills` | `skills.html` |
+| `/projects` | `projects.html` |
+| `/stats`  | `stats.html`  |
+| `/contact`| `contact.html` |
+
+Semua path lain di-rewrite ke `/`. Style bersama ada di `assets/css/style.css`,
+script bersama di `assets/js/main.js` (active nav, reveal animation, copy email).

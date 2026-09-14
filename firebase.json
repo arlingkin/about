@@ -4,7 +4,15 @@
       "target": "main",
       "public": ".",
       "ignore": ["firebase.json", "app/**", ".git/**", ".firebaserc", "**/.*", "**/node_modules/**"],
-      "rewrites": [{ "source": "**", "destination": "/home.html" }]
+      "rewrites": [
+        { "source": "/", "destination": "/index.html" },
+        { "source": "/about", "destination": "/about.html" },
+        { "source": "/skills", "destination": "/skills.html" },
+        { "source": "/projects", "destination": "/projects.html" },
+        { "source": "/stats", "destination": "/stats.html" },
+        { "source": "/contact", "destination": "/contact.html" },
+        { "source": "**", "destination": "/index.html" }
+      ]
     },
     {
       "target": "app",
