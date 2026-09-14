@@ -228,6 +228,12 @@ h1 em, .display em { color:var(--orange); font-family:"Playfair Display",serif; 
 .contact-card .cta { margin-top:auto; padding-top:20px; font-family:"DM Mono",monospace; font-size:12px; color:var(--lime); border-bottom:1px solid rgba(217,255,89,.5); align-self:flex-start; }
 .card-mail { grid-column:1 / -1; }
 
+.lang-switch { display:inline-flex; align-items:center; border:1px solid var(--line); border-radius:20px; overflow:hidden; margin-left:8px; flex-shrink:0; }
+.lang-switch button { padding:5px 11px; background:transparent; border:none; color:var(--muted); cursor:pointer; font:500 11px/1 "DM Mono",monospace; letter-spacing:.04em; text-transform:uppercase; transition:background .2s,color .2s; }
+.lang-switch button:hover { background:rgba(120,166,255,.1); }
+.lang-switch button.on { background:var(--lime); color:#10152a; }
+.lang-switch button + button { border-left:1px solid var(--line); }
+
 footer { display:flex; justify-content:space-between; padding:25px 0 34px; border-top:1px solid var(--line); color:var(--muted); font-size:13px; align-items:baseline; gap:14px; }
 footer a { color:var(--ink); border-bottom:1px solid var(--ink); }
 

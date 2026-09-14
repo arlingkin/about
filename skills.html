@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,64 +28,65 @@
     <header class="site-header">
       <a class="brand" href="index.html" aria-label="Arlingkin home"><span class="brand-mark">a</span>arlingkin</a>
       <nav aria-label="Primary navigation">
-        <a class="nav-link" href="index.html">home</a>
-        <a class="nav-link" href="about.html">about</a>
-        <a class="nav-link active" href="skills.html">skills</a>
-        <a class="nav-link" href="projects.html">projects</a>
-        <a class="nav-link" href="stats.html">stats</a>
-        <a class="nav-link" href="contact.html">contact</a>
-        <a class="nav-link" href="https://github.com/arlingkin" target="_blank" rel="noreferrer">github ↗</a>
+        <a class="nav-link" href="index.html" data-i18n="nav.home">home</a>
+        <a class="nav-link" href="about.html" data-i18n="nav.about">about</a>
+        <a class="nav-link active" href="skills.html" data-i18n="nav.skills">skills</a>
+        <a class="nav-link" href="projects.html" data-i18n="nav.projects">projects</a>
+        <a class="nav-link" href="stats.html" data-i18n="nav.stats">stats</a>
+        <a class="nav-link" href="contact.html" data-i18n="nav.contact">contact</a>
+        <a class="nav-link" href="https://github.com/arlingkin" target="_blank" rel="noreferrer" data-i18n="nav.github">github ↗</a>
       </nav>
+      <div class="lang-switch"><button class="lang-btn" data-lang="en">EN</button><button class="lang-btn" data-lang="id">ID</button></div>
     </header>
 
     <main>
       <section class="page-head" aria-labelledby="skills-title">
-        <p class="eyebrow">02 / Skills</p>
-        <h1 id="skills-title">The <em>toolbox.</em></h1>
-        <p class="intro">A growing collection of languages, frameworks and tools I reach for — and keep getting better at.</p>
+        <p class="eyebrow" data-i18n="skills.eyebrow">02 / Skills</p>
+        <h1 id="skills-title" data-i18n="skills.h1">The <em>toolbox.</em></h1>
+        <p class="intro" data-i18n="skills.intro">A growing collection of languages, frameworks and tools I reach for — and keep getting better at.</p>
       </section>
 
       <section aria-label="Skills grid">
         <div class="section-head">
-          <h2>Languages</h2>
-          <span class="meta">the core</span>
+          <h2 data-i18n="skills.lang.lbl">Languages</h2>
+          <span class="meta" data-i18n="skills.lang.sub">the core</span>
         </div>
         <div class="skill-grid">
-          <article class="skill reveal"><span class="ico">JS</span><h3>JavaScript</h3><p>Scripting, DOM, ES modules.</p><span class="bar"><i style="width:82%"></i></span></article>
-          <article class="skill reveal"><span class="ico">PY</span><h3>Python</h3><p>Logic, automation, tooling.</p><span class="bar"><i style="width:70%"></i></span></article>
-          <article class="skill reveal"><span class="ico">JV</span><h3>Java</h3><p>Object-oriented fundamentals.</p><span class="bar"><i style="width:55%"></i></span></article>
-          <article class="skill reveal"><span class="ico">HTML</span><h3>HTML5</h3><p>Semantic, accessible markup.</p><span class="bar"><i style="width:88%"></i></span></article>
+          <article class="skill reveal"><span class="ico">JS</span><h3 data-i18n="skills.js.title">JavaScript</h3><p data-i18n="skills.js.desc">Scripting, DOM, ES modules.</p><span class="bar"><i style="width:82%"></i></span></article>
+          <article class="skill reveal"><span class="ico">PY</span><h3 data-i18n="skills.py.title">Python</h3><p data-i18n="skills.py.desc">Logic, automation, tooling.</p><span class="bar"><i style="width:70%"></i></span></article>
+          <article class="skill reveal"><span class="ico">JV</span><h3 data-i18n="skills.jv.title">Java</h3><p data-i18n="skills.jv.desc">Object-oriented fundamentals.</p><span class="bar"><i style="width:55%"></i></span></article>
+          <article class="skill reveal"><span class="ico">HTML</span><h3 data-i18n="skills.html.title">HTML5</h3><p data-i18n="skills.html.desc">Semantic, accessible markup.</p><span class="bar"><i style="width:88%"></i></span></article>
         </div>
 
         <div class="section-head">
-          <h2>Frontend</h2>
-          <span class="meta">looks &amp; feel</span>
+          <h2 data-i18n="skills.fe.lbl">Frontend</h2>
+          <span class="meta" data-i18n="skills.fe.sub">looks &amp; feel</span>
         </div>
         <div class="skill-grid">
-          <article class="skill reveal"><span class="ico">TW</span><h3>TailwindCSS</h3><p>Utility-first styling.</p><span class="bar"><i style="width:76%"></i></span></article>
-          <article class="skill reveal"><span class="ico">NX</span><h3>NextJS</h3><p>React-based web apps.</p><span class="bar"><i style="width:66%"></i></span></article>
-          <article class="skill reveal"><span class="ico">CSS</span><h3>CSS</h3><p>Layout, animation, design.</p><span class="bar"><i style="width:80%"></i></span></article>
-          <article class="skill reveal"><span class="ico">VSC</span><h3>VS Code</h3><p>My daily driver editor.</p><span class="bar"><i style="width:90%"></i></span></article>
+          <article class="skill reveal"><span class="ico">TW</span><h3 data-i18n="skills.tw.title">TailwindCSS</h3><p data-i18n="skills.tw.desc">Utility-first styling.</p><span class="bar"><i style="width:76%"></i></span></article>
+          <article class="skill reveal"><span class="ico">NX</span><h3 data-i18n="skills.nx.title">NextJS</h3><p data-i18n="skills.nx.desc">React-based web apps.</p><span class="bar"><i style="width:66%"></i></span></article>
+          <article class="skill reveal"><span class="ico">CSS</span><h3 data-i18n="skills.css.title">CSS</h3><p data-i18n="skills.css.desc">Layout, animation, design.</p><span class="bar"><i style="width:80%"></i></span></article>
+          <article class="skill reveal"><span class="ico">VSC</span><h3 data-i18n="skills.vsc.title">VS Code</h3><p data-i18n="skills.vsc.desc">My daily driver editor.</p><span class="bar"><i style="width:90%"></i></span></article>
         </div>
 
         <div class="section-head">
-          <h2>Backend &amp; Platform</h2>
-          <span class="meta">ship &amp; run</span>
+          <h2 data-i18n="skills.bp.lbl">Backend &amp; Platform</h2>
+          <span class="meta" data-i18n="skills.bp.sub">ship &amp; run</span>
         </div>
         <div class="skill-grid">
-          <article class="skill reveal"><span class="ico">FB</span><h3>Firebase</h3><p>Hosting, auth, realtime data.</p><span class="bar"><i style="width:78%"></i></span></article>
-          <article class="skill reveal"><span class="ico">SB</span><h3>Supabase</h3><p>Postgres as a service.</p><span class="bar"><i style="width:64%"></i></span></article>
-          <article class="skill reveal"><span class="ico">GIT</span><h3>Git</h3><p>Version control &amp; workflows.</p><span class="bar"><i style="width:80%"></i></span></article>
-          <article class="skill reveal"><span class="ico">DC</span><h3>DevOps</h3><p>Deployment, CI/CD, infra.</p><span class="bar"><i style="width:60%"></i></span></article>
+          <article class="skill reveal"><span class="ico">FB</span><h3 data-i18n="skills.fb.title">Firebase</h3><p data-i18n="skills.fb.desc">Hosting, auth, realtime data.</p><span class="bar"><i style="width:78%"></i></span></article>
+          <article class="skill reveal"><span class="ico">SB</span><h3 data-i18n="skills.sb.title">Supabase</h3><p data-i18n="skills.sb.desc">Postgres as a service.</p><span class="bar"><i style="width:64%"></i></span></article>
+          <article class="skill reveal"><span class="ico">GIT</span><h3 data-i18n="skills.git.title">Git</h3><p data-i18n="skills.git.desc">Version control &amp; workflows.</p><span class="bar"><i style="width:80%"></i></span></article>
+          <article class="skill reveal"><span class="ico">DC</span><h3 data-i18n="skills.dc.title">DevOps</h3><p data-i18n="skills.dc.desc">Deployment, CI/CD, infra.</p><span class="bar"><i style="width:60%"></i></span></article>
         </div>
       </section>
     </main>
 
     <footer>
-      <span>© 2026 Arlingkin. Built with care &amp; plain HTML.</span>
-      <a href="contact.html">say hello ↗</a>
+      <span data-i18n="footer.copy">© 2026 Arlingkin. Built with care &amp; plain HTML.</span>
+      <a href="contact.html" data-i18n="footer.hello">say hello ↗</a>
     </footer>
   </div>
-  <script type="module" src="assets/js/main.js"></script>
+  <script src="assets/js/main.js"></script>
 </body>
 </html>

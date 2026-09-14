@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,80 +28,81 @@
     <header class="site-header">
       <a class="brand" href="index.html" aria-label="Arlingkin home"><span class="brand-mark">a</span>arlingkin</a>
       <nav aria-label="Primary navigation">
-        <a class="nav-link" href="index.html">home</a>
-        <a class="nav-link" href="about.html">about</a>
-        <a class="nav-link" href="skills.html">skills</a>
-        <a class="nav-link" href="projects.html">projects</a>
-        <a class="nav-link" href="stats.html">stats</a>
-        <a class="nav-link active" href="contact.html">contact</a>
-        <a class="nav-link" href="https://github.com/arlingkin" target="_blank" rel="noreferrer">github ↗</a>
+        <a class="nav-link" href="index.html" data-i18n="nav.home">home</a>
+        <a class="nav-link" href="about.html" data-i18n="nav.about">about</a>
+        <a class="nav-link" href="skills.html" data-i18n="nav.skills">skills</a>
+        <a class="nav-link" href="projects.html" data-i18n="nav.projects">projects</a>
+        <a class="nav-link" href="stats.html" data-i18n="nav.stats">stats</a>
+        <a class="nav-link active" href="contact.html" data-i18n="nav.contact">contact</a>
+        <a class="nav-link" href="https://github.com/arlingkin" target="_blank" rel="noreferrer" data-i18n="nav.github">github ↗</a>
       </nav>
+      <div class="lang-switch"><button class="lang-btn" data-lang="en">EN</button><button class="lang-btn" data-lang="id">ID</button></div>
     </header>
 
     <main>
       <section class="page-head" aria-labelledby="contact-title">
-        <p class="eyebrow">05 / Contact</p>
-        <h1 id="contact-title">Say <em>hello.</em></h1>
-        <p class="intro">Open to collaboration on modern website production, questions about code, or just a chat — especially about blue. 💙</p>
+        <p class="eyebrow" data-i18n="contact.eyebrow">05 / Contact</p>
+        <h1 id="contact-title" data-i18n="contact.h1">Say <em>hello.</em></h1>
+        <p class="intro" data-i18n="contact.intro">Open to collaboration on modern website production, questions about code, or just a chat — especially about blue. 💙</p>
       </section>
 
       <section class="contact-grid" aria-label="Contact options">
         <article class="contact-card card-mail reveal">
-          <span class="kbd">email · fastest</span>
+          <span class="kbd" data-i18n="nav.contact">email · fastest</span>
           <h3>linggasaja03@gmail.com</h3>
-          <p>For work, projects, or collaboration. I usually reply within a couple of days.</p>
-          <button class="cta" type="button" data-copy="linggasaja03@gmail.com">copy email</button>
+          <p data-i18n="contact.email.desc">For work, projects, or collaboration. I usually reply within a couple of days.</p>
+          <button class="cta" type="button" data-copy="linggasaja03@gmail.com" data-i18n="contact.email.btn">copy email</button>
         </article>
 
         <article class="contact-card reveal">
           <span class="kbd">social · 01</span>
           <h3>GitHub</h3>
-          <p>Code, experiments, and everything I ship in public.</p>
+          <p data-i18n="contact.gh.desc">Code, experiments, and everything I ship in public.</p>
           <a class="cta" href="https://github.com/arlingkin" target="_blank" rel="noreferrer">@arlingkin ↗</a>
         </article>
 
         <article class="contact-card reveal">
           <span class="kbd">social · 02</span>
           <h3>Instagram</h3>
-          <p>Life behind the code and occasional project peeks.</p>
+          <p data-i18n="contact.ig.desc">Life behind the code and occasional project peeks.</p>
           <a class="cta" href="https://instagram.com/__lingg4" target="_blank" rel="noreferrer">@__lingg4 ↗</a>
         </article>
 
         <article class="contact-card reveal">
           <span class="kbd">social · 03</span>
           <h3>TikTok</h3>
-          <p>Short clips, build stories, and the occasional hot take.</p>
+          <p data-i18n="contact.tt.desc">Short clips, build stories, and the occasional hot take.</p>
           <a class="cta" href="https://tiktok.com/@arlingkin" target="_blank" rel="noreferrer">@arlingkin ↗</a>
         </article>
 
         <article class="contact-card reveal">
           <span class="kbd">social · 04</span>
           <h3>YouTube</h3>
-          <p>Longer form: tutorials, walkthroughs, and learning in public.</p>
+          <p data-i18n="contact.yt.desc">Longer form: tutorials, walkthroughs, and learning in public.</p>
           <a class="cta" href="https://youtube.com/@arlingkin" target="_blank" rel="noreferrer">@arlingkin ↗</a>
         </article>
 
         <article class="contact-card reveal">
           <span class="kbd">social · 05</span>
           <h3>Telegram</h3>
-          <p>Quick messages, direct and casual.</p>
+          <p data-i18n="contact.tg.desc">Quick messages, direct and casual.</p>
           <a class="cta" href="https://t.me/arlingkin" target="_blank" rel="noreferrer">@arlingkin ↗</a>
         </article>
 
         <article class="contact-card reveal">
           <span class="kbd">support · optional</span>
           <h3>Buy me a coffee</h3>
-          <p>If anything here helped or inspired you, a coffee keeps the experiments going.</p>
+          <p data-i18n="contact.coffee.desc">If anything here helped or inspired you, a coffee keeps the experiments going.</p>
           <a class="cta" href="https://www.buymeacoffee.com/arlingkin" target="_blank" rel="noreferrer">buymeacoffee.com/arlingkin ↗</a>
         </article>
       </section>
     </main>
 
     <footer>
-      <span>© 2026 Arlingkin. Built with care &amp; plain HTML.</span>
-      <a href="mailto:linggasaja03@gmail.com">say hello ↗</a>
+      <span data-i18n="footer.copy">© 2026 Arlingkin. Built with care &amp; plain HTML.</span>
+      <a href="mailto:linggasaja03@gmail.com" data-i18n="footer.hello">say hello ↗</a>
     </footer>
   </div>
-  <script type="module" src="assets/js/main.js"></script>
+  <script src="assets/js/main.js"></script>
 </body>
 </html>
