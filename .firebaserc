@@ -1,12 +1,12 @@
 {
   "projects": {
-    "default": "GANTI_DENGAN_PROJECT_ID"
+    "default": "arlingkin"
   },
   "targets": {
-    "GANTI_DENGAN_PROJECT_ID": {
+    "arlingkin": {
       "hosting": {
-        "main": ["GANTI_DENGAN_PROJECT_ID"],
-        "app": ["GANTI_DENGAN_PROJECT_ID-app"]
+        "main": ["arlingkin"],
+        "app": ["arlingkin-app"]
       }
     }
   }
