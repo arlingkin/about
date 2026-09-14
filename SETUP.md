@@ -43,3 +43,29 @@ Site utama adalah multi-halaman statis. `firebase.json` memetakan path ke file H
 
 Semua path lain di-rewrite ke `/`. Style bersama ada di `assets/css/style.css`,
 script bersama di `assets/js/main.js` (active nav, reveal animation, copy email).
+
+## Deploy otomatis ke Vercel (arlingkin.vercel.app)
+
+Situs utama sekarang memakai **Vercel** (`https://arlingkin.vercel.app`)
+dengan clean URLs (`/about`, `/skills`, ...), bukan lagi `arlingkin.web.app`.
+
+1. Pastikan project Vercel bernama **`arlingkin`** ada di akun kamu
+   (Import repo `arlingkin/about` di dashboard, rename project jadi `arlingkin`,
+   domain otomatis `arlingkin.vercel.app`).
+2. Buat token di [vercel.com/account/tokens](https://vercel.com/account/tokens).
+3. Buka repo GitHub → **Settings → Secrets and variables → Actions**.
+4. Tambah secret **`VERCEL_TOKEN`** dengan nilai token tadi.
+5. Workflow `vercel-deploy.yml` (aktif tiap push ke `main`):
+   - `vercel link --project arlingkin` → hubungkan ke project `arlingkin`
+   - `vercel pull/build/deploy --prod` → deploy ke production
+
+Build memakai `vercel.json` untuk clean URLs dan cache header.
+
+Catatan: direktori `.vercel/` di-ignore (`.gitignore` + `firebase.json`) agar
+setting project-scoped Vercel tidak ikut ter-commit atau ter-upload Firebase.
+
+### Mengatur variabel situs (GitHub Actions variables)
+Lihat `assets/js/site-config.js`. Override dari GitHub:
+**Settings → Secrets and variables → Actions → Variables** dengan alias:
+`SITE_LOCATION`, `SITE_STATUS`, `SITE_WORKING_ON`, `SITE_OPEN_TO`,
+`SITE_FAV_COLOR`, `SITE_EMAIL`, `SITE_ROLE`, `SITE_TAGLINE`, `SITE_NOW_1..4`.
