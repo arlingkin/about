@@ -124,7 +124,7 @@ const T = {
   'proj.a4.desc':    { en:'Open source, MIT licensed. Learn to code without letting AI do the thinking.', id:'Open source, berlisensi MIT. Belajar coding tanpa biarkan AI yang berpikir.' },
   'proj.a4.link':    { en:'SOURCE ↗', id:'SUMBER ↗' },
   'proj.a5.title':   { en:'Snake-game — matrix edition', id:'Snake-game — edisi matrix' },
-  'proj.a5.desc':    { en:'A retro snake in a matrix rain shell — score, speed-ups, glowing green grid, pure vanilla JS + canvas.', id:'Snake retro dalam kulit hujan matrix — skor, penambah kecepatan, grid hijau menyala, JS vanilla + canvas murni.' },
+  'proj.a5.desc':    { en:"The classic snake game with a glow of Matrix rain. Guide the snake, eat the food, grow longer — and try not to hit the wall. Pure vanilla JS on a neon green grid.", id:'Game ular klasik dengan nuansa hujan Matrix. Arahkan ularnya, makan makanan, makin kepanjangan — dan jangan sampai nabrak tembok. Dibuat murni dengan JavaScript vanilla di atas grid hijau menyala.' },
   'proj.a5.tag':     { en:'GAME · MATRIX', id:'GAME · MATRIX' },
 
   /* stats */
