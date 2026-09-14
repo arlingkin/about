@@ -37,7 +37,7 @@ const T = {
   'home.stats.desc':   { en:'Live GitHub metrics, streaks, and the little automation behind them.', id:'Metrik GitHub live, streaks, dan sedikit otomasi di baliknya.' },
   'home.now.label':    { en:'03 / RIGHT NOW', id:'03 / SEKARANG' },
   'home.now.h2':       { en:'A few things<br>I\'m <em>into.</em>', id:'Beberapa hal<br>yang saya <em>sukai.</em>' },
-  'home.now.1':        { en:'Working on a school project — <em>nufabase</em> — one careful feature at a time.', id:'Mengerjakan proyek sekolah — <em>nufabase</em> — satu fitur hati-hati dalam waktu.' },
+  'home.now.1':        { en:'Working on a personal project — one careful feature at a time.', id:'Mengerjakan proyek pribadi — satu fitur hati-hati dalam waktu.' },
   'home.now.2':        { en:'Studying JavaScript, CSS & HTML the slow, hands-on way.', id:'Belajar JavaScript, CSS & HTML dengan cara lambat, langsung praktik.' },
   'home.now.3':        { en:'Trying to make the web feel more personal again.', id:'Mencoba membuat web terasa lebih personal kembali.' },
   'home.now.4':        { en:"Ask me about blue — it's my favorite color.", id:'Tanya saya tentang biru — itu warna favorit saya.' },
@@ -47,16 +47,16 @@ const T = {
   'about.h1':         { en:"Hi, I'm<br><em>Arlingga.</em>", id:'Hai, saya<br><em>Arlingga.</em>' },
   'about.intro':      { en:'Web development across the whole stack — frontend, backend, devops, and AI engineering. Vibes of a maker, instincts of a human.', id:'Web development lintas stack — frontend, backend, devops, dan AI engineering. Vibra seorang maker, insting manusia.' },
   'about.lead':       { en:'I build for the web and learn <em>in public.</em>', id:'Saya membangun untuk web dan belajar <em>di publik.</em>' },
-  'about.p1':         { en:"I'm a developer based in Indonesia 🇮🇩, working across frontend, backend, devops and AI engineering. Right now I'm putting most of my energy into a school project called <em>nufabase</em>, and studying JavaScript, CSS and HTML the slow, hands-on way — because that's how ideas stick.", id:'Saya pengembang yang berbasis di Indonesia 🇮🇩, bekerja di frontend, backend, devops, dan AI engineering. Sekarang saya menaruh sebagian besar energi ke proyek sekolah bernama <em>nufabase</em>, dan belajar JavaScript, CSS, dan HTML dengan cara lambat, langsung praktik — karena itulah cara ide menempel.' },
+  'about.p1':         { en:"I'm a developer based in Indonesia 🇮🇩, working across frontend, backend, devops and AI engineering. Right now I'm active on a personal project, and studying JavaScript, CSS and HTML the slow, hands-on way — because that's how ideas stick.", id:'Saya pengembang yang berbasis di Indonesia 🇮🇩, bekerja di frontend, backend, devops, dan AI engineering. Sekarang saya aktif di sebuah proyek pribadi, dan belajar JavaScript, CSS, dan HTML dengan cara lambat, langsung praktik — karena itulah cara ide menempel.' },
   'about.p2':         { en:"I believe in shipping small, keeping things simple, and making the web feel personal again. Also — blue is my favorite color, in case you need conversation fuel.", id:'Saya percaya mengirim yang kecil, menjaga kesederhanaan, dan membuat web terasa personal kembali. Selain itu — biru adalah warna favorit saya, jika butuh bahan ngobrol.' },
   'about.fact.loc':   { en:'location', id:'lokasi' },
   'about.fact.locv':  { en:'Indonesia 🇮🇩', id:'Indonesia 🇮🇩' },
   'about.fact.stat':  { en:'status', id:'status' },
-  'about.fact.statv': { en:'learning JS, CSS & HTML', id:'belajar JS, CSS & HTML' },
+  'about.fact.statv': { en:'active', id:'aktif' },
   'about.fact.work':  { en:'working on', id:'mengerjakan' },
-  'about.fact.workv': { en:'nufabase (school project)', id:'nufabase (proyek sekolah)' },
+  'about.fact.workv': { en:'personal project', id:'proyek pribadi' },
   'about.fact.open':  { en:'open to', id:'terbuka untuk' },
-  'about.fact.openv': { en:'modern website collabs', id:'kolaborasi website modern' },
+  'about.fact.openv': { en:'collaborate', id:'berkolaborasi' },
   'about.fact.col':   { en:'favorite color', id:'warna favorit' },
   'about.fact.colv':  { en:'blue 💙', id:'biru 💙' },
   'about.fact.em':    { en:'email', id:'email' },
@@ -64,7 +64,7 @@ const T = {
   'about.now.label':  { en:'Now', id:'Sekarang' },
   'about.now.h2':     { en:'Currently<br><em>doing.</em>', id:'Saat ini<br><em>mengerjakan.</em>' },
   'about.now.1':      { en:'Building little web experiments with vanilla JavaScript.', id:'Membangun eksperimen web kecil dengan vanilla JavaScript.' },
-  'about.now.2':      { en:'Keeping a school project (nufabase) alive, one careful feature at a time.', id:'Menjaga proyek sekolah (nufabase) tetap hidup, satu fitur hati-hati dalam waktu.' },
+  'about.now.2':      { en:'Keeping a personal project alive, one careful feature at a time.', id:'Menjaga proyek pribadi tetap hidup, satu fitur hati-hati dalam waktu.' },
   'about.now.3':      { en:'Learning the fundamentals before reaching for frameworks.', id:'Belajar dasar-dasar sebelum meraih frameworks.' },
   'about.now.4':      { en:'Looking to collaborate on modern website production.', id:'Mencari kolaborasi untuk produksi website modern.' },
 
@@ -175,6 +175,21 @@ function initLangSwitch() {
   });
 }
 
+/* ── site config (CI-injectable overrides) ────────────────────── */
+function applyConfig() {
+  const c = window.SITE_CONFIG;
+  if (!c) return;
+  const s = (v, def) => (v && v.indexOf('__') !== 0) ? v : def;
+  Object.assign(T, {
+    'about.fact.locv':  { en: s(c.location,       T['about.fact.locv'].en),  id: s(c.location,       T['about.fact.locv'].id)  },
+    'about.fact.statv': { en: s(c.status,         T['about.fact.statv'].en), id: s(c.status,         T['about.fact.statv'].id) },
+    'about.fact.workv': { en: s(c.working_on,     T['about.fact.workv'].en), id: s(c.working_on,     T['about.fact.workv'].id) },
+    'about.fact.openv': { en: s(c.open_to,        T['about.fact.openv'].en), id: s(c.open_to,        T['about.fact.openv'].id) },
+    'about.fact.colv':  { en: s(c.favorite_color, T['about.fact.colv'].en),  id: s(c.favorite_color, T['about.fact.colv'].id)  },
+    'about.fact.emv':   { en: s(c.email,          T['about.fact.emv'].en),   id: s(c.email,          T['about.fact.emv'].id)   },
+  });
+}
+
 /* ── nav ──────────────────────────────────────────────────────── */
 function setActiveNav() {
   document.querySelectorAll('.nav-link').forEach(link => {
@@ -216,6 +231,7 @@ function initCopyEmail() {
 /* ── boot ─────────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   setActiveNav();
+  applyConfig();
   revealOnScroll();
   initCopyEmail();
   initLangSwitch();

@@ -26,6 +26,22 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      - name: Inject site config
+        run: node scripts/inject-config.mjs
+        env:
+          SITE_LOCATION:      ${{ vars.SITE_LOCATION }}
+          SITE_STATUS:        ${{ vars.SITE_STATUS }}
+          SITE_WORKING_ON:    ${{ vars.SITE_WORKING_ON }}
+          SITE_OPEN_TO:       ${{ vars.SITE_OPEN_TO }}
+          SITE_FAV_COLOR:     ${{ vars.SITE_FAV_COLOR }}
+          SITE_EMAIL:         ${{ vars.SITE_EMAIL }}
+          SITE_ROLE:          ${{ vars.SITE_ROLE }}
+          SITE_TAGLINE:       ${{ vars.SITE_TAGLINE }}
+          SITE_NOW_1:         ${{ vars.SITE_NOW_1 }}
+          SITE_NOW_2:         ${{ vars.SITE_NOW_2 }}
+          SITE_NOW_3:         ${{ vars.SITE_NOW_3 }}
+          SITE_NOW_4:         ${{ vars.SITE_NOW_4 }}
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
