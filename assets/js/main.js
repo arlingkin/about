@@ -126,6 +126,9 @@ const T = {
   'proj.a5.title':   { en:'Snake-game — matrix edition', id:'Snake-game — edisi matrix' },
   'proj.a5.desc':    { en:"The classic snake game with a glow of Matrix rain. Guide the snake, eat the food, grow longer — and try not to hit the wall. Pure vanilla JS on a neon green grid.", id:'Game ular klasik yang dihiasi nuansa hujan Matrix. Gerakkan ularnya, makan makanannya, badanmu makin panjang — dan jangan sampai nabrak tembok. Dikerjakan murni dengan JavaScript vanilla di atas grid hijau menyala.' },
   'proj.a5.tag':     { en:'GAME · MATRIX', id:'GAME · MATRIX' },
+  'proj.a5.link':    { en:'PLAY THE GAME →', id:'MAINKAN GAME →' },
+  'proj.a6.title':   { en:'Project — data limit', id:'Proyek — batas data' },
+  'proj.a6.desc':    { en:"The latest one — a small helper that keeps an eye on your daily data allowance (kuota) so you stay in control before it runs out.", id:'Yang terbaru — pembantu kecil yang memantau pemakaian data/kuota harianmu, biar kamu tetap sadar dan tidak kehabisan di tengah jalan.' },
 
   /* stats */
   'stats.eyebrow':    { en:'04 / GitHub stats', id:'04 / Statistik GitHub' },

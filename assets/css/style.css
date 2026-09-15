@@ -105,6 +105,10 @@ h1 em, .display em { color:var(--orange); font-family:"Playfair Display",serif; 
   background:linear-gradient(132deg,#6c86ff 0%,#5b4ac7 48%,#182441 100%);
 }
 .code-art:before { content:""; position:absolute; width:260px; height:260px; right:-50px; bottom:-85px; border-radius:50%; background:var(--orange); }
+.feature-card.matrix .code-art {
+  background:linear-gradient(132deg,#00ff41 0%,#0a8030 48%,#061a0e 100%);
+}
+.feature-card.matrix .code-art:before { background:rgba(0,255,65,.35); }
 .code-window {
   position:relative; z-index:1; padding:18px;
   background:rgba(9,14,30,.83); border:1px solid rgba(255,255,255,.17); border-radius:8px;
