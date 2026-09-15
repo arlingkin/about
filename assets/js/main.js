@@ -128,7 +128,8 @@ const T = {
   'proj.a5.tag':     { en:'GAME · MATRIX', id:'GAME · MATRIX' },
   'proj.a5.link':    { en:'PLAY THE GAME →', id:'MAINKAN GAME →' },
   'proj.a6.title':   { en:'Project — data limit', id:'Proyek — batas data' },
-  'proj.a6.desc':    { en:"The latest one — a small helper that keeps an eye on your daily data allowance (kuota) so you stay in control before it runs out.", id:'Yang terbaru — pembantu kecil yang memantau pemakaian data/kuota harianmu, biar kamu tetap sadar dan tidak kehabisan di tengah jalan.' },
+  'proj.a6.desc':    { en:"The latest one — an Android app that keeps your daily data allowance (kuota) in check. Grab the newest APK straight from the GitHub pre-releases.", id:'Yang terbaru — aplikasi Android buat menjaga pemakaian data/kuota harianmu. Ambil APK terbarunya langsung dari pre-release GitHub.' },
+  'proj.a6.link':    { en:'GET PRE-RELEASES →', id:'AMBIL PRE-RELEASE →' },
 
   /* stats */
   'stats.eyebrow':    { en:'04 / GitHub stats', id:'04 / Statistik GitHub' },
