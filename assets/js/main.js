@@ -204,9 +204,10 @@ function setActiveNav() {
   document.querySelectorAll('.nav-link').forEach(link => {
     const href = link.getAttribute('href') || '';
     if (href.startsWith('http')) return;
-    const target = href.split('#')[0].replace(/\.html$/, '');
-    const here = path === '/' ? '/index' : path;
-    if (here === target) link.classList.add('active');
+    const target = href.split('#')[0];
+    if ((path === '/' && target === '/') || (path !== '/' && path === target)) {
+      link.classList.add('active');
+    }
   });
 }
 
@@ -217,7 +218,10 @@ function revealOnScroll() {
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
   }, { threshold: 0.12 });
-  els.forEach(el => io.observe(el));
+  els.forEach(el => {
+    if (el.dataset.delay) el.style.setProperty('--d', `${el.dataset.delay}ms`);
+    io.observe(el);
+  });
 }
 
 /* ── copy email ───────────────────────────────────────────────── */

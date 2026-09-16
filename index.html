@@ -27,14 +27,14 @@
 <body>
   <div class="page">
     <header class="site-header">
-      <a class="brand" href="index.html" aria-label="Arlingkin home"><span class="brand-mark">a</span>arlingkin</a>
+      <a class="brand" href="/" aria-label="Arlingkin home"><span class="brand-mark">a</span>arlingkin</a>
       <nav aria-label="Primary navigation">
-        <a class="nav-link active" href="index.html" data-i18n="nav.home">home</a>
-        <a class="nav-link" href="about.html" data-i18n="nav.about">about</a>
-        <a class="nav-link" href="skills.html" data-i18n="nav.skills">skills</a>
-        <a class="nav-link" href="projects.html" data-i18n="nav.projects">projects</a>
-        <a class="nav-link" href="stats.html" data-i18n="nav.stats">stats</a>
-        <a class="nav-link" href="contact.html" data-i18n="nav.contact">contact</a>
+        <a class="nav-link active" href="/" data-i18n="nav.home">home</a>
+        <a class="nav-link" href="/about" data-i18n="nav.about">about</a>
+        <a class="nav-link" href="/skills" data-i18n="nav.skills">skills</a>
+        <a class="nav-link" href="/projects" data-i18n="nav.projects">projects</a>
+        <a class="nav-link" href="/stats" data-i18n="nav.stats">stats</a>
+        <a class="nav-link" href="/contact" data-i18n="nav.contact">contact</a>
         <a class="nav-link" href="https://github.com/arlingkin" target="_blank" rel="noreferrer" data-i18n="nav.github">github ↗</a>
       </nav>
       <div class="lang-switch"><button class="lang-btn" data-lang="en">EN</button><button class="lang-btn" data-lang="id">ID</button></div>
@@ -42,7 +42,7 @@
 
     <main id="top">
       <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-grid">
+        <div class="hero-grid reveal reveal-zoom">
           <div>
             <p class="eyebrow" data-i18n="home.eyebrow">Personal notes / 2026</p>
             <h1 id="hero-title" data-i18n="home.h1">Making sense<br>of <em>code.</em></h1>
@@ -57,14 +57,14 @@
       <section class="featured" aria-labelledby="featured-title" id="writing">
         <div class="section-head">
           <h2 id="featured-title" data-i18n="home.latest.label">01 / LATEST NOTE</h2>
-          <a href="projects.html" data-i18n="home.latest.link">view projects</a>
+          <a href="/projects" data-i18n="home.latest.link">view projects</a>
         </div>
         <article class="feature-card">
           <div class="feature-copy reveal">
             <span class="tag" data-i18n="home.latest.tag">ESSAY · 06 MIN</span>
             <h3 data-i18n="home.latest.title">Learn to code without letting AI do the thinking.</h3>
             <p data-i18n="home.latest.desc">A few thoughts on keeping your curiosity sharp when the answers arrive instantly.</p>
-            <a class="read-link" href="projects.html" data-i18n="home.latest.read">READ THE NOTE →</a>
+            <a class="read-link" href="/projects" data-i18n="home.latest.read">READ THE NOTE →</a>
           </div>
           <div class="code-art reveal" aria-label="Decorative code illustration">
             <div class="code-window">
@@ -85,17 +85,17 @@
           <span class="meta" data-i18n="home.where.sub">based in indonesia, building on the web</span>
         </div>
         <div class="article-grid">
-          <a class="article" href="about.html">
+          <a class="article reveal reveal-left d1" href="/about">
             <p class="meta" data-i18n="home.about.tag">ABOUT · 01</p>
             <h3 data-i18n="home.about.title">Hi, I'm Arlingga</h3>
             <p data-i18n="home.about.desc">Web dev, frontend + backend, devops, AI engineering. Follow the journey.</p>
           </a>
-          <a class="article" href="skills.html">
+          <a class="article reveal d2" href="/skills">
             <p class="meta" data-i18n="home.skills.tag">SKILLS · 02</p>
             <h3 data-i18n="home.skills.title">The toolbox</h3>
             <p data-i18n="home.skills.desc">JS, Python, Java, Tailwind, NextJS, Firebase, Supabase &amp; more.</p>
           </a>
-          <a class="article" href="stats.html">
+          <a class="article reveal reveal-right d3" href="/stats">
             <p class="meta" data-i18n="home.stats.tag">STATS · 03</p>
             <h3 data-i18n="home.stats.title">Shipping in public</h3>
             <p data-i18n="home.stats.desc">Live GitHub metrics, streaks, and the little automation behind them.</p>
@@ -103,7 +103,7 @@
         </div>
       </section>
 
-      <section class="now" id="now" aria-labelledby="now-title">
+      <section class="now reveal reveal-right" id="now" aria-labelledby="now-title">
         <div>
           <p class="eyebrow" data-i18n="home.now.label">03 / RIGHT NOW</p>
           <h2 id="now-title" data-i18n="home.now.h2">A few things<br>I'm <em>into.</em></h2>
