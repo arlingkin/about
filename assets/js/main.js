@@ -102,6 +102,8 @@ const T = {
   'skills.git.desc':  { en:'Version control & workflows.', id:'Kontrol versi & alur kerja.' },
   'skills.dc.title': { en:'DevOps', id:'DevOps' },
   'skills.dc.desc':  { en:'Deployment, CI/CD, infra.', id:'Deployment, CI/CD, dan infra.' },
+  'skills.tools':     { en:'Quick tools index', id:'Indeks tool cepat' },
+  'skills.tools.sub': { en:'tap any icon for the docs', id:'ketuk ikon mana pun untuk dokumentasi' },
 
   /* projects */
   'proj.eyebrow':    { en:'03 / Projects', id:'03 / Proyek' },

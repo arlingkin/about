@@ -162,10 +162,11 @@ h1 em, .display em { color:var(--orange); font-family:"Playfair Display",serif; 
 .skill-grid { display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--line); border-left:1px solid var(--line); }
 .skill {
   min-height:205px; padding:26px 22px; border-right:1px solid var(--line); border-bottom:1px solid var(--line);
-  display:flex; flex-direction:column; gap:0; transition:background .2s;
+  display:flex; flex-direction:column; gap:0; transition:background .2s; text-decoration:none; color:inherit;
 }
 .skill:hover { background:rgba(120,166,255,.08); }
 .skill .ico { width:42px; height:42px; border-radius:9px; display:grid; place-items:center; font:500 19px/1 "DM Mono",monospace; background:linear-gradient(135deg,rgba(120,166,255,.2),rgba(174,140,255,.14)); border:1px solid rgba(216,224,255,.14); }
+.skill .ico img { display:block; }
 .skill h3 { margin:34px 0 8px; font-size:17px; letter-spacing:-.02em; }
 .skill p { margin:0; color:var(--muted); font-size:13px; line-height:1.5; }
 .skill .bar { position:relative; height:3px; background:rgba(216,224,255,.12); margin-top:auto; border-radius:2px; overflow:hidden; }
