@@ -169,6 +169,18 @@ function applyLang(lang) {
     const key = el.getAttribute('data-i18n');
     const entry = T[key];
     if (!entry) return;
+
+    // About fact labels keep their configurable value in a nested <b> element.
+    // Build that value as text so injected repository variables are displayed
+    // safely and survive each language switch.
+    const factValue = T[`${key}v`];
+    if (key.startsWith('about.fact.') && factValue) {
+      el.textContent = entry[lang] || entry.en;
+      const value = document.createElement('b');
+      value.textContent = factValue[lang] || factValue.en;
+      el.append(value);
+      return;
+    }
     el.innerHTML = entry[lang] || entry.en;
   });
   document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -188,14 +200,21 @@ function initLangSwitch() {
 function applyConfig() {
   const c = window.SITE_CONFIG;
   if (!c) return;
-  const s = (v, def) => (v && v.indexOf('__') !== 0) ? v : def;
+  // An unset GitHub variable leaves its __SITE_*__ alias in site-config.js.
+  // Treat it (and null / blank values) as absent so the existing About copy
+  // remains visible rather than exposing an alias or an empty fact value.
+  const valueOrDefault = (value, fallback) => {
+    if (typeof value !== 'string') return fallback;
+    const valueTrimmed = value.trim();
+    return valueTrimmed && !valueTrimmed.startsWith('__') ? valueTrimmed : fallback;
+  };
   Object.assign(T, {
-    'about.fact.locv':  { en: s(c.location,       T['about.fact.locv'].en),  id: s(c.location,       T['about.fact.locv'].id)  },
-    'about.fact.statv': { en: s(c.status,         T['about.fact.statv'].en), id: s(c.status,         T['about.fact.statv'].id) },
-    'about.fact.workv': { en: s(c.working_on,     T['about.fact.workv'].en), id: s(c.working_on,     T['about.fact.workv'].id) },
-    'about.fact.openv': { en: s(c.open_to,        T['about.fact.openv'].en), id: s(c.open_to,        T['about.fact.openv'].id) },
-    'about.fact.colv':  { en: s(c.favorite_color, T['about.fact.colv'].en),  id: s(c.favorite_color, T['about.fact.colv'].id)  },
-    'about.fact.emv':   { en: s(c.email,          T['about.fact.emv'].en),   id: s(c.email,          T['about.fact.emv'].id)   },
+    'about.fact.locv':  { en: valueOrDefault(c.location,       T['about.fact.locv'].en),  id: valueOrDefault(c.location,       T['about.fact.locv'].id)  },
+    'about.fact.statv': { en: valueOrDefault(c.status,         T['about.fact.statv'].en), id: valueOrDefault(c.status,         T['about.fact.statv'].id) },
+    'about.fact.workv': { en: valueOrDefault(c.working_on,     T['about.fact.workv'].en), id: valueOrDefault(c.working_on,     T['about.fact.workv'].id) },
+    'about.fact.openv': { en: valueOrDefault(c.open_to,        T['about.fact.openv'].en), id: valueOrDefault(c.open_to,        T['about.fact.openv'].id) },
+    'about.fact.colv':  { en: valueOrDefault(c.favorite_color, T['about.fact.colv'].en),  id: valueOrDefault(c.favorite_color, T['about.fact.colv'].id)  },
+    'about.fact.emv':   { en: valueOrDefault(c.email,          T['about.fact.emv'].en),   id: valueOrDefault(c.email,          T['about.fact.emv'].id)   },
   });
 }
 
