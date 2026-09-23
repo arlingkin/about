@@ -11,4 +11,17 @@
 .site-header::after { content: ""; position: absolute; width: 180px; height: 180px; pointer-events: none; border-radius: 50%; background: radial-gradient(circle, rgba(120,166,255,.08), transparent 68%); left: var(--header-glow-x, 50%); top: var(--header-glow-y, 50%); transform: translate(-50%, -50%); opacity: 0; transition: opacity .25s ease; }
 .site-header { position: relative; }
 .site-header.has-glow::after { opacity: 1; }
-@media (prefers-reduced-motion: reduce) { .brand, .brand-mark, .brand::before { transition: none; } .brand.is-popping .brand-mark::after { animation: none; } }
+
+/* Expanding language pill: EN -> ENGLISH | ID, ID -> EN | INDONESIA */
+.lang-switch { position: relative; width: 78px; min-height: 28px; padding: 2px; transition: width .5s cubic-bezier(.22,.61,.36,1), box-shadow .35s ease; }
+.lang-switch:has(.lang-btn[data-lang="en"].on) { width: 118px; }
+.lang-switch:has(.lang-btn[data-lang="id"].on) { width: 130px; }
+.lang-btn { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 0; min-width: 34px; height: 23px; overflow: hidden; white-space: nowrap; }
+.lang-short, .lang-long { display: inline-block; overflow: hidden; }
+.lang-short { max-width: 3ch; opacity: 1; transform: translateX(0); transition: max-width .4s ease, opacity .25s ease, transform .4s cubic-bezier(.34,1.56,.64,1); }
+.lang-long { max-width: 0; opacity: 0; transform: translateX(-5px); transition: max-width .5s cubic-bezier(.22,.61,.36,1), opacity .22s ease, transform .45s cubic-bezier(.34,1.56,.64,1); }
+.lang-btn.on .lang-short { max-width: 0; opacity: 0; transform: translateX(-5px); }
+.lang-btn.on .lang-long { max-width: 10ch; opacity: 1; transform: translateX(0); }
+.lang-switch:has(.lang-btn.on) { box-shadow: 0 0 22px rgba(120,166,255,.08); }
+@media (max-width: 620px) { .lang-switch:has(.lang-btn[data-lang="en"].on) { width: 108px; } .lang-switch:has(.lang-btn[data-lang="id"].on) { width: 120px; } .lang-btn { padding-inline: 8px; } }
+@media (prefers-reduced-motion: reduce) { .brand, .brand-mark, .brand::before, .lang-switch, .lang-short, .lang-long { transition: none; } .brand.is-popping .brand-mark::after { animation: none; } }
