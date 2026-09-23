@@ -138,6 +138,8 @@ const T = {
   'proj.opencode.link':  { en:'VISIT OPENCODE →', id:'KUNJUNGI OPENCODE →' },
   'proj.a5.archive.title': { en:'Snake-game — matrix edition', id:'Snake-game — edisi Matrix' },
   'proj.a5.archive.desc':  { en:'A compact Matrix-themed browser game built with vanilla JavaScript — a small experiment in game logic, animation, and interaction.', id:'Game browser bertema Matrix yang ringkas dengan vanilla JavaScript — eksperimen kecil dalam logika game, animasi, dan interaksi.' },
+  'skills.oc.title': { en:'OpenCode', id:'OpenCode' },
+  'skills.oc.desc': { en:'AI coding agent for terminal workflows.', id:'AI coding agent untuk alur kerja coding di terminal.' },
 
   /* stats */
   'stats.eyebrow':    { en:'04 / GitHub stats', id:'04 / Statistik GitHub' },
