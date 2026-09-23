@@ -133,6 +133,9 @@ const T = {
   'proj.a6.title':   { en:'Project — data limit', id:'Proyek — batas data' },
   'proj.a6.desc':    { en:"The latest one — an Android app that keeps your daily data allowance (kuota) in check. Grab the newest APK straight from the GitHub pre-releases.", id:'Yang terbaru — aplikasi Android buat menjaga pemakaian data/kuota harianmu. Ambil APK terbarunya langsung dari pre-release GitHub.' },
   'proj.a6.link':    { en:'GET PRE-RELEASES →', id:'AMBIL PRE-RELEASE →' },
+  'proj.opencode.title': { en:'OpenCode', id:'OpenCode' },
+  'proj.opencode.desc':  { en:'An open-source AI coding agent for the terminal — built to help you code, inspect, and ship with control.', id:'AI coding agent open-source untuk terminal — membantu coding, inspeksi, dan rilis dengan kontrol tetap di tanganmu.' },
+  'proj.opencode.link':  { en:'VISIT OPENCODE →', id:'KUNJUNGI OPENCODE →' },
 
   /* stats */
   'stats.eyebrow':    { en:'04 / GitHub stats', id:'04 / Statistik GitHub' },
