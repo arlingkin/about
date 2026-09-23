@@ -20,7 +20,7 @@ const T = {
   'home.status':       { en:'vibe code, but with <em>human</em> sense', id:'vibe code, tapi tetap pakai akal <em>manusia</em>' },
   'home.latest.label': { en:'01 / LATEST NOTE', id:'01 / CATATAN TERBARU' },
   'home.latest.link':  { en:'view projects',   id:'lihat proyek' },
-  'home.latest.tag':   { en:'ESSAY · 06 MIN',  id:'ESAI · 6 MENIT' },
+  'home.latest.tag':   { en:'PERSONAL NOTE',  id:'CATATAN PRIBADI' },
   'home.latest.title': { en:'Learn to code without letting AI do the thinking.', id:'Belajar coding tanpa membiarkan AI memikirkan semuanya untukmu.' },
   'home.latest.desc':  { en:'A few thoughts on keeping your curiosity sharp when the answers arrive instantly.', id:'Sedikit renungan soal tetap peka dan penasaran, padahal jawabannya datang seketika.' },
   'home.latest.read':  { en:'READ THE NOTE →',  id:'BACA CATATAN →' },
