@@ -41,6 +41,7 @@ const T = {
   'home.now.2':        { en:'Studying JavaScript, CSS & HTML the slow, hands-on way.', id:'Belajar JavaScript, CSS & HTML secara santai, sambil langsung praktik.' },
   'home.now.3':        { en:'Trying to make the web feel more personal again.', id:'Berusaha bikin web terasa lebih personal lagi.' },
   'home.now.4':        { en:"Ask me about blue — it's my favorite color.", id:'Tanya soal warna biru — itu favoritku.' },
+  'home.toolbox.sub':  { en:'things I build with', id:'alat yang saya gunakan untuk berkarya' },
 
   /* about */
   'about.eyebrow':    { en:'01 / About me', id:'01 / Tentang saya' },
