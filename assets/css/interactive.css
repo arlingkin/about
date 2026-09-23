@@ -53,7 +53,6 @@
     linear-gradient(135deg, #f8fbff 8%, #e8f0ff 42%, #f4f7ff 72%, #ffffff 100%);
 }
 :root[data-theme="light"] body::after { opacity: .42; }
-:root[data-theme="light"] .feature-card { color: #10152a; }
 :root[data-theme="light"] .feature-copy p { color: #4d5870; }
 :root[data-theme="light"] .code-window { background: rgba(12,20,42,.9); color: #e7ebf5; }
 .theme-toggle {
