@@ -24,6 +24,18 @@ const T = {
   'home.latest.title': { en:'Learn to code without letting AI do the thinking.', id:'Belajar coding tanpa membiarkan AI memikirkan semuanya untukmu.' },
   'home.latest.desc':  { en:'A few thoughts on keeping your curiosity sharp when the answers arrive instantly.', id:'Sedikit renungan soal tetap peka dan penasaran, padahal jawabannya datang seketika.' },
   'home.latest.read':  { en:'READ THE NOTE →',  id:'BACA CATATAN →' },
+  'note2.h1':    { en:'The moment I stopped <em>watching the chart.</em>', id:'Saat saya berhenti <em>menatap chart.</em>' },
+  'note2.meta1': { en:'trading / psychology', id:'trading / psikologi' },
+  'note2.meta2': { en:'6 min read', id:'6 menit baca' },
+  'note2.meta3': { en:'personal log', id:'catatan pribadi' },
+  'note2.lead': { en:"There was a point where checking the chart felt like doing the work. It wasn't.", id:'Pernah ada titik ketika mengecek chart terasa seperti sedang bekerja. Padahal tidak.' },
+  'note2.p1': { en:'I used to think more screen time meant more opportunities. More candles, more setups, more chances to catch the move. In reality, I was often just feeding my attention to every little movement.', id:'Dulu saya pikir semakin lama di depan layar berarti semakin banyak peluang. Lebih banyak candle, setup, dan kesempatan menangkap pergerakan. Kenyataannya, saya sering hanya menyerahkan perhatian pada setiap gerakan kecil.' },
+  'note2.p2': { en:"A setup doesn't become better because I stare at it longer. A loss doesn't become easier because I immediately hunt for the next trade. And a green candle isn't an invitation.", id:'Sebuah setup tidak menjadi lebih bagus hanya karena saya menatapnya lebih lama. Kerugian tidak menjadi lebih ringan hanya karena saya langsung mencari trade berikutnya. Dan candle hijau bukan berarti sebuah undangan.' },
+  'note2.quote': { en:'Sometimes the most disciplined thing I can do is <span>close the chart.</span>', id:'Kadang hal paling disiplin yang bisa saya lakukan adalah <span>menutup chart.</span>' },
+  'note2.p3': { en:'That changed how I want to trade. I still study structure, liquidity, entries and risk. But I want the process to survive even when the screen is off. The goal is not to predict every move. The goal is to know my setup, define the invalidation, take the risk I can actually accept, and walk away.', id:'Itu mengubah cara saya ingin trading. Saya tetap belajar structure, liquidity, entry, dan risk. Tapi saya ingin prosesnya tetap berjalan meski layar mati. Tujuannya bukan memprediksi semua gerakan. Tujuannya memahami setup, menentukan invalidation, mengambil risiko yang benar-benar bisa saya terima, lalu pergi.' },
+  'note2.p4': { en:"For me, stepping away isn't wasted time. It's part of the system. There is school, prayer, family, exercise, coding, and simply being a person outside the candles. A trading plan that requires me to watch every second is not freedom yet.", id:'Buat saya, menjauh sejenak bukan waktu yang terbuang. Itu bagian dari sistem. Ada sekolah, ibadah, keluarga, olahraga, coding, dan kehidupan sebagai manusia di luar candle. Trading plan yang mengharuskan saya menonton setiap detik belum benar-benar menjadi kebebasan.' },
+  'note2.p5': { en:"I'm still learning this. Some days I break my own rule and come back to the screen too quickly. The difference now is that I notice it — and I can reset before one bad decision turns into a whole session.", id:'Saya masih belajar soal ini. Beberapa hari saya masih melanggar aturan sendiri dan kembali ke layar terlalu cepat. Bedanya sekarang, saya menyadarinya — dan bisa reset sebelum satu keputusan buruk berubah menjadi satu sesi penuh.' },
+  'note2.back': { en:'← back to projects', id:'← kembali ke proyek' },
   'home.where.label':  { en:'02 / WHERE I AM',  id:'02 / DI MANA SAYA' },
   'home.where.sub':    { en:'based in indonesia, building on the web', id:'tinggal di indonesia, berkarya di web' },
   'home.about.tag':    { en:'ABOUT · 01', id:'TENTANG · 01' },
@@ -42,6 +54,9 @@ const T = {
   'home.now.3':        { en:'Trying to make the web feel more personal again.', id:'Berusaha bikin web terasa lebih personal lagi.' },
   'home.now.4':        { en:"Ask me about blue — it's my favorite color.", id:'Tanya soal warna biru — itu favoritku.' },
   'home.toolbox.sub':  { en:'things I build with', id:'alat yang saya gunakan untuk berkarya' },
+  'proj.note2.title': { en:'Personal Note — The moment I stopped watching the chart.', id:'Catatan Pribadi — Saat saya berhenti menatap chart.' },
+  'proj.note2.desc':  { en:'A note about trading, screen time, and learning that stepping away is part of the process.', id:'Catatan tentang trading, waktu di depan layar, dan belajar bahwa menjauh sejenak juga bagian dari proses.' },
+  'proj.note2.link':  { en:'READ NOTE →', id:'BACA CATATAN →' },
 
   /* about */
   'about.eyebrow':    { en:'01 / About me', id:'01 / Tentang saya' },
@@ -315,4 +330,25 @@ document.addEventListener('DOMContentLoaded', () => {
   initCopyEmail();
   initLangSwitch();
   applyLang(getLang());
+  initNoteTypography();
 }, { once: true });
+
+
+/* ── dynamic note typography ─────────────────────────────────── */
+function initNoteTypography() {
+  const targets = document.querySelectorAll('[data-note-fonts]');
+  if (!targets.length) return;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  if (reduced.matches) return;
+  let index = 0;
+  const tick = () => {
+    targets.forEach(el => {
+      el.classList.remove('note-font-0','note-font-1','note-font-2','note-font-3','note-font-4');
+      el.classList.add(`note-font-${index}`);
+      el.classList.toggle('font-shifted', index % 2 === 1);
+    });
+    index = (index + 1) % 5;
+  };
+  tick();
+  setInterval(tick, 3600);
+}
