@@ -75,6 +75,12 @@
   addEventListener('resize', updateProgress);
   updateProgress();
 
+  const marqueeTrack = document.querySelector('.tool-marquee-track');
+  if (marqueeTrack) {
+    const items = [...marqueeTrack.children];
+    items.forEach(item => marqueeTrack.appendChild(item.cloneNode(true)));
+  }
+
   document.querySelectorAll('.cta, .read-link, .project-link').forEach(el => {
     el.addEventListener('pointerdown', () => {
       el.classList.remove('is-pressed');
