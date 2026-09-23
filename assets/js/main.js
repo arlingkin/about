@@ -115,6 +115,7 @@ const T = {
   'proj.feat.tag':   { en:'SCHOOL PROJECT · LIVE', id:'PROYEK SEKOLAH · LIVE' },
   'proj.feat.desc':  { en:"A web project I'm building and maintaining one careful feature at a time — from data to layout to deployment.", id:'Proyek web yang saya garap pelan-pelan, fitur demi fitur — mulai dari data, layout, sampai dideploy.' },
   'proj.feat.link':  { en:'VISIT SITE →', id:'KUNJUNGI SITUS →' },
+  'proj.feat2.tag':  { en:'GAME · MATRIX', id:'GAME · MATRIX' },
   'proj.arch.label': { en:'From the archive', id:'Dari arsip' },
   'proj.arch.sub':   { en:'small observations, small builds', id:'build kecil, temuan kecil' },
   'proj.a1.title':   { en:'This portfolio — arlingkin', id:'Portofolio ini — arlingkin' },
