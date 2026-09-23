@@ -168,3 +168,28 @@
   .tool-marquee-wrap { overflow: visible; }
   .tool-marquee-wrap::before, .tool-marquee-wrap::after { display: none; }
 }
+
+
+/* ── Personal note: animated lime ↔ cyan perimeter ─────────── */
+.featured .feature-card.personal-note { position: relative; isolation: isolate; overflow: hidden; }
+.featured .feature-card.personal-note::before {
+  content: ""; position: absolute; z-index: 3; inset: 0; padding: 1px; border-radius: inherit;
+  background: conic-gradient(from 0deg, transparent 0deg 18deg, var(--lime) 48deg, var(--cyan) 108deg, transparent 142deg 218deg, var(--cyan) 248deg, var(--lime) 308deg, transparent 340deg 360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+  animation: personal-note-orbit 5.5s linear infinite;
+}
+.featured .feature-card.personal-note::after {
+  content: ""; position: absolute; z-index: -1; inset: -18%;
+  background: conic-gradient(from 0deg, transparent 0deg 80deg, rgba(217,255,89,.11) 120deg, rgba(142,232,255,.13) 180deg, transparent 230deg 360deg);
+  filter: blur(28px); opacity: .5; pointer-events: none;
+  animation: personal-note-glow 5.5s linear infinite;
+}
+.featured .feature-card.personal-note > * { position: relative; z-index: 1; }
+.personal-note-tag { background: linear-gradient(100deg, var(--lime), var(--cyan), var(--lime)); background-size: 220% 100%; animation: personal-note-tag-flow 3.8s ease-in-out infinite; }
+@keyframes personal-note-orbit { to { transform: rotate(360deg); } }
+@keyframes personal-note-glow { to { transform: rotate(360deg); } }
+@keyframes personal-note-tag-flow { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+@media (prefers-reduced-motion: reduce) {
+  .featured .feature-card.personal-note::before, .featured .feature-card.personal-note::after, .personal-note-tag { animation: none; }
+}
