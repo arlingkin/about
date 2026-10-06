@@ -710,3 +710,29 @@ main#top > .hero + .featured { margin-top: calc(var(--home-gap) * .7); }
 main#top .hero { padding-bottom: 48px; }
 main#top .section-head { padding: 0 0 18px; }
 main#top ~ .site-footer { margin-top: clamp(56px, 7vw, 96px); }
+
+/* ── Engagement motion: staggered entrances + one CTA nudge ──────
+   Fill-mode "backwards" only: after the animation, normal styles (and :hover) apply.
+   Triggered by the existing `.in` class; no JS needed. */
+@keyframes rise-in { from { opacity: 0; transform: translateY(14px); } }
+@keyframes slide-in { from { opacity: 0; transform: translateX(16px); } }
+@keyframes cta-nudge { 0%, 86%, 100% { transform: translateX(0); } 92% { transform: translateX(6px); } }
+
+.page-head.in > :is(.eyebrow, h1, .intro),
+.hero-grid.in > div { animation: rise-in .7s var(--ease) backwards; }
+.page-head.in > h1, .hero-grid.in > div:nth-child(2) { animation-delay: 90ms; }
+.page-head.in > .intro { animation-delay: 180ms; }
+
+.now.in .now-list li { animation: slide-in .6s var(--ease) backwards; }
+.now.in .now-list li:nth-child(1) { animation-delay: .2s; }
+.now.in .now-list li:nth-child(2) { animation-delay: .29s; }
+.now.in .now-list li:nth-child(3) { animation-delay: .38s; }
+.now.in .now-list li:nth-child(4) { animation-delay: .47s; }
+
+/* the single primary conversion on home: the latest-note link */
+.personal-note .read-link:not(:hover):not(.is-pressed) { animation: cta-nudge 5s var(--ease) 2s infinite; }
+
+html.lite .personal-note .read-link { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .page-head.in > *, .hero-grid.in > div, .now.in .now-list li, .personal-note .read-link { animation: none; }
+}
