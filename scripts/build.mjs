@@ -49,7 +49,7 @@ const num = (i) => String(i).padStart(2, '0');
 const chipButtons = (key, labels, lists) =>
   Object.keys(labels)
     .filter((id) => lists.some((tags) => tags.includes(id)))
-    .map((id) => `            <button class="chip chip-btn" type="button" data-filter-tag="${id}" aria-pressed="false" data-i18n="${key}.${id}">${esc(labels[id].en)}</button>`)
+    .map((id) => `                <button class="chip chip-btn" type="button" data-filter-tag="${id}" aria-pressed="false" data-i18n="${key}.${id}">${esc(labels[id].en)}</button>`)
     .join('\n');
 
 /* notes */

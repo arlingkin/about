@@ -128,6 +128,8 @@ const T = {
   /* search / filter (notes + projects) */
   'filter.all': { en: "All", id: "Semua" },
   'filter.label': { en: "Search", id: "Cari" },
+  'filter.title': { en: "Filter", id: "Filter" },
+  'filter.clearq': { en: "Clear search", id: "Hapus pencarian" },
   'filter.ph.notes': { en: "Search notes…", id: "Cari catatan…" },
   'filter.ph.projects': { en: "Search projects…", id: "Cari proyek…" },
   'filter.count.notes': { en: "Showing {n} of {t} notes", id: "Menampilkan {n} dari {t} catatan" },
