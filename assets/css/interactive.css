@@ -831,3 +831,7 @@ button.read-link { background: none; border: 0; border-bottom: 1px solid color-m
 /* footer link stays lit on its own section (notes live only in the footer) */
 .footer-link[aria-current="page"] { color: var(--link); }
 .footer-link[aria-current="page"]::after { right: 0; }
+
+/* tags inside rows/cards are shortcuts to the filter (filter.js) */
+html.js .row-meta .chip[data-tag] { cursor: pointer; transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease); }
+html.js .row-meta .chip[data-tag]:hover { color: var(--ink); border-color: var(--accent); background: hsl(var(--acc-h) 100% 62% / .12); }

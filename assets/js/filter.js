@@ -19,6 +19,7 @@
   const dates = [...root.querySelectorAll('time[data-date]')];
   const PAGE = Math.max(1, Number(root.dataset.page) || 8);
   const noun = root.dataset.noun || 'items';
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
   const controller = new AbortController();
   const opts = { signal: controller.signal };
 
@@ -85,7 +86,7 @@
       input.placeholder = tr(input.dataset.ph, input.placeholder);
       input.setAttribute('aria-label', tr('filter.label', 'Search'));
     }
-    if (searchBtn) { const l = tr('filter.label', 'Search'); searchBtn.setAttribute('aria-label', l); searchBtn.title = l; }
+    if (searchBtn) { const l = tr('filter.label', 'Search'); searchBtn.setAttribute('aria-label', l); searchBtn.title = `${l} (/)`; }
     if (searchClear) { const l = tr('filter.clearq', 'Clear search'); searchClear.setAttribute('aria-label', l); searchClear.title = l; }
     const fmt = new Intl.DateTimeFormat(lang() === 'id' ? 'id-ID' : 'en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
     dates.forEach(t => { t.textContent = fmt.format(new Date(`${t.dataset.date}T00:00:00Z`)); });
@@ -111,7 +112,13 @@
     idle.forEach(el => { el.hidden = active; });
     if (moreBtn) moreBtn.hidden = paged === 0;
     if (emptyEl) emptyEl.hidden = shown.size > 0;
-    if (countEl) countEl.textContent = tr(`filter.count.${noun}`, 'Showing {n} of {t}').replace('{n}', shown.size).replace('{t}', rows.length);
+    if (countEl) {
+      const text = tr(`filter.count.${noun}`, 'Showing {n} of {t}').replace('{n}', shown.size).replace('{t}', rows.length);
+      if (countEl.textContent !== text) {
+        countEl.textContent = text;
+        if (!first && !reduce.matches) countEl.animate([{ opacity: .35, transform: 'translateY(4px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'ease-out' });
+      }
+    }
     chips.forEach(c => c.setAttribute('aria-pressed', String(c.dataset.filterTag === tag)));
     syncUrl(raw);
     if (searchClear) searchClear.hidden = raw === '';
@@ -150,6 +157,38 @@
     limit = PAGE;
     render();
   }, opts);
+  /* tags inside rows/cards jump straight to that filter */
+  root.addEventListener('click', e => {
+    const chip = e.target.closest('[data-item] .chip[data-tag]');
+    if (!chip || !chips.some(c => c.dataset.filterTag === chip.dataset.tag)) return;
+    e.preventDefault();
+    tag = chip.dataset.tag;
+    limit = PAGE;
+    setPanel(true);
+    render();
+    root.querySelector('.filter-bar')?.scrollIntoView({ behavior: reduce.matches ? 'auto' : 'smooth', block: 'start' });
+  }, opts);
+
+  /* keyboard: "/" opens search; arrows walk the visible results (search <-> list) */
+  const links = () => rows.filter(r => !r.el.hidden).map(r => (r.el.matches('a') ? r.el : r.el.querySelector('a')));
+  root.addEventListener('keydown', e => {
+    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+    const list = links();
+    const onInput = e.target === input;
+    const i = list.indexOf(e.target);
+    if ((!onInput && i < 0) || (onInput && e.key === 'ArrowUp')) return;
+    e.preventDefault();
+    if (e.key === 'ArrowDown') list[onInput ? 0 : Math.min(i + 1, list.length - 1)]?.focus();
+    else if (i > 0) list[i - 1].focus();
+    else setSearch(true, true);
+  }, opts);
+  document.addEventListener('keydown', e => {
+    const el = document.activeElement;
+    if (e.key !== '/' || e.ctrlKey || e.metaKey || e.altKey || (el && (/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName) || el.isContentEditable))) return;
+    e.preventDefault();
+    setSearch(true, true);
+  }, opts);
+
   document.addEventListener('click', e => {
     if (e.target.closest('.lang-btn')) setTimeout(() => { texts(); render(); }, 0);
   }, opts);
