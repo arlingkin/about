@@ -149,7 +149,7 @@ const pages = {
   '404.html': null,
   'notes/index.html': null,
   'notes/mindustry.html': null,
-  'notes/note-02.html': null,
+  'notes/trading.html': null,
 };
 
 const header = read('partials/header.html').trimEnd();

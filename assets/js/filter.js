@@ -16,7 +16,6 @@
   const searchClear = root.querySelector('[data-filter-search-clear]');
   const panel = root.querySelector('[data-filter-panel]');
   const panelBtn = root.querySelector('[data-filter-panel-toggle]');
-  const dates = [...root.querySelectorAll('time[data-date]')];
   const PAGE = Math.max(1, Number(root.dataset.page) || 8);
   const noun = root.dataset.noun || 'items';
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
@@ -88,8 +87,6 @@
     }
     if (searchBtn) { const l = tr('filter.label', 'Search'); searchBtn.setAttribute('aria-label', l); searchBtn.title = `${l} (/)`; }
     if (searchClear) { const l = tr('filter.clearq', 'Clear search'); searchClear.setAttribute('aria-label', l); searchClear.title = l; }
-    const fmt = new Intl.DateTimeFormat(lang() === 'id' ? 'id-ID' : 'en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
-    dates.forEach(t => { t.textContent = fmt.format(new Date(`${t.dataset.date}T00:00:00Z`)); });
   };
 
   const render = () => {
