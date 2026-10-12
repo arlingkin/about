@@ -102,7 +102,7 @@ Notes and Projects share one search/filter script (`assets/js/filter.js`, the `[
 
 | Variable | Used for |
 | --- | --- |
-| `SITE_LOCATION`, `SITE_STATUS`, `SITE_WORKING_ON`, `SITE_OPEN_TO`, `SITE_FAV_COLOR`, `SITE_EMAIL` | facts list on the About page |
+| `SITE_LOCATION`, `SITE_STATUS`, `SITE_WORKING_ON`, `SITE_OPEN_TO`, `SITE_EMAIL` | facts list on the About page |
 | `SITE_ROLE`, `SITE_TAGLINE` | home page eyebrow and status line |
 | `SITE_NOW_1` to `SITE_NOW_4` | "Right now" list on the home page |
 
