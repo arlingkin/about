@@ -181,6 +181,11 @@ const T = {
 
 /* ── language ─────────────────────────────────────────────────── */
 function getLang() {
+  // ?lang=id|en overrides the saved choice (and is persisted by applyLang)
+  try {
+    const q = new URLSearchParams(location.search).get('lang');
+    if (q === 'id' || q === 'en') return q;
+  } catch {}
   try { return localStorage.getItem(LANG_KEY) === 'id' ? 'id' : 'en'; } catch { return 'en'; }
 }
 

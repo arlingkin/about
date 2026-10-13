@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script>(function(){var d=document.documentElement;d.classList.add('js');try{d.dataset.theme=localStorage.getItem('arlingkin-theme')==='light'?'light':'dark';if(localStorage.getItem('arlingkin-lang')==='id'){d.lang='id';d.dataset.lang='id';}}catch(e){}})();</script>
+  <script>(function(){var d=document.documentElement,L;d.classList.add('js');try{var q=new URLSearchParams(location.search).get('lang');if(q==='id'||q==='en'){L=q;localStorage.setItem('arlingkin-lang',q);}}catch(e){}try{L=L||localStorage.getItem('arlingkin-lang');d.dataset.theme=localStorage.getItem('arlingkin-theme')==='light'?'light':'dark';}catch(e){}if(L==='id'){d.lang='id';d.dataset.lang='id';}})();</script>
   <meta name="description" content="Contact Arlingga by email, GitHub, Instagram, TikTok, YouTube or Telegram.">
   <meta name="keywords" content="contact Arlingga, email, GitHub, Instagram, TikTok, YouTube, Telegram, Arlingkin">
   <meta name="author" content="Arlingga">
