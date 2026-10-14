@@ -859,3 +859,22 @@ html.js .row-meta .chip[data-tag]:hover { color: var(--ink); border-color: var(-
 .skill.lit .bar::after { opacity: .95; animation: flame-run .4s linear infinite, flame-flicker-b .16s ease-in-out infinite alternate; }
 @keyframes flame-flicker-b { from { transform: skewX(-46deg) scaleY(.7); } to { transform: skewX(-56deg) scaleY(1.15); } }
 @media (prefers-reduced-motion: reduce) { .skill.lit .bar::after { animation: none; } }
+
+/* ===== Performance & compatibility =====
+   html.lite (set by interactive.js: low RAM/CPU, small or touch screen, save-data, slow net, low FPS)
+   mematikan dekorasi berulang & blur berat. Layout dan warna tidak berubah. */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+a, button, summary, label, [role="button"], input, select, textarea { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+html.lite .featured .feature-card.personal-note::before,
+html.lite .personal-note-tag,
+html.lite .personal-note .code-art,
+html.lite .personal-note .code-window,
+html.lite .site-footer::before,
+html.lite .cyber-glass::before,
+html.lite .cyber-glass .scanline,
+html.lite h1 em, html.lite .display em { animation: none; }
+html.lite .featured .feature-card.personal-note::after { display: none; }
+html.lite .tool-marquee-track, html.lite .reveal, html.lite .reveal.in { will-change: auto; }
+html.lite .skill.lit .bar i::after { animation: flame-run .4s linear infinite; }
+html.lite .skill.lit .bar::after { animation: flame-run .4s linear infinite; }
+

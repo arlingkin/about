@@ -192,9 +192,11 @@
   const rand = (min, max) => min + Math.random() * (max - min);
   const idle = cb => ('requestIdleCallback' in window ? requestIdleCallback(cb, { timeout: 1000 }) : setTimeout(cb, 150));
   const isPalette = v => v && [v.a, v.b, v.c].every(Number.isFinite);
-  const detectLite = () => liteQuery.matches || (navigator.deviceMemory ?? 8) <= 4 || navigator.connection?.saveData === true;
+  const detectLite = () => slow || liteQuery.matches || (navigator.deviceMemory ?? 8) <= 4 || (navigator.hardwareConcurrency ?? 8) <= 4
+    || navigator.connection?.saveData === true || /(^|-)2g$/.test(navigator.connection?.effectiveType || '') || matchMedia('(prefers-reduced-data: reduce)').matches;
   let current = { a: 158, b: 196, c: 330 };
   let lite = false;
+  let slow = false;
   let alt = false;
 
   const setVars = (prefix, palette) => {
@@ -273,6 +275,19 @@
   paintInstant(stored || current);
   applyLite();
   liteQuery.addEventListener('change', applyLite, opts);
+
+  // Auto: bila FPS nyata rendah (<25fps pada >45% frame), pakai mode lite untuk sesi ini
+  if (!lite && !reduced.matches) {
+    let last = 0, n = 0, bad = 0, warm = 30;
+    const tick = t => {
+      if (document.hidden) return;
+      if (warm > 0) warm--; else if (last) { n++; if (t - last > 40) bad++; }
+      last = t;
+      if (n >= 90) { if (bad / n > .45) { slow = true; applyLite(); } return; }
+      requestAnimationFrame(tick);
+    };
+    idle(() => requestAnimationFrame(tick));
+  }
 
   channel?.addEventListener('message', e => receive(e.data), opts);
   addEventListener('storage', e => {
