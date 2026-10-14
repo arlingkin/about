@@ -534,3 +534,22 @@
     controller.abort();
   }, { once: true });
 })();
+
+(() => {
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const SEL = '.article, .skill, .icon-card, .contact-card';
+  let frame = null, x = 0, y = 0, target = null;
+  const paint = () => {
+    frame = null;
+    const r = target.getBoundingClientRect();
+    target.style.setProperty('--mx', `${x - r.left}px`);
+    target.style.setProperty('--my', `${y - r.top}px`);
+  };
+  document.addEventListener('pointermove', e => {
+    if (document.documentElement.classList.contains('lite')) return;
+    const t = e.target.closest?.(SEL);
+    if (!t) return;
+    target = t; x = e.clientX; y = e.clientY;
+    if (frame === null) frame = requestAnimationFrame(paint);
+  }, { passive: true });
+})();

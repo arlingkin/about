@@ -886,3 +886,23 @@ html.lite::after {
   font: 500 9px/1.3 var(--font-mono); letter-spacing: .04em; text-transform: lowercase; color: var(--muted); opacity: .75; pointer-events: none;
 }
 @media print { html.lite::after { display: none; } }
+
+/* ── Effects polish: blur-in reveal, cursor spotlight, progress glow ── */
+html.js .reveal:not(.in) { filter: blur(6px); }
+html.lite .reveal:not(.in) { filter: none; }
+.scroll-progress { box-shadow: 0 0 10px rgba(120,166,255,.55); }
+@media (hover: hover) and (pointer: fine) {
+  :is(.article, .skill, .icon-card, .contact-card) { position: relative; }
+  :is(.article, .skill, .icon-card, .contact-card)::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
+    background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(120,166,255,.14), transparent 70%);
+    transition: opacity var(--dur) var(--ease);
+  }
+  :is(.article, .skill, .icon-card, .contact-card):hover::before { opacity: 1; }
+  html.lite :is(.article, .skill, .icon-card, .contact-card)::before { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html.js .reveal:not(.in) { filter: none; }
+  .scroll-progress { box-shadow: none; }
+  :is(.article, .skill, .icon-card, .contact-card)::before { display: none; }
+}
