@@ -146,6 +146,7 @@ const pages = {
   'projects.html': '/projects',
   'stats.html': '/stats',
   'contact.html': '/contact',
+  'now.html': null,
   '404.html': null,
   'notes/index.html': null,
   'notes/mindustry.html': null,
