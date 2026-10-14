@@ -39,16 +39,19 @@ window.SKILL_VALUES = {
   });
 })();
 
-// Efek api bar: hover/fokus (mouse/keyboard) & sentuhan (touch) menyalakan .lit
+// Efek api bar: mouse = selama hover; touch = sekali jalan ~2.2s (tanpa hold)
 (() => {
   const on = (c) => c.classList.add('lit');
   const off = (c) => c.classList.remove('lit');
   document.querySelectorAll('.skill[data-skill]').forEach((c) => {
-    c.addEventListener('pointerenter', () => on(c));
-    c.addEventListener('pointerleave', () => off(c));
-    c.addEventListener('pointerdown', () => on(c));
-    c.addEventListener('pointerup', (e) => { if (e.pointerType === 'touch') off(c); });
-    c.addEventListener('pointercancel', () => off(c));
+    let t;
+    c.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'touch') on(c); });
+    c.addEventListener('pointerleave', (e) => { if (e.pointerType !== 'touch') off(c); });
+    c.addEventListener('pointerdown', (e) => {
+      if (e.pointerType !== 'touch') return;
+      clearTimeout(t); on(c);
+      t = setTimeout(() => off(c), 2200);
+    });
     c.addEventListener('focus', () => on(c));
     c.addEventListener('blur', () => off(c));
   });

@@ -836,18 +836,18 @@ button.read-link { background: none; border: 0; border-bottom: 1px solid color-m
 html.js .row-meta .chip[data-tag] { cursor: pointer; transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease); }
 html.js .row-meta .chip[data-tag]:hover { color: var(--ink); border-color: var(--accent); background: hsl(var(--acc-h) 100% 62% / .12); }
 
-/* Skill bar: efek api kanan → kiri saat di-highlight (.lit dari valueskills.js) */
-.skill .bar i::before, .skill .bar i::after { content: ""; position: absolute; left: 0; right: 0; opacity: 0; pointer-events: none; transition: opacity .25s var(--ease); }
-.skill .bar i::before { inset: 0; border-radius: inherit; background: linear-gradient(90deg, #ff3d00, #ff9100, #ffe082, #ff9100, #ff3d00) 0 0 / 160px 100% repeat-x; }
-.skill .bar i::after { bottom: 100%; height: 12px; transform-origin: bottom center; background: radial-gradient(ellipse 5px 12px at 50% 100%, #ffe082 0, #ff9100 40%, #ff3d00 62%, transparent 76%) 0 0 / 12px 12px repeat-x; -webkit-mask-image: linear-gradient(270deg, #000 55%, transparent); mask-image: linear-gradient(270deg, #000 55%, transparent); }
-.skill .bar { transition: box-shadow .25s var(--ease); }
-.skill.lit .bar { overflow: visible; box-shadow: 0 0 12px rgba(255,120,0,.45); }
-.skill.lit .bar i { box-shadow: 0 0 10px rgba(255,100,0,.9), 0 0 22px rgba(255,61,0,.5); }
-.skill.lit .bar i::before { opacity: 1; animation: fire-run .7s linear infinite; }
-.skill.lit .bar i::after { opacity: .95; animation: flame-run .45s linear infinite, flame-flicker .18s ease-in-out infinite alternate; }
-@keyframes fire-run { to { background-position: -160px 0; } }
-@keyframes flame-run { to { background-position: -12px 0; } }
-@keyframes flame-flicker { from { transform: scaleY(.7); } to { transform: scaleY(1.15); } }
+/* Skill bar: api roket (ungu-biru, merah, kuning) kanan → kiri; menyala bersamaan dengan icon miring (.lit) */
+.skill .bar i::before, .skill .bar i::after { content: ""; position: absolute; opacity: 0; pointer-events: none; transition: opacity .3s var(--ease); }
+.skill .bar i::before { inset: -3px 0; clip-path: polygon(0 42%, 100% 0, 100% 100%, 0 58%); background: radial-gradient(circle at 100% 50%, #fff 0, #fff3a0 18%, rgba(255,228,92,0) 55%) 100% 50% / 22px 100% no-repeat, linear-gradient(90deg, #3b4bff, #8a3ffc 18%, #ff2d55 45%, #ff9500 72%, #ffe45c 86%, #ff9500 93%, #3b4bff) 0 0 / 160px 100% repeat-x; }
+.skill .bar i::after { left: 0; right: 0; bottom: 100%; height: 16px; margin-bottom: 1px; transform-origin: bottom left; transform: skewX(50deg); background: radial-gradient(ellipse 3px 8px at 50% 100%, #fff3a0 0, #ffd23f 55%, transparent 100%) 0 0 / 10px 16px repeat-x, radial-gradient(ellipse 5px 12px at 50% 100%, #ff4d4d 0, #ff2d55 50%, transparent 100%) 0 0 / 14px 16px repeat-x, radial-gradient(ellipse 7px 16px at 50% 100%, rgba(138,63,252,.9) 0, rgba(59,75,255,.7) 55%, transparent 100%) 0 0 / 20px 16px repeat-x; -webkit-mask-image: linear-gradient(270deg, #000 45%, transparent); mask-image: linear-gradient(270deg, #000 45%, transparent); }
+.skill.lit .ico { transform: scale(1.12) rotate(-4deg); box-shadow: 0 0 0 4px rgba(120,166,255,.12); }
+.skill.lit .bar { overflow: visible; }
+.skill.lit .bar i { box-shadow: 0 0 10px rgba(255,80,60,.8), 0 0 22px rgba(138,63,252,.55); }
+.skill.lit .bar i::before { opacity: 1; animation: fire-run .6s linear infinite; }
+.skill.lit .bar i::after { opacity: .95; animation: flame-run .4s linear infinite, flame-flicker .16s ease-in-out infinite alternate; }
+@keyframes fire-run { to { background-position: 100% 50%, -160px 0; } }
+@keyframes flame-run { to { background-position: -10px 0, -14px 0, -20px 0; } }
+@keyframes flame-flicker { from { transform: skewX(46deg) scaleY(.7); } to { transform: skewX(56deg) scaleY(1.15); } }
 @media (prefers-reduced-motion: reduce) {
   .skill.lit .bar i::before, .skill.lit .bar i::after { animation: none; }
 }
