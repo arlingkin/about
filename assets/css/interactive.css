@@ -836,23 +836,26 @@ button.read-link { background: none; border: 0; border-bottom: 1px solid color-m
 html.js .row-meta .chip[data-tag] { cursor: pointer; transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease); }
 html.js .row-meta .chip[data-tag]:hover { color: var(--ink); border-color: var(--accent); background: hsl(var(--acc-h) 100% 62% / .12); }
 
-/* Skill bar: fireball di ujung bar (api atas+bawah, shading 3D semu), jejak ungu-biru → merah → kuning; aktif bersama icon miring (.lit) */
-.skill .bar i::before, .skill .bar i::after { content: ""; position: absolute; opacity: 0; pointer-events: none; transition: opacity .3s var(--ease), scale .35s var(--ease-spring); }
-.skill .bar i::before { top: 0; bottom: 0; right: 0; width: min(100%, 72px); border-radius: inherit; background: linear-gradient(90deg, rgba(59,75,255,0), rgba(110,80,255,.6) 30%, rgba(255,45,85,.8) 65%, rgba(255,170,40,.95)); }
-.skill .bar i::after { right: -27px; top: 50%; width: 38px; height: 46px; margin-top: -23px; scale: .3; transform-origin: 50% 50%;
-  background:
-    radial-gradient(circle closest-side at 38% 34%, #fff 0, #fff3a0 18%, #ffb300 38%, #ff4d2e 64%, #8a3ffc 90%, rgba(59,75,255,0) 100%) 50% 50% / 28px 28px no-repeat,
-    radial-gradient(ellipse 7px 16px at 50% 100%, #ffe45c 0, #ff7a1a 42%, #ff2d55 70%, rgba(138,63,252,0) 100%) 50% 0 / 14px 16px no-repeat,
-    radial-gradient(ellipse 7px 16px at 50% 0, #ffe45c 0, #ff7a1a 42%, #ff2d55 70%, rgba(138,63,252,0) 100%) 50% 100% / 14px 16px no-repeat;
-  filter: drop-shadow(0 0 5px rgba(255,90,40,.9)) drop-shadow(0 0 12px rgba(138,63,252,.55)); }
+/* Skill bar: api roket (ungu-biru, merah, kuning) kanan → kiri; menyala bersamaan dengan icon miring (.lit) */
+.skill .bar i::before, .skill .bar i::after { content: ""; position: absolute; opacity: 0; pointer-events: none; transition: opacity .3s var(--ease); }
+.skill .bar i::before { inset: -3px 0; clip-path: polygon(0 42%, 100% 0, 100% 100%, 0 58%); background: radial-gradient(circle at 100% 50%, #fff 0, #fff3a0 18%, rgba(255,228,92,0) 55%) 100% 50% / 22px 100% no-repeat, linear-gradient(90deg, #3b4bff, #8a3ffc 18%, #ff2d55 45%, #ff9500 72%, #ffe45c 86%, #ff9500 93%, #3b4bff) 0 0 / 160px 100% repeat-x; }
+.skill .bar i::after { left: 0; right: 0; bottom: 100%; height: 16px; margin-bottom: 1px; transform-origin: bottom left; transform: skewX(50deg); background: radial-gradient(ellipse 3px 8px at 50% 100%, #fff3a0 0, #ffd23f 55%, transparent 100%) 0 0 / 10px 16px repeat-x, radial-gradient(ellipse 5px 12px at 50% 100%, #ff4d4d 0, #ff2d55 50%, transparent 100%) 0 0 / 14px 16px repeat-x, radial-gradient(ellipse 7px 16px at 50% 100%, rgba(138,63,252,.9) 0, rgba(59,75,255,.7) 55%, transparent 100%) 0 0 / 20px 16px repeat-x; -webkit-mask-image: linear-gradient(270deg, #000 45%, transparent); mask-image: linear-gradient(270deg, #000 45%, transparent); }
 .skill.lit .ico { transform: scale(1.12) rotate(-4deg); box-shadow: 0 0 0 4px rgba(120,166,255,.12); }
 .skill.lit .bar { overflow: visible; }
-.skill.lit .bar i { box-shadow: 0 0 8px color-mix(in srgb, var(--lime) 55%, transparent), 0 0 14px rgba(255,100,40,.35); }
-.skill.lit .bar i::before { opacity: .95; animation: trail-shimmer .5s ease-in-out infinite alternate; }
-.skill.lit .bar i::after { opacity: 1; scale: 1; animation: fireball-flick .22s ease-in-out infinite alternate, fireball-lick .36s ease-in-out infinite alternate; }
-@keyframes trail-shimmer { from { opacity: .7; } to { opacity: 1; } }
-@keyframes fireball-flick { from { transform: scale(.94, .9) rotate(-3deg); } to { transform: scale(1.06, 1.1) rotate(3deg); } }
-@keyframes fireball-lick { from { background-position: 50% 50%, 50% 2px, 50% calc(100% - 2px); } to { background-position: 50% 50%, 50% -2px, 50% calc(100% + 2px); } }
+.skill.lit .bar i { box-shadow: 0 0 10px rgba(255,80,60,.8), 0 0 22px rgba(138,63,252,.55); }
+.skill.lit .bar i::before { opacity: 1; animation: fire-run .6s linear infinite; }
+.skill.lit .bar i::after { opacity: .95; animation: flame-run .4s linear infinite, flame-flicker .16s ease-in-out infinite alternate; }
+@keyframes fire-run { to { background-position: 100% 50%, -160px 0; } }
+@keyframes flame-run { to { background-position: -10px 0, -14px 0, -20px 0; } }
+@keyframes flame-flicker { from { transform: skewX(46deg) scaleY(.7); } to { transform: skewX(56deg) scaleY(1.15); } }
 @media (prefers-reduced-motion: reduce) {
   .skill.lit .bar i::before, .skill.lit .bar i::after { animation: none; }
 }
+
+/* Api bawah: miring ke kiri juga, lebar = nilai bar (--v dari valueskills.js) */
+.skill .bar::after { content: ""; position: absolute; left: 0; top: 100%; width: calc(var(--v, 0) * 1%); height: 16px; margin-top: 1px; opacity: 0; pointer-events: none; transition: opacity .3s var(--ease); transform-origin: top left; transform: skewX(-50deg);
+  background: radial-gradient(ellipse 3px 8px at 50% 0, #fff3a0 0, #ffd23f 55%, transparent 100%) 0 0 / 10px 16px repeat-x, radial-gradient(ellipse 5px 12px at 50% 0, #ff4d4d 0, #ff2d55 50%, transparent 100%) 0 0 / 14px 16px repeat-x, radial-gradient(ellipse 7px 16px at 50% 0, rgba(138,63,252,.9) 0, rgba(59,75,255,.7) 55%, transparent 100%) 0 0 / 20px 16px repeat-x;
+  -webkit-mask-image: linear-gradient(270deg, #000 45%, transparent); mask-image: linear-gradient(270deg, #000 45%, transparent); }
+.skill.lit .bar::after { opacity: .95; animation: flame-run .4s linear infinite, flame-flicker-b .16s ease-in-out infinite alternate; }
+@keyframes flame-flicker-b { from { transform: skewX(-46deg) scaleY(.7); } to { transform: skewX(-56deg) scaleY(1.15); } }
+@media (prefers-reduced-motion: reduce) { .skill.lit .bar::after { animation: none; } }

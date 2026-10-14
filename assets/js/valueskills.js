@@ -34,6 +34,7 @@ window.SKILL_VALUES = {
     const label = document.createElement('span');
     label.className = 'skill-val';
     label.textContent = value;
+    card.style.setProperty('--v', value);
     card.setAttribute('aria-label', `${card.getAttribute('aria-label')}, ${value} of 100`);
     card.appendChild(label);
   });
