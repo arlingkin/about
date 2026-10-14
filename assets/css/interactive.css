@@ -226,9 +226,22 @@ html.js .reveal.in { will-change: auto; }
 
 @view-transition { navigation: auto; }
 .site-header { view-transition-name: site-header; }
-::view-transition-group(site-header) { animation-duration: 0s; }
-::view-transition-old(root) { animation-duration: .12s; }
-::view-transition-new(root) { animation-duration: .2s; }
+.scroll-progress { view-transition-name: scroll-progress; }
+::view-transition-group(site-header), ::view-transition-group(scroll-progress) { animation-duration: 0s; }
+@keyframes vt-out { to { opacity: 0; transform: translateY(-6px); } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(12px); } }
+@keyframes vt-out-fwd { to { opacity: 0; transform: translateX(-22px); } }
+@keyframes vt-in-fwd { from { opacity: 0; transform: translateX(22px); } }
+@keyframes vt-out-back { to { opacity: 0; transform: translateX(22px); } }
+@keyframes vt-in-back { from { opacity: 0; transform: translateX(-22px); } }
+::view-transition-old(root) { animation: vt-out .22s var(--ease-soft) both; }
+::view-transition-new(root) { animation: vt-in .38s var(--ease) .06s both; }
+:root:active-view-transition-type(forward)::view-transition-old(root) { animation-name: vt-out-fwd; }
+:root:active-view-transition-type(forward)::view-transition-new(root) { animation-name: vt-in-fwd; }
+:root:active-view-transition-type(back)::view-transition-old(root) { animation-name: vt-out-back; }
+:root:active-view-transition-type(back)::view-transition-new(root) { animation-name: vt-in-back; }
+html.lite ::view-transition-old(root) { animation: vt-out .1s linear both; }
+html.lite ::view-transition-new(root) { animation: vt-in .16s linear both; transform: none; }
 .reveal-instant { transition: none !important; }
 @media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }
 

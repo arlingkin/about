@@ -884,4 +884,19 @@
     if (observer) observer.disconnect();
     controller.abort();
   }, { once: true });
+  const ORDER = ['/', '/about', '/skills', '/projects', '/notes', '/now', '/stats', '/contact'];
+  const index = href => {
+    try {
+      const p = new URL(href, location.href).pathname.replace(/\/$/, '') || '/';
+      return ORDER.findIndex(o => p === o || (o !== '/' && p.startsWith(o + '/')));
+    } catch { return -1; }
+  };
+  addEventListener('pagereveal', e => {
+    const vt = e.viewTransition;
+    const act = window.navigation?.activation;
+    if (!vt || !act?.from || !vt.types) return;
+    const from = index(act.from.url), to = index(act.entry.url);
+    if (from < 0 || to < 0 || from === to) return;
+    vt.types.add(to > from ? 'forward' : 'back');
+  });
 })();
