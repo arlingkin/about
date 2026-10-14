@@ -900,3 +900,105 @@
     vt.types.add(to > from ? 'forward' : 'back');
   });
 })();
+
+(() => {
+  const nav = document.querySelector('#primary-nav');
+  if (!nav) return;
+  const links = [...nav.querySelectorAll('.nav-link')];
+  const rest = nav.querySelector('.nav-link.active, .nav-link[aria-current="page"]');
+  const wide = matchMedia('(min-width: 701px)');
+  const KEY = 'arlingkin-navind';
+  const bar = document.createElement('span');
+  bar.className = 'nav-indicator';
+  bar.setAttribute('aria-hidden', 'true');
+  nav.append(bar);
+  let at = null;
+
+  const place = (link, animate = true) => {
+    if (!link || !wide.matches) { bar.classList.remove('on'); at = null; return; }
+    if (!animate) bar.style.transition = 'none';
+    bar.style.width = `${link.offsetWidth}px`;
+    bar.style.transform = `translate(${link.offsetLeft}px, ${link.offsetTop + link.offsetHeight - 2}px)`;
+    bar.classList.add('on');
+    if (!animate) { bar.getBoundingClientRect(); bar.style.transition = ''; }
+    at = link;
+  };
+  const home = (animate = true) => place(rest, animate);
+  const sync = () => { nav.classList.toggle('has-indicator', wide.matches); home(false); };
+
+  links.forEach(link => {
+    link.addEventListener('pointerenter', e => { if (e.pointerType !== 'touch') place(link); });
+    link.addEventListener('focus', () => { if (link.matches(':focus-visible')) place(link); });
+    link.addEventListener('blur', () => home());
+  });
+  nav.addEventListener('pointerleave', () => home());
+  wide.addEventListener('change', sync);
+  if ('ResizeObserver' in window) {
+    const ro = new ResizeObserver(() => place(at || rest, false));
+    ro.observe(nav);
+    links.forEach(l => ro.observe(l));
+  }
+  document.fonts?.ready.then(() => place(at || rest, false));
+
+  let prev = null;
+  try {
+    prev = sessionStorage.getItem(KEY);
+    sessionStorage.setItem(KEY, rest?.getAttribute('href') || '');
+  } catch {}
+  nav.classList.toggle('has-indicator', wide.matches);
+  const from = prev && prev !== rest?.getAttribute('href') ? links.find(l => l.getAttribute('href') === prev) : null;
+  if (from && rest && wide.matches) {
+    place(from, false);
+    requestAnimationFrame(() => requestAnimationFrame(() => home()));
+  } else home(false);
+})();
+
+(() => {
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const NS = 'http://www.w3.org/2000/svg';
+  const svgEl = (name, attrs, parent) => {
+    const el = document.createElementNS(NS, name);
+    Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+    parent?.append(el);
+    return el;
+  };
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'top-fab';
+  const svg = svgEl('svg', { viewBox: '0 0 44 44', 'aria-hidden': 'true' }, btn);
+  const grad = svgEl('linearGradient', { id: 'topFabGrad', x1: '0', y1: '0', x2: '1', y2: '1' }, svgEl('defs', {}, svg));
+  ['fab-g1', 'fab-g2', 'fab-g3'].forEach((c, i) => svgEl('stop', { class: c, offset: `${i * 50}%` }, grad));
+  svgEl('circle', { class: 'fab-track', cx: 22, cy: 22, r: 20 }, svg);
+  const ring = svgEl('circle', { class: 'fab-ring', cx: 22, cy: 22, r: 20, pathLength: 100 }, svg);
+  const arrow = document.createElement('span');
+  arrow.className = 'fab-arrow';
+  arrow.setAttribute('aria-hidden', 'true');
+  arrow.textContent = '↑';
+  btn.append(arrow);
+  document.body.append(btn);
+
+  const label = () => {
+    const text = document.documentElement.lang === 'id' ? 'Kembali ke atas' : 'Back to top';
+    btn.setAttribute('aria-label', text);
+    btn.title = text;
+  };
+  label();
+  new MutationObserver(label).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+
+  let frame = null;
+  const paint = () => {
+    frame = null;
+    const max = document.documentElement.scrollHeight - innerHeight;
+    const pct = max > 0 ? Math.min(1, Math.max(0, scrollY / max)) : 0;
+    ring.style.strokeDashoffset = String(100 - pct * 100);
+    btn.classList.toggle('show', scrollY > innerHeight * 0.6);
+  };
+  const schedule = () => { if (frame === null) frame = requestAnimationFrame(paint); };
+  addEventListener('scroll', schedule, { passive: true });
+  addEventListener('resize', schedule, { passive: true });
+  btn.addEventListener('click', () => {
+    scrollTo({ top: 0, behavior: reduced.matches ? 'auto' : 'smooth' });
+    document.getElementById('main')?.focus({ preventScroll: true });
+  });
+  paint();
+})();
