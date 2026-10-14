@@ -277,12 +277,12 @@
   applyLite();
 
   // Auto berdasar performa nyata (bukan RAM/core): 5 jendela x 60 frame setelah load.
-  // Lite hanya jika frame >40ms (<25fps) mendominasi: 1 jendela sangat buruk, atau 2 jendela buruk berturut-turut.
+  // Lite hanya jika frame >56ms (<18fps) mendominasi: 1 jendela sangat buruk, atau 2 jendela buruk berturut-turut.
   if (!lite && !reduced.matches) {
     const WIN = 60; let last = 0, n = 0, bad = 0, warm = 20, wins = 0, streak = 0;
     const tick = t => {
       if (document.hidden) { last = 0; warm = 10; return addEventListener('visibilitychange', start, { once: true }); }
-      if (warm > 0) warm--; else if (last) { n++; if (t - last > 40) bad++; }
+      if (warm > 0) warm--; else if (last) { n++; if (t - last > 56) bad++; }
       last = t;
       if (n >= WIN) {
         const r = bad / n; n = bad = 0; wins++;
