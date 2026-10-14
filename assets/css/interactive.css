@@ -878,3 +878,11 @@ html.lite .tool-marquee-track, html.lite .reveal, html.lite .reveal.in { will-ch
 html.lite .skill.lit .bar i::after { animation: flame-run .4s linear infinite; }
 html.lite .skill.lit .bar::after { animation: flame-run .4s linear infinite; }
 
+
+/* Penanda mode lite: kecil, overlay kiri atas, tidak menggeser layout & tidak menangkap sentuhan */
+html.lite::after {
+  content: "lite"; position: fixed; z-index: 1001; top: max(4px, env(safe-area-inset-top)); left: max(4px, env(safe-area-inset-left));
+  padding: 1px 5px; border: 1px solid var(--line); border-radius: 4px; background: rgba(5,10,28,.55);
+  font: 500 9px/1.3 var(--font-mono); letter-spacing: .04em; text-transform: lowercase; color: var(--muted); opacity: .75; pointer-events: none;
+}
+@media print { html.lite::after { display: none; } }
