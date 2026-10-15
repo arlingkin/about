@@ -40,7 +40,6 @@ window.SKILL_VALUES = {
   });
 })();
 
-// Efek api bar: mouse = selama hover; touch = sekali jalan ~2.2s (tanpa hold)
 (() => {
   const on = (c) => c.classList.add('lit');
   const off = (c) => c.classList.remove('lit');

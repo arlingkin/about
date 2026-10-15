@@ -52,7 +52,6 @@ const chipButtons = (key, labels, lists) =>
     .map((id) => `                <button class="chip chip-btn" type="button" data-filter-tag="${id}" aria-pressed="false" data-i18n="${key}.${id}">${esc(labels[id].en)}</button>`)
     .join('\n');
 
-/* notes */
 const noteTags = notesData.tags || {};
 const sortedNotes = [...notesData.notes].sort((a, b) => b.date.localeCompare(a.date));
 const mainNotes = sortedNotes.filter((note) => note.featured);
@@ -67,7 +66,6 @@ const mainHtml = mainNotes.map((note, i) => noteRow(note, i + 1)).join('\n');
 const moreHtml = moreNotes.map((note, i) => noteRow(note, mainNotes.length + i + 1)).join('\n');
 const noteTagHtml = chipButtons('notes.tag', noteTags, notesData.notes.map((n) => n.tags || []));
 
-/* projects */
 const projects = projData.projects;
 const projTypes = projData.types;
 const projStatus = projData.status;
@@ -231,7 +229,6 @@ const items = sortedNotes
 const feed = `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n  <channel>\n    <title>Arlingkin - Notes</title>\n    <link>${origin}/notes</link>\n    <atom:link href="${origin}/feed.xml" rel="self" type="application/rss+xml"/>\n    <description>Short notes from Arlingga.</description>\n    <language>en</language>\n    <lastBuildDate>${new Date(`${sortedNotes[0].date}T00:00:00Z`).toUTCString()}</lastBuildDate>\n${items}\n  </channel>\n</rss>\n`;
 write('feed.xml', feed);
 
-/* CSP: keep sha256 hashes of the inline scripts (boot + speculation rules) in vercel.json in sync. */
 const inline = (re, name) => {
   const m = read('index.html').match(re);
   if (!m) throw new Error(`${name} not found in index.html`);

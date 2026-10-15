@@ -1,4 +1,3 @@
-/* Search + tag filter + "show more" for any page with [data-filter] (notes, projects). */
 (() => {
   const root = document.querySelector('[data-filter]');
   if (!root) return;
@@ -49,7 +48,6 @@
 
   chips.forEach((chip, i) => chip.style.setProperty('--i', i));
 
-  /* search collapses to an icon; the tag panel folds away behind a "Filter" button */
   let ignoreBlur = false;
   const setSearch = (open, focus) => {
     if (!searchWrap || !input) return;
@@ -154,7 +152,6 @@
     limit = PAGE;
     render();
   }, opts);
-  /* tags inside rows/cards jump straight to that filter */
   root.addEventListener('click', e => {
     const chip = e.target.closest('[data-item] .chip[data-tag]');
     if (!chip || !chips.some(c => c.dataset.filterTag === chip.dataset.tag)) return;
@@ -166,7 +163,6 @@
     root.querySelector('.filter-bar')?.scrollIntoView({ behavior: reduce.matches ? 'auto' : 'smooth', block: 'start' });
   }, opts);
 
-  /* keyboard: "/" opens search; arrows walk the visible results (search <-> list) */
   const links = () => rows.filter(r => !r.el.hidden).map(r => (r.el.matches('a') ? r.el : r.el.querySelector('a')));
   root.addEventListener('keydown', e => {
     if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;

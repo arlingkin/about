@@ -201,7 +201,6 @@
   };
 
   let swapping = false, swapTimer = null;
-  /* Crossfade guard: one swap at a time; slow time-based layer animations pause while the fade runs (bg-swap). */
   const paint = palette => {
     if (swapping) return false;
     swapping = true;

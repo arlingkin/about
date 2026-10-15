@@ -1,7 +1,6 @@
 const LANG_KEY = 'arlingkin-lang';
 const path = location.pathname.replace(/\/$/, '') || '/';
 
-/* ── translations ─────────────────────────────────────────────── */
 const T = {
   'nav.home':     { en:'home',      id:'beranda' },
   'nav.about':    { en:'about',     id:'tentang' },
@@ -24,7 +23,6 @@ const T = {
   'err.eyebrow': { en: "404 - Not found", id: "404 - Tidak ketemu" },
   'err.home': { en: "BACK HOME →", id: "KE BERANDA →" },
 
-  /* home */
   'home.eyebrow':      { en:'Personal notes - 2026',   id:'Catatan pribadi - 2026' },
   'home.h1':           { en:'Making sense of <em>code.</em>',  id:'Menerka makna <em>kode.</em>' },
   'home.intro': { en: "This is my personal site. I make things for the web and keep notes on what I'm <strong>learning.</strong>", id: "Ini situs pribadi saya. Saya bikin hal-hal untuk web dan mencatat apa yang lagi <strong>saya pelajari.</strong>" },
@@ -83,7 +81,6 @@ const T = {
   'home.toolbox.label': { en:'<span class="sec-num">04</span>TOOLBOX', id:'<span class="sec-num">04</span>KOTAK PERKAKAS' },
   'home.toolbox.sub': { en: "things I build with", id: "alat yang saya pakai" },
 
-  /* about */
   'about.eyebrow':    { en:'01 - About me', id:'01 - Tentang saya' },
   'about.h1':         { en:"Hi, I'm<br><em>Arlingga.</em>", id:'Hai, saya<br><em>Arlingga.</em>' },
   'about.intro': { en: "Web developer from Indonesia. I started out playing games and ended up writing code.", id: "Web developer dari Indonesia. Awalnya main game, ujung-ujungnya malah belajar ngoding." },
@@ -109,12 +106,10 @@ const T = {
   'about.now.3': { en: "Learning the basics before jumping into frameworks.", id: "Belajar dasar dulu sebelum lompat ke framework." },
   'about.now.4': { en: "Open to building websites with other people.", id: "Terbuka untuk bikin website bareng orang lain." },
 
-  /* skills */
   'skills.eyebrow':  { en:'02 - Skills', id:'02 - Keahlian' },
   'skills.h1':       { en:'The <em>toolbox.</em>', id:'Kotak <em>perkakas</em> saya.' },
   'skills.intro': { en: "The languages, frameworks and tools I use most.", id: "Bahasa, framework, dan tool yang paling sering saya pakai." },
 
-  /* projects */
   'proj.eyebrow':    { en:'03 - Projects', id:'03 - Proyek' },
   'proj.h1': { en: "Things I <em>built.</em>", id: "Yang sudah <em>saya buat.</em>" },
   'proj.intro': { en: "Stuff I made while learning, from school projects to small experiments.", id: "Yang saya buat sambil belajar, dari proyek sekolah sampai eksperimen kecil." },
@@ -126,7 +121,6 @@ const T = {
   'proj.soon.desc': { en: "New projects land here once they're ready to show. One feature at a time.", id: "Proyek baru muncul di sini begitu siap dipamerkan. Satu fitur setiap kali." },
   'proj.soon.alt': { en: "Arlingkin letters hopping with squash and stretch", id: "Huruf arlingkin melompat dengan squash and stretch" },
 
-  /* search / filter (notes + projects) */
   'filter.all': { en: "All", id: "Semua" },
   'filter.label': { en: "Search", id: "Cari" },
   'filter.title': { en: "Filter", id: "Filter" },
@@ -141,7 +135,6 @@ const T = {
   'filter.more': { en: "SHOW MORE ↓", id: "TAMPILKAN LAGI ↓" },
   'proj.a5.link':    { en:'PLAY THE GAME →', id:'MAINKAN GAME →' },
 
-  /* stats */
   'stats.eyebrow':    { en:'04 - GitHub stats', id:'04 - Statistik GitHub' },
   'stats.h1': { en: "My GitHub <em>activity.</em>", id: "Aktivitas <em>GitHub</em> saya." },
   'stats.intro': { en: "These numbers are generated automatically from my GitHub account, the same way as my profile README.", id: "Angka-angka ini dibuat otomatis dari akun GitHub saya, sama seperti README profil saya." },
@@ -164,7 +157,6 @@ const T = {
   'stats.auto2.desc': { en: "A streak card that pulls its numbers from a streak API.", id: "Kartu streak yang angkanya diambil dari streak API." },
   'stats.auto3.desc': { en: "A small Python script in the repo that feeds the streak automation.", id: "Skrip Python kecil di repo yang menyuplai otomasi streak." },
 
-  /* contact */
   'contact.eyebrow':    { en:'05 - Contact', id:'05 - Kontak' },
   'contact.h1':         { en:'Say <em>hello.</em>', id:'Tinggalkan <em>halo.</em>' },
   'contact.intro': { en: "Message me about a website project, a coding question, or just to chat about code and games.", id: "Kirim pesan soal proyek website, pertanyaan kode, atau sekadar ngobrol soal koding dan game." },
@@ -179,9 +171,7 @@ const T = {
   'contact.coffee.desc': { en: "If something here helped you, you can buy me a coffee.", id: "Kalau ada yang membantu, boleh traktir saya kopi." },
 };
 
-/* ── language ─────────────────────────────────────────────────── */
 function getLang() {
-  // ?lang=id|en overrides the saved choice (and is persisted by applyLang)
   try {
     const q = new URLSearchParams(location.search).get('lang');
     if (q === 'id' || q === 'en') return q;
@@ -197,9 +187,6 @@ function applyLang(lang) {
     const entry = T[key];
     if (!entry) return;
 
-    // About fact labels keep their configurable value in a nested <b> element.
-    // Build that value as text so injected repository variables are displayed
-    // safely and survive each language switch.
     const factValue = T[`${key}v`];
     if (key.startsWith('about.fact.') && factValue) {
       el.textContent = entry[lang] || entry.en;
@@ -221,7 +208,6 @@ function applyLang(lang) {
     btn.classList.toggle('on', active);
     btn.setAttribute('aria-pressed', String(active));
   });
-  /* update <html lang> */
   document.documentElement.lang = lang === 'id' ? 'id' : 'en';
 }
 
@@ -231,13 +217,9 @@ function initLangSwitch() {
   });
 }
 
-/* ── site config (CI-injectable overrides) ────────────────────── */
 function applyConfig() {
   const c = window.SITE_CONFIG;
   if (!c) return;
-  // An unset GitHub variable leaves its __SITE_*__ alias in site-config.js.
-  // Treat it (and null / blank values) as absent so the existing About copy
-  // remains visible rather than exposing an alias or an empty fact value.
   const valueOrDefault = (value, fallback) => {
     if (typeof value !== 'string') return fallback;
     const valueTrimmed = value.trim();
@@ -260,9 +242,7 @@ function applyConfig() {
   });
 }
 
-/* ── nav ──────────────────────────────────────────────────────── */
 function setActiveNav() {
-  /* header + footer links; a section link (e.g. /notes) stays current on its child pages */
   document.querySelectorAll('.nav-link, .footer-link').forEach(link => {
     const href = link.getAttribute('href') || '';
     if (!href.startsWith('/')) return;
@@ -274,7 +254,6 @@ function setActiveNav() {
   });
 }
 
-/* ── reveal ───────────────────────────────────────────────────── */
 function revealOnScroll() {
   const els = document.querySelectorAll('.reveal');
   if (!('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('in')); return; }
@@ -291,7 +270,6 @@ function revealOnScroll() {
   });
 }
 
-/* ── copy email ───────────────────────────────────────────────── */
 function initCopyEmail() {
   document.querySelectorAll('[data-copy]').forEach(btn => {
     btn.addEventListener('click', async () => {
@@ -308,7 +286,6 @@ function initCopyEmail() {
   });
 }
 
-/* ── boot ─────────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   setActiveNav();
   applyConfig();
@@ -320,9 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
 }, { once: true });
 
 
-/* ── dynamic note typography ─────────────────────────────────── */
 function initNoteTypography() {
-  /* The font changes only on click/tap, never on its own (WCAG 2.2.2). */
   const all = ['note-font-0','note-font-1','note-font-2','note-font-3','note-font-4'];
   document.querySelectorAll('[data-note-fonts]').forEach(el => {
     let index = 0;
