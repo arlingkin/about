@@ -873,3 +873,14 @@ html.js .reveal:not(.in) { filter: blur(6px); }
   .scroll-progress { box-shadow: none; }
   :is(.article, .skill, .icon-card, .contact-card)::before { display: none; }
 }
+
+/* ── Contact: same look, cheaper paint on touch / mid-range ── */
+html.js .contact-grid.reveal { opacity: 1; transform: none; filter: none; transition: none; will-change: auto; }
+html.js .footer-mark:not(.is-visible) { animation-play-state: paused; }
+@media (hover: none), (pointer: coarse) {
+  html.js .contact-card.reveal:not(.in) { filter: blur(2px); }
+  .contact-card::after {
+    padding: 0; background: none; -webkit-mask: none; mask: none; -webkit-mask-composite: initial; mask-composite: initial;
+    box-shadow: inset 0 0 0 1px hsl(var(--acc-h) 100% 66% / .6);
+  }
+}

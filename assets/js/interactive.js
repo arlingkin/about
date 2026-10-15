@@ -491,10 +491,12 @@
     inView = true;
   }, { threshold: 0.55 });
   observer.observe(mark);
+  const vis = new IntersectionObserver(([e]) => mark.classList.toggle('is-visible', e.isIntersecting));
+  vis.observe(mark);
   addEventListener('pagehide', () => {
     clearTimeout(guard);
     if (frame !== null) cancelAnimationFrame(frame);
-    observer.disconnect();
+    observer.disconnect(); vis.disconnect();
     controller.abort();
   }, { once: true });
 })();
