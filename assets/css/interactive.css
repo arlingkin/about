@@ -325,10 +325,6 @@ address { font-style: normal; display: grid; justify-items: start; gap: 14px; }
 }
 @media (prefers-reduced-motion: reduce) { .site-footer::before, .footer-mark { animation: none; } }
 
-html.lite .featured .feature-card.personal-note::after { display: none; }
-html.lite .personal-note .code-art, html.lite .personal-note-tag,
-html.lite .footer-mark, html.lite .site-footer::before,
-html.lite .cyber-glass .scanline { animation: none; }
 
 html { --bg-a: 158; --bg-b: 196; --bg-c: 330; --bg2-a: 158; --bg2-b: 196; --bg2-c: 330; --acc-max: 1; background: #030814; }
 html[data-theme="light"] { --acc-max: .5; background: #eef3ff; }
@@ -379,8 +375,6 @@ body::after {
 html.bg-alt body::before { opacity: 0; }
 html.bg-alt body::after { opacity: var(--acc-max); }
 html.bg-swap body::before, html.bg-swap body::after { animation-play-state: paused, paused, running; }
-/* lite: static, smaller color layers; only html::before keeps its slow drift */
-html.lite body::before, html.lite body::after { inset: 0; animation: none; will-change: auto; }
 html.bg-instant body::before, html.bg-instant body::after { transition: none; }
 @supports (animation-timeline: scroll()) {
   body::before, body::after {
@@ -495,7 +489,6 @@ h1 em, .display em {
 @keyframes burst-ring { from { transform: scale(.3); opacity: .9; } to { transform: scale(2.2); opacity: 0; } }
 @keyframes burst-fly { to { transform: translate(var(--x), var(--y)) scale(.2); opacity: 0; } }
 
-html.lite h1 em, html.lite .display em, html.lite .eyebrow::before { animation: none; }
 @media (prefers-reduced-motion: reduce) {
   .cursor-glow, .burst { display: none; }
   .skill .bar i { transform: none; }
@@ -585,7 +578,6 @@ html.lite h1 em, html.lite .display em, html.lite .eyebrow::before { animation: 
 }
 .auto-card h3 { font-family: var(--font-mono); letter-spacing: -.02em; }
 
-html.lite .cyber-glass::before { animation: none; background: linear-gradient(135deg, var(--accent), transparent 38%, var(--violet)); }
 @media (max-width: 700px) {
   .cron-body { grid-template-columns: 1fr; justify-items: center; gap: 26px; padding: 24px 18px; }
   .cron-ring-wrap { width: 170px; }
@@ -732,7 +724,6 @@ main#top ~ .site-footer { margin-top: clamp(56px, 7vw, 96px); }
 /* the single primary conversion on home: the latest-note link */
 .personal-note .read-link:not(:hover):not(.is-pressed) { animation: cta-nudge 5s var(--ease) 2s infinite; }
 
-html.lite .personal-note .read-link { animation: none; }
 @media (prefers-reduced-motion: reduce) {
   .page-head.in > *, .hero-grid.in > div, .now.in .now-list li, .personal-note .read-link { animation: none; }
 }
@@ -860,36 +851,13 @@ html.js .row-meta .chip[data-tag]:hover { color: var(--ink); border-color: var(-
 @keyframes flame-flicker-b { from { transform: skewX(-46deg) scaleY(.7); } to { transform: skewX(-56deg) scaleY(1.15); } }
 @media (prefers-reduced-motion: reduce) { .skill.lit .bar::after { animation: none; } }
 
-/* ===== Performance & compatibility =====
-   html.lite (set by interactive.js: low RAM/CPU, small or touch screen, save-data, slow net, low FPS)
-   mematikan dekorasi berulang & blur berat. Layout dan warna tidak berubah. */
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 a, button, summary, label, [role="button"], input, select, textarea { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
-html.lite .featured .feature-card.personal-note::before,
-html.lite .personal-note-tag,
-html.lite .personal-note .code-art,
-html.lite .personal-note .code-window,
-html.lite .site-footer::before,
-html.lite .cyber-glass::before,
-html.lite .cyber-glass .scanline,
-html.lite h1 em, html.lite .display em { animation: none; }
-html.lite .featured .feature-card.personal-note::after { display: none; }
-html.lite .tool-marquee-track, html.lite .reveal, html.lite .reveal.in { will-change: auto; }
-html.lite .skill.lit .bar i::after { animation: flame-run .4s linear infinite; }
-html.lite .skill.lit .bar::after { animation: flame-run .4s linear infinite; }
 
 
-/* Penanda mode lite: kecil, overlay kiri atas, tidak menggeser layout & tidak menangkap sentuhan */
-html.lite::after {
-  content: "lite"; position: fixed; z-index: 1001; top: max(4px, env(safe-area-inset-top)); left: max(4px, env(safe-area-inset-left));
-  padding: 1px 5px; border: 1px solid var(--line); border-radius: 4px; background: rgba(5,10,28,.55);
-  font: 500 9px/1.3 var(--font-mono); letter-spacing: .04em; text-transform: lowercase; color: var(--muted); opacity: .75; pointer-events: none;
-}
-@media print { html.lite::after { display: none; } }
 
 /* ── Effects polish: blur-in reveal, cursor spotlight, progress glow ── */
 html.js .reveal:not(.in) { filter: blur(6px); }
-html.lite .reveal:not(.in) { filter: none; }
 .scroll-progress { box-shadow: 0 0 10px rgba(120,166,255,.55); }
 @media (hover: hover) and (pointer: fine) {
   :is(.article, .skill, .icon-card, .contact-card) { position: relative; }
@@ -899,7 +867,6 @@ html.lite .reveal:not(.in) { filter: none; }
     transition: opacity var(--dur) var(--ease);
   }
   :is(.article, .skill, .icon-card, .contact-card):hover::before { opacity: 1; }
-  html.lite :is(.article, .skill, .icon-card, .contact-card)::before { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   html.js .reveal:not(.in) { filter: none; }

@@ -191,13 +191,7 @@
   const rand = (min, max) => min + Math.random() * (max - min);
   const idle = cb => ('requestIdleCallback' in window ? requestIdleCallback(cb, { timeout: 1000 }) : setTimeout(cb, 150));
   const isPalette = v => v && [v.a, v.b, v.c].every(Number.isFinite);
-  const PERF_KEY = 'arlingkin-perf';
-  const readPerf = () => { try { const v = JSON.parse(localStorage.getItem(PERF_KEY)); return v && v.lite && Date.now() - v.t < 864e5; } catch { return false; } };
-  const detectLite = () => slow || readPerf() || navigator.connection?.saveData === true
-    || /(^|-)2g$/.test(navigator.connection?.effectiveType || '') || matchMedia('(prefers-reduced-data: reduce)').matches;
   let current = { a: 158, b: 196, c: 330 };
-  let lite = false;
-  let slow = false;
   let alt = false;
 
   const setVars = (prefix, palette) => {
@@ -230,11 +224,6 @@
     setVars('--bg2-', palette);
     root.classList.remove('bg-alt');
     requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove('bg-instant')));
-  };
-
-  const applyLite = () => {
-    lite = detectLite();
-    root.classList.toggle('lite', lite);
   };
 
   const readStored = () => {
@@ -274,32 +263,7 @@
 
   const stored = readStored();
   paintInstant(stored || current);
-  applyLite();
 
-  // Auto berdasar performa nyata (bukan RAM/core): 5 jendela x 60 frame setelah load.
-  // Lite hanya jika frame >56ms (<18fps) mendominasi: 1 jendela sangat buruk, atau 2 jendela buruk berturut-turut.
-  if (!lite && !reduced.matches) {
-    const WIN = 60; let last = 0, n = 0, bad = 0, warm = 20, wins = 0, streak = 0;
-    const tick = t => {
-      if (document.hidden) { last = 0; warm = 10; return addEventListener('visibilitychange', start, { once: true }); }
-      if (warm > 0) warm--; else if (last) { n++; if (t - last > 56) bad++; }
-      last = t;
-      if (n >= WIN) {
-        const r = bad / n; n = bad = 0; wins++;
-        streak = r > .35 ? streak + 1 : 0;
-        if (r > .6 || streak >= 2) {
-          slow = true; applyLite();
-          try { localStorage.setItem(PERF_KEY, JSON.stringify({ lite: 1, t: Date.now() })); } catch {}
-          return;
-        }
-        if (wins >= 5) return;
-      }
-      requestAnimationFrame(tick);
-    };
-    const start = () => requestAnimationFrame(tick);
-    const begin = () => idle(start);
-    document.readyState === 'complete' ? begin() : addEventListener('load', begin, { once: true });
-  }
 
   channel?.addEventListener('message', e => receive(e.data), opts);
   addEventListener('storage', e => {
@@ -546,7 +510,6 @@
     target.style.setProperty('--my', `${y - r.top}px`);
   };
   document.addEventListener('pointermove', e => {
-    if (document.documentElement.classList.contains('lite')) return;
     const t = e.target.closest?.(SEL);
     if (!t) return;
     target = t; x = e.clientX; y = e.clientY;
