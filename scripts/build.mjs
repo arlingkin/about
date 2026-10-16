@@ -160,8 +160,8 @@ const syncHead = (src, file) =>
   src
     .replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${origin}${urlPath(file)}$2`)
     .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${origin}${urlPath(file)}$2`)
-    .replace(/(<meta property="og:image" content=")[^"]*(")/, `$1${origin}/icons/og.png$2`)
-    .replace(/(<meta name="twitter:image" content=")[^"]*(")/, `$1${origin}/icons/og.png$2`)
+    .replace(/(<meta property="og:image" content=")[^"]*(")/, `$1${origin}/icons/og.jpg$2`)
+    .replace(/(<meta name="twitter:image" content=")[^"]*(")/, `$1${origin}/icons/og.jpg$2`)
     .replace(/("(?:@id|url|image)": ")https?:\/\/[^\/"]+/g, `$1${origin}`);
 const statsOwner = site.statsRepo.split('/')[0];
 const syncStats = (src) =>
