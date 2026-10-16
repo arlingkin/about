@@ -3,6 +3,17 @@
   "redirects": [
     { "source": "/notes/note-02", "destination": "/notes/trading", "permanent": true }
   ],
+  "rewrites": [
+    { "source": "/", "has": [{ "type": "query", "key": "lang", "value": "id" }], "destination": "/id/" },
+    { "source": "/about", "has": [{ "type": "query", "key": "lang", "value": "id" }], "destination": "/id/about" },
+    { "source": "/skills", "has": [{ "type": "query", "key": "lang", "value": "id" }], "destination": "/id/skills" },
+    { "source": "/projects", "has": [{ "type": "query", "key": "lang", "value": "id" }], "destination": "/id/projects" },
+    { "source": "/stats", "has": [{ "type": "query", "key": "lang", "value": "id" }], "destination": "/id/stats" },
+    { "source": "/contact", "has": [{ "type": "query", "key": "lang", "value": "id" }], "destination": "/id/contact" },
+    { "source": "/notes", "has": [{ "type": "query", "key": "lang", "value": "id" }], "destination": "/id/notes/" },
+    { "source": "/notes/mindustry", "has": [{ "type": "query", "key": "lang", "value": "id" }], "destination": "/id/notes/mindustry" },
+    { "source": "/notes/trading", "has": [{ "type": "query", "key": "lang", "value": "id" }], "destination": "/id/notes/trading" }
+  ],
   "headers": [
     {
       "source": "/(.*)",

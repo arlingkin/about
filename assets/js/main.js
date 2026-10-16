@@ -63,13 +63,13 @@ const T = {
   'home.about.tag':    { en:'<span class="idx">02.1</span>ABOUT', id:'<span class="idx">02.1</span>TENTANG' },
   'home.about.title':  { en:"Hi, I'm Arlingga", id:'Hai, saya Arlingga' },
   'home.about.desc': { en: "Web dev: frontend, backend, a bit of devops and AI.", id: "Web dev: frontend, backend, sedikit devops dan AI." },
-  'home.skills.tag':   { en:'<span class="idx">02.2</span>SKILLS', id:'<span class="idx">02.2</span>KEAHLIAN' },
+  'home.skills.tag':   { en:'<span class="idx">02.3</span>SKILLS', id:'<span class="idx">02.3</span>KEAHLIAN' },
   'home.skills.title': { en:'The toolbox', id:'Kotak perkakas' },
   'home.skills.desc': { en: "JS, Python, Java, Tailwind, NextJS, Firebase, Supabase and more.", id: "JS, Python, Java, Tailwind, NextJS, Firebase, Supabase, dan lainnya." },
-  'home.stats.tag':    { en:'<span class="idx">02.3</span>STATS', id:'<span class="idx">02.3</span>STATISTIK' },
+  'home.stats.tag':    { en:'<span class="idx">02.4</span>STATS', id:'<span class="idx">02.4</span>STATISTIK' },
   'home.stats.title': { en: "GitHub stats", id: "Statistik GitHub" },
   'home.stats.desc': { en: "My GitHub activity and streak, updated automatically.", id: "Aktivitas GitHub dan streak saya, diperbarui otomatis." },
-  'home.proj.tag':     { en:'<span class="idx">02.4</span>PROJECTS', id:'<span class="idx">02.4</span>PROYEK' },
+  'home.proj.tag':     { en:'<span class="idx">02.2</span>PROJECTS', id:'<span class="idx">02.2</span>PROYEK' },
   'home.proj.title':   { en: "Things I built", id: "Yang sudah saya buat" },
   'home.proj.desc': { en: "A school web app, a Matrix-style snake game, an Android data-quota tracker and a few web experiments.", id: "Web app sekolah, game snake bertema Matrix, aplikasi Android pemantau kuota, dan beberapa eksperimen web." },
   'home.now.label':    { en:'<span class="sec-num">03</span>RIGHT NOW', id:'<span class="sec-num">03</span>SEKARANG' },
@@ -182,6 +182,10 @@ function getLang() {
 function applyLang(lang) {
   document.documentElement.setAttribute('data-lang', lang);
   try { localStorage.setItem(LANG_KEY, lang); } catch {}
+  try {
+    const u = new URL(location.href);
+    if (u.searchParams.has('lang') && u.searchParams.get('lang') !== lang) { u.searchParams.set('lang', lang); history.replaceState(null, '', u); }
+  } catch {}
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     const entry = T[key];

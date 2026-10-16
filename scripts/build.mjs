@@ -1,11 +1,13 @@
 import { createHash } from 'node:crypto';
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname } from 'node:path';
 
 const check = process.argv.includes('--check');
 const read = (path) => readFileSync(path, 'utf8');
 const data = JSON.parse(read('data/tools.json'));
 const notesData = JSON.parse(read('data/notes.json'));
 const site = JSON.parse(read('data/site.json'));
+const idMeta = JSON.parse(read('data/meta-id.json'));
 const projData = JSON.parse(read('data/projects.json'));
 const origin = site.url.replace(/\/$/, '');
 const byId = new Map(data.tools.map((tool) => [tool.id, tool]));
@@ -171,11 +173,28 @@ const syncStats = (src) =>
     .replace(/(data-src [^>]*>)[^<]*(<\/a>)/, `$1${site.statsRepo} &#8599;$2`)
     .replace(/user=[^&"]+/, `user=${statsOwner}`);
 
+const idPage = (src, file) => {
+  const m = idMeta.pages[file];
+  if (!m) return null;
+  const at = (re, fn) => { src = src.replace(re, fn); };
+  at('<html lang="en" data-lang="en">', () => '<html lang="id" data-lang="id">');
+  at(/(<meta name="description" content=")[^"]*(")/, (_, a, z) => a + escAttr(m.desc) + z);
+  at(/(<meta property="og:description" content=")[^"]*(")/, (_, a, z) => a + escAttr(m.desc) + z);
+  at(/(<meta property="og:title" content=")[^"]*(")/, (_, a, z) => a + escAttr(m.title) + z);
+  at(/<title>[^<]*<\/title>/, () => `<title>${esc(m.title)}</title>`);
+  at(/(<meta property="og:url" content="[^"]*)(")/, (_, a, z) => `${a}?lang=id${z}`);
+  at(/(<meta property="og:image:alt" content=")[^"]*(")/, (_, a, z) => a + escAttr(idMeta.alt) + z);
+  at('<meta property="og:locale" content="en_US">', () => '<meta property="og:locale" content="id_ID">');
+  at('<meta property="og:locale:alternate" content="id_ID">', () => '<meta property="og:locale:alternate" content="en_US">');
+  at('content="index, follow, max-image-preview:large"', () => 'content="noindex, follow"');
+  return src;
+};
+
 const changed = [];
 const write = (path, next) => {
   if (existsSync(path) && read(path) === next) return;
   changed.push(path);
-  if (!check) writeFileSync(path, next);
+  if (!check) { mkdirSync(dirname(path), { recursive: true }); writeFileSync(path, next); }
 };
 
 for (const [path, active] of Object.entries(pages)) {
@@ -193,6 +212,8 @@ for (const [path, active] of Object.entries(pages)) {
   src = syncHead(src, path);
   if (path === 'stats.html') src = syncStats(src);
   write(path, src);
+  const idSrc = idPage(src, path);
+  if (idSrc) write(`id/${path}`, idSrc);
 }
 
 write('sitemap.xml', read('sitemap.xml').replace(/<loc>https?:\/\/[^\/<]+/g, `<loc>${origin}`));

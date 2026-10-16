@@ -74,6 +74,8 @@
     const next = new URLSearchParams();
     if (q) next.set('q', q);
     if (tag) next.set('tag', tag);
+    const keepLang = new URLSearchParams(location.search).get('lang');
+    if (keepLang) next.set('lang', keepLang);
     const qs = next.toString();
     history.replaceState(null, '', `${location.pathname}${qs ? `?${qs}` : ''}${location.hash}`);
   };
