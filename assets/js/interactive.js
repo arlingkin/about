@@ -517,3 +517,33 @@
     if (frame === null) frame = requestAnimationFrame(paint);
   }, { passive: true });
 })();
+
+(() => {
+  const header = document.querySelector('.site-header');
+  if (!header || document.querySelector('.nf')) return;
+  let segs;
+  try { segs = decodeURIComponent(location.pathname).replace(/\.html$/, '').split('/').filter(Boolean); } catch { return; }
+  if (segs[segs.length - 1] === 'index') segs.pop();
+  if (!segs.length) return;
+  const trail = document.createElement('nav');
+  trail.className = 'crumbs';
+  trail.setAttribute('aria-label', 'Breadcrumb');
+  const ol = document.createElement('ol');
+  const add = (label, href, key) => {
+    const li = document.createElement('li');
+    const el = document.createElement(href ? 'a' : 'span');
+    if (href) el.href = href; else el.setAttribute('aria-current', 'page');
+    if (key && typeof T !== 'undefined' && T[key]) el.setAttribute('data-i18n', key);
+    el.textContent = label;
+    li.appendChild(el);
+    ol.appendChild(li);
+  };
+  add('home', '/', 'nav.home');
+  segs.forEach((seg, i) => {
+    const key = `nav.${seg}`;
+    const known = typeof T !== 'undefined' && T[key] && i === 0;
+    add(known ? T[key].en : seg, i < segs.length - 1 ? `/${segs.slice(0, i + 1).join('/')}` : null, known ? key : null);
+  });
+  trail.appendChild(ol);
+  header.insertAdjacentElement('afterend', trail);
+})();
