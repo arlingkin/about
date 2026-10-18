@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>(function(){var d=document.documentElement,L;d.classList.add('js');try{var q=new URLSearchParams(location.search).get('lang');if(q==='id'||q==='en'){L=q;localStorage.setItem('arlingkin-lang',q);}}catch(e){}try{L=L||localStorage.getItem('arlingkin-lang');d.dataset.theme=localStorage.getItem('arlingkin-theme')==='light'?'light':'dark';}catch(e){}if(L==='id'){d.lang='id';d.dataset.lang='id';}})();</script>
+  <meta name="description" content="How I learned to think like an engineer in Simple Rockets 2: rockets, a space station, autonomous chip programs and a rocket-boosted plane.">
+  <meta name="keywords" content="Simple Rockets 2, SR2, rocket, space station, programming, game, Arlingkin, Arlingga">
+  <meta name="author" content="Arlingga">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#071a3b">
+  <meta name="color-scheme" content="dark">
+  <title>Arlingkin - Simple Rockets 2</title>
+  <meta property="og:title" content="Arlingkin - Simple Rockets 2">
+  <meta property="og:description" content="How I learned to think like an engineer in Simple Rockets 2: rockets, a space station, autonomous chip programs and a rocket-boosted plane.">
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2026-10-18">
+  <meta property="og:url" content="https://arlingkin.vercel.app/notes/simple-rockets-2">
+  <link rel="canonical" href="https://arlingkin.vercel.app/notes/simple-rockets-2">
+  <meta property="og:image" content="https://arlingkin.vercel.app/icons/og.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Arlingkin, personal site of Arlingga: Making sense of code.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="id_ID">
+  <meta property="og:site_name" content="Arlingkin">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:creator" content="@arlingkin">
+  <meta name="twitter:image" content="https://arlingkin.vercel.app/icons/og.jpg">
+  <link rel="alternate" type="application/rss+xml" title="Arlingkin - Notes" href="/feed.xml">
+  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Lora:ital,wght@1,400;1,500&family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/interactive.css">
+  <script type="speculationrules">{"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"selector_matches":"[target=_blank]"}}]},"eagerness":"moderate"}]}</script>
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="skip.main">Skip to content</a>
+  <div class="page">
+    <header class="site-header" data-build="header">
+      <a class="brand" href="/" aria-label="Arlingkin home"><span class="brand-mark">a</span>arlingkin</a>
+      <nav id="primary-nav" aria-label="Primary navigation">
+        <a class="nav-link" href="/" data-i18n="nav.home">home</a>
+        <a class="nav-link" href="/about" data-i18n="nav.about">about</a>
+        <a class="nav-link" href="/skills" data-i18n="nav.skills">skills</a>
+        <a class="nav-link" href="/projects" data-i18n="nav.projects">projects</a>
+        <a class="nav-link" href="/stats" data-i18n="nav.stats">stats</a>
+        <a class="nav-link" href="/contact" data-i18n="nav.contact">contact</a>
+        <a class="nav-link" href="https://github.com/arlingkin" target="_blank" rel="noreferrer" data-i18n="nav.github">github ↗</a>
+      </nav>
+      <div class="lang-switch" aria-label="Language selector">
+        <button class="lang-btn" data-lang="en" aria-label="Switch to English"><span class="lang-short">EN</span><span class="lang-long">ENGLISH</span></button>
+        <button class="lang-btn" data-lang="id" aria-label="Ganti ke Bahasa Indonesia"><span class="lang-short">ID</span><span class="lang-long">INDONESIA</span></button>
+      </div>
+      <button class="theme-toggle" type="button" aria-label="Switch theme" title="Switch theme"><span class="theme-icon">◐</span><span class="theme-label">DARK</span></button>
+      <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="primary-nav"><span aria-hidden="true"></span></button>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <article>
+        <header class="page-head note-head reveal reveal-zoom">
+          <h1 data-i18n="sr2.h1">How I became an <em>engineer in Simple Rockets 2.</em></h1>
+          <div class="row-meta note-meta"><time datetime="2026-10-18" data-date="2026-10-18">18 Oct 2026</time><a class="chip" data-tag="programming" href="/notes?tag=programming" data-i18n="notes.tag.programming">programming</a><a class="chip" data-tag="game" href="/notes?tag=game" data-i18n="notes.tag.game">game</a></div>
+        </header>
+
+        <div class="note-body">
+          <p class="lead reveal" data-note-fonts data-i18n="sr2.lead">Simple Rockets 2 is where I learned to think like an engineer.</p>
+          <p class="reveal" data-i18n="sr2.p1">I build rockets and planes and keep redesigning them until they fly well. One of my best builds is a rocket with good aerodynamics: a clean shape that cuts through the air instead of fighting it.</p>
+          <p class="reveal" data-i18n="sr2.p2">I also built a huge space station with many docking ports, and I put astronauts on it. Many docks means many ships can visit at once.</p>
+          <p class="reveal" data-i18n="sr2.p3">My favorite part is programming the embedded chip inside the game. It's so much fun. My programs run autonomously: they handle staging, pitch and deploying the payload, so the rocket flies its mission without me.</p>
+          <blockquote class="note-quote reveal" data-note-fonts data-i18n="sr2.quote">I like building things that <span>run on their own.</span></blockquote>
+          <p class="reveal" data-i18n="sr2.p4">I also made one of the fastest planes in the game. I added a rocket to it, used the tinker panel to keep the weight light, and wrote a small program that makes the rocket push the plane with unlimited fuel.</p>
+          <p class="reveal" data-i18n="sr2.p5">I built a VTOL rocket too. Same habit as on the web: build small, test, fix, repeat.</p>
+        </div>
+
+        <a class="note-back" href="/notes" data-i18n="note3.back">← back to notes</a>
+      </article>
+    </main>
+
+    <footer class="site-footer" data-build="footer">
+      <div class="footer-top">
+        <div class="footer-col footer-brand">
+          <a class="footer-logo" href="/" aria-label="Arlingkin home"><span class="brand-mark">a</span>arlingkin</a>
+          <p data-i18n="footer.tagline">Arlingga. I build web stuff and write down what I learn.</p>
+          <p class="footer-status"><span class="pulse" aria-hidden="true"></span><span data-i18n="footer.status">open to collaborate</span></p>
+        </div>
+        <nav class="footer-col" aria-labelledby="footer-nav-title">
+          <h2 class="footer-title" id="footer-nav-title" data-i18n="footer.nav">Pages</h2>
+          <ul class="footer-links">
+            <li><a class="footer-link" href="/" data-i18n="nav.home">home</a></li>
+            <li><a class="footer-link" href="/about" data-i18n="nav.about">about</a></li>
+            <li><a class="footer-link" href="/skills" data-i18n="nav.skills">skills</a></li>
+            <li><a class="footer-link" href="/projects" data-i18n="nav.projects">projects</a></li>
+            <li><a class="footer-link" href="/notes" data-i18n="nav.notes">notes</a></li>
+            <li><a class="footer-link" href="/stats" data-i18n="nav.stats">stats</a></li>
+            <li><a class="footer-link" href="/contact" data-i18n="nav.contact">contact</a></li>
+          </ul>
+        </nav>
+        <nav class="footer-col" aria-labelledby="footer-social-title">
+          <h2 class="footer-title" id="footer-social-title" data-i18n="footer.social">Find me on</h2>
+          <ul class="footer-links">
+            <li><a class="footer-link" href="https://github.com/arlingkin" target="_blank" rel="noreferrer">GitHub ↗</a></li>
+            <li><a class="footer-link" href="https://instagram.com/__lingg4" target="_blank" rel="noreferrer">Instagram ↗</a></li>
+            <li><a class="footer-link" href="https://tiktok.com/@arlingkin" target="_blank" rel="noreferrer">TikTok ↗</a></li>
+            <li><a class="footer-link" href="https://youtube.com/@arlingkin" target="_blank" rel="noreferrer">YouTube ↗</a></li>
+            <li><a class="footer-link" href="https://t.me/arlingkin" target="_blank" rel="noreferrer">Telegram ↗</a></li>
+            <li><a class="footer-link" href="/feed.xml" type="application/rss+xml">RSS</a></li>
+          </ul>
+        </nav>
+        <div class="footer-col">
+          <h2 class="footer-title" data-i18n="footer.contact">Contact</h2>
+          <address>
+            <a class="footer-link" href="/contact" data-mail-link data-i18n="footer.hello">say hello ↗</a>
+            <button class="footer-copy cta" type="button" data-copy="" data-i18n="contact.email.btn">copy email</button>
+          </address>
+        </div>
+      </div>
+      <p class="footer-mark" aria-hidden="true">arlingkin</p>
+      <div class="footer-bottom">
+        <small data-i18n="footer.copy">© 2026 Arlingkin. Plain HTML, CSS and a bit of JS.</small>
+        <a class="to-top" href="#" data-i18n="footer.top">Back to top ↑</a>
+      </div>
+    </footer>
+  </div>
+  <script src="/assets/js/mail.js"></script><script src="/assets/js/site-config.js"></script>
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/tools-i18n.js"></script>
+  <script src="/assets/js/interactive.js"></script>
+</body>
+</html>

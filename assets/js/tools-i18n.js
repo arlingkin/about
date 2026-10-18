@@ -43,6 +43,8 @@ Object.assign(T, {
   "skills.nl.desc": {"en":"Static hosting and deploy previews.","id":"Hosting statis dan preview deploy."},
   "skills.os.title": {"en":"OneSignal","id":"OneSignal"},
   "skills.os.desc": {"en":"Push notifications for web and mobile.","id":"Notifikasi push untuk web dan mobile."},
+  "notes.simple-rockets-2.title": {"en":"How I became an engineer in Simple Rockets 2.","id":"Bagaimana saya jadi engineer di Simple Rockets 2."},
+  "notes.simple-rockets-2.desc": {"en":"How I learned to think like an engineer in Simple Rockets 2: rockets, a space station, autonomous chip programs and a rocket-boosted plane.","id":"Bagaimana saya belajar berpikir seperti engineer di Simple Rockets 2: roket, stasiun luar angkasa, program chip otomatis, dan pesawat berbooster roket."},
   "notes.mindustry.title": {"en":"Where it started: Mindustry logic.","id":"Awalnya dari logic Mindustry."},
   "notes.mindustry.desc": {"en":"How a phone game and its logic processor led me into web development.","id":"Bagaimana game di ponsel dan logic processor-nya membawa saya ke web development."},
   "notes.trading.title": {"en":"The moment I stopped watching the chart.","id":"Saat saya berhenti menatap chart."},

@@ -879,3 +879,14 @@ html.js .contact-card.reveal.reveal-instant { animation: none; }
 .crumbs [aria-current="page"] { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); overflow-wrap: anywhere; }
 .crumbs [aria-current="page"]::before { content: ""; width: 5px; height: 5px; flex: none; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
 @media (prefers-reduced-motion: reduce) { .crumbs { animation: none; } }
+
+@media (hover: none), (pointer: coarse), (max-width: 700px) {
+  html::before { inset: 0; animation: none; will-change: auto; }
+  body::before, body::after { inset: -6%; animation: bd-drift 36s ease-in-out infinite alternate; animation-timeline: auto; animation-range: normal; }
+  body::after { animation-direction: alternate-reverse; animation-delay: -14s; }
+  html:not(.bg-alt) body::after, html.bg-alt body::before { animation-play-state: paused; }
+  html.bg-swap body::before, html.bg-swap body::after { animation-play-state: running; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html::before, body::before, body::after { animation: none; }
+}

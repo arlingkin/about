@@ -19,6 +19,23 @@
   },
   "notes": [
     {
+      "slug": "simple-rockets-2",
+      "date": "2026-10-18",
+      "featured": false,
+      "title": {
+        "en": "How I became an engineer in Simple Rockets 2.",
+        "id": "Bagaimana saya jadi engineer di Simple Rockets 2."
+      },
+      "desc": {
+        "en": "How I learned to think like an engineer in Simple Rockets 2: rockets, a space station, autonomous chip programs and a rocket-boosted plane.",
+        "id": "Bagaimana saya belajar berpikir seperti engineer di Simple Rockets 2: roket, stasiun luar angkasa, program chip otomatis, dan pesawat berbooster roket."
+      },
+      "tags": [
+        "programming",
+        "game"
+      ]
+    },
+    {
       "slug": "mindustry",
       "date": "2026-10-03",
       "featured": true,

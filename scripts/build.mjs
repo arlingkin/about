@@ -150,6 +150,7 @@ const pages = {
   'notes/index.html': null,
   'notes/mindustry.html': null,
   'notes/trading.html': null,
+  'notes/simple-rockets-2.html': null,
 };
 
 const header = read('partials/header.html').trimEnd();
