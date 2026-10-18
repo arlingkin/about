@@ -856,11 +856,18 @@ html.js .reveal:not(.in) { filter: blur(6px); }
 html.js .contact-grid.reveal { opacity: 1; transform: none; filter: none; transition: none; will-change: auto; }
 html.js .footer-mark:not(.is-visible) { animation-play-state: paused; }
 @media (hover: none), (pointer: coarse) {
-  html.js .contact-card.reveal:not(.in) { filter: blur(2px); }
-  .contact-card::after {
-    padding: 0; background: none; -webkit-mask: none; mask: none; -webkit-mask-composite: initial; mask-composite: initial;
-    box-shadow: inset 0 0 0 1px hsl(var(--acc-h) 100% 66% / .6);
-  }
+  .contact-card { isolation: auto; content-visibility: auto; contain-intrinsic-size: auto 190px; transition: border-color var(--dur-fast) var(--ease); }
+  .contact-card::before, .contact-card::after { content: none; }
+  .contact-card:hover, .contact-card:focus-within { transform: none; box-shadow: none; }
+}
+
+html.js .contact-card.reveal { opacity: 0; transform: translate3d(0, 14px, 0); filter: none; clip-path: none; will-change: auto; transition: none; }
+html.js .contact-card.reveal.in { opacity: 1; transform: none; animation: contact-in .45s var(--ease) var(--d, 0ms) backwards; }
+html.js .contact-card.reveal.reveal-instant { animation: none; }
+@keyframes contact-in { from { opacity: 0; transform: translate3d(0, 14px, 0); } }
+@media (prefers-reduced-motion: reduce) {
+  html.js .contact-card.reveal { opacity: 1; transform: none; }
+  html.js .contact-card.reveal.in { animation: none; }
 }
 
 .crumbs { padding: 16px 0 0; animation: rise-in .5s var(--ease) backwards; }
