@@ -890,3 +890,32 @@ html.js .contact-card.reveal.reveal-instant { animation: none; }
 @media (prefers-reduced-motion: reduce) {
   html::before, body::before, body::after { animation: none; }
 }
+
+.sr-fig { margin: 8px 0 40px; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; content-visibility: auto; contain-intrinsic-size: auto 260px; background: radial-gradient(circle, color-mix(in srgb, var(--ink) 14%, transparent) 1px, transparent 1.6px) 0 0 / 22px 22px, var(--panel); }
+.sr-fig svg { display: block; width: 100%; height: auto; }
+.sr-fig figcaption { padding: 12px 18px; border-top: 1px solid var(--line-soft); font: 400 .75rem/1.55 var(--font-mono); letter-spacing: .02em; color: var(--muted); }
+.sr-fig .g-st { fill: none; stroke: var(--blue); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.sr-fig .g-hull { fill: color-mix(in srgb, var(--blue) 16%, transparent); stroke: var(--blue); stroke-width: 2; stroke-linejoin: round; }
+.sr-fig .g-acc { fill: none; stroke: var(--link); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.sr-fig .g-accf { fill: var(--link); }
+.sr-fig .g-dim { fill: none; stroke: var(--faint); stroke-width: 1.5; stroke-linecap: round; opacity: .6; }
+.sr-fig .g-sol { fill: color-mix(in srgb, var(--cyan) 18%, transparent); stroke: var(--cyan); stroke-width: 1.5; }
+.sr-fig .g-dock circle { fill: var(--paper); stroke: var(--link); stroke-width: 2; }
+.sr-fig .g-fire { fill: var(--orange); }
+.sr-fig .g-ink { fill: var(--ink); }
+.sr-fig .g-star { fill: var(--faint); }
+.sr-fig .g-dash { stroke-dasharray: 5 7; }
+.sr-fig .g-dash2 { stroke-dasharray: 2 7; }
+.sr-fig text { font: 500 11px var(--font-mono); letter-spacing: .08em; fill: var(--muted); }
+.sr-fig text.g-tl { font-size: 12px; fill: var(--ink); }
+.note-sec { display: flex; align-items: baseline; margin: 52px 0 18px; font: 500 .8125rem/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink); scroll-margin-top: 24px; }
+.note-toc { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 8px; }
+.note-toc .meta { width: 100%; margin-bottom: 4px; color: var(--faint); }
+.game-card { display: grid; grid-template-columns: auto 1fr; gap: 18px; margin: 8px 0 28px; padding: 24px; border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(115deg, rgba(120,166,255,.07), transparent 60%), var(--panel); }
+.game-ico { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 9px; color: var(--blue); background: linear-gradient(135deg, rgba(120,166,255,.2), rgba(174,140,255,.14)); border: 1px solid rgba(216,224,255,.14); }
+.game-body { min-width: 0; }
+.game-body h3 { margin: 14px 0 8px; font-size: 22px; letter-spacing: -.03em; }
+.game-body p { margin: 0 0 18px; font-size: .9375rem; line-height: 1.55; color: var(--muted); }
+.note-body .game-body p.game-src { margin: 18px 0 0; padding-top: 14px; border-top: 1px solid var(--line-soft); font: 400 .75rem/1.6 var(--font-mono); color: var(--faint); }
+html.js :is(.sr-fig, .game-card, .note-sec, .note-toc).reveal:not(.in) { filter: none; will-change: auto; }
+@media (max-width: 700px) { .game-card { grid-template-columns: 1fr; padding: 20px; } .note-sec { margin-top: 40px; } }
