@@ -53,6 +53,7 @@ Object.assign(T, {
   "notes.tag.game": {"en":"game","id":"game"},
   "notes.tag.trading": {"en":"trading","id":"trading"},
   "notes.tag.habits": {"en":"habits","id":"kebiasaan"},
+  "notes.tag.science": {"en":"science","id":"sains"},
   "projects.type.web": {"en":"Web","id":"Web"},
   "projects.type.game": {"en":"Game","id":"Game"},
   "projects.type.mobile": {"en":"Mobile","id":"Mobile"},

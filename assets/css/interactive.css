@@ -919,3 +919,7 @@ html.js .contact-card.reveal.reveal-instant { animation: none; }
 .note-body .game-body p.game-src { margin: 18px 0 0; padding-top: 14px; border-top: 1px solid var(--line-soft); font: 400 .75rem/1.6 var(--font-mono); color: var(--faint); }
 html.js :is(.sr-fig, .game-card, .note-sec, .note-toc).reveal:not(.in) { filter: none; will-change: auto; }
 @media (max-width: 700px) { .game-card { grid-template-columns: 1fr; padding: 20px; } .note-sec { margin-top: 40px; } }
+.sr-fig .g-nebv { stop-color: var(--violet); stop-opacity: .4; }
+.sr-fig .g-nebv0 { stop-color: var(--violet); stop-opacity: 0; }
+.sr-fig .g-nebb { stop-color: var(--cyan); stop-opacity: .25; }
+.sr-fig .g-nebb0 { stop-color: var(--cyan); stop-opacity: 0; }

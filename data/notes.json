@@ -15,6 +15,10 @@
     "habits": {
       "en": "habits",
       "id": "kebiasaan"
+    },
+    "science": {
+      "en": "science",
+      "id": "sains"
     }
   },
   "notes": [
@@ -32,7 +36,8 @@
       },
       "tags": [
         "programming",
-        "game"
+        "game",
+        "science"
       ]
     },
     {
