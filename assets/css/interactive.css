@@ -937,3 +937,30 @@ html.js :is(.sr-fig, .game-card, .note-sec, .note-toc).reveal:not(.in) { filter:
 .sr-fig::after { opacity: .9; animation-duration: 90s; background-image: radial-gradient(circle at 62% 72%,var(--sk) 0 1.2px,transparent 1.9px),radial-gradient(circle at 92% 72%,var(--sk) 0 1.3px,transparent 1.9px),radial-gradient(circle at 5% 47%,var(--sk) 0 1.3px,transparent 1.9px),radial-gradient(circle at 64% 87%,var(--sk) 0 0.9px,transparent 1.9px),radial-gradient(circle at 47% 27%,var(--sk) 0 1.1px,transparent 1.9px),radial-gradient(circle at 57% 5%,var(--sk) 0 1.0px,transparent 1.9px),radial-gradient(circle at 29% 88%,var(--sk) 0 1.2px,transparent 1.9px),radial-gradient(circle at 17% 77%,var(--sk) 0 1.0px,transparent 1.9px),radial-gradient(circle at 61% 16%,var(--sk) 0 0.9px,transparent 1.9px); }
 @keyframes sr-drift { to { transform: translate3d(-50%, 0, 0); } }
 @media (prefers-reduced-motion: reduce) { .sr-fig::before, .sr-fig::after { animation: none; will-change: auto; } }
+.sr-map { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 8px 0 32px; }
+.sr-map-item { display: grid; align-content: start; gap: 8px; padding: 14px 16px; border: 1px solid var(--line); border-left: 2px solid var(--link); border-radius: var(--radius); background: var(--panel); }
+.sr-map-game { font: 500 .75rem/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--faint); }
+.sr-map-game::after { content: " →"; color: var(--link); }
+.sr-map-concept { font-size: 17px; font-weight: 600; letter-spacing: -.02em; color: var(--ink); }
+.sr-map-item code { justify-self: start; max-width: 100%; padding: 3px 8px; border: 1px solid var(--line-soft); border-radius: 6px; background: color-mix(in srgb, var(--blue) 10%, transparent); font: 500 .75rem/1.5 var(--font-mono); color: var(--muted); overflow-wrap: anywhere; }
+html.js .sr-map.reveal:not(.in) { filter: none; will-change: auto; }
+@media (max-width: 700px) { .sr-map { grid-template-columns: 1fr; } }
+
+.chip[data-tag="rockets"], .chip-btn[data-filter-tag="rockets"], html.js .row-meta .chip[data-tag="rockets"]:hover {
+  --g1: color-mix(in srgb, var(--violet) 42%, transparent); --g2: color-mix(in srgb, var(--blue) 34%, transparent); --g3: color-mix(in srgb, var(--cyan) 36%, transparent);
+  color: var(--ink); border-color: color-mix(in srgb, var(--violet) 60%, transparent);
+  background:
+    radial-gradient(circle at 5% 20%, var(--ink) 0 .6px, transparent 1.3px),
+    radial-gradient(circle at 72% 8%, var(--ink) 0 .5px, transparent 1.2px),
+    radial-gradient(circle at 96% 78%, var(--ink) 0 .6px, transparent 1.3px),
+    linear-gradient(110deg, var(--g1) 0%, var(--g2) 16.66%, var(--g3) 33.33%, var(--g1) 50%, var(--g2) 66.66%, var(--g3) 83.33%, var(--g1) 100%);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 200% 100%;
+  background-position: 0 0, 0 0, 0 0, 0% 0;
+  box-shadow: 0 0 12px color-mix(in srgb, var(--violet) 30%, transparent);
+  animation: sr-chip-flow 9s linear infinite;
+}
+.chip[data-tag="rockets"]::before, .chip-btn[data-filter-tag="rockets"]::before { content: "✦"; color: var(--cyan); font-size: .8em; animation: sr-chip-twinkle 3.2s ease-in-out infinite; }
+.chip-btn[data-filter-tag="rockets"][aria-pressed="true"] { border-color: var(--link); box-shadow: 0 0 0 1px var(--link), 0 0 16px color-mix(in srgb, var(--violet) 55%, transparent); }
+@keyframes sr-chip-flow { to { background-position: 0 0, 0 0, 0 0, 100% 0; } }
+@keyframes sr-chip-twinkle { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .chip[data-tag="rockets"], .chip-btn[data-filter-tag="rockets"], .chip[data-tag="rockets"]::before, .chip-btn[data-filter-tag="rockets"]::before { animation: none; } }
