@@ -27,6 +27,10 @@
     "rockets": {
       "en": "rockets",
       "id": "roket"
+    },
+    "engineer": {
+      "en": "engineer",
+      "id": "insinyur"
     }
   },
   "notes": [
@@ -36,7 +40,7 @@
       "featured": false,
       "title": {
         "en": "How I became an engineer in Simple Rockets 2.",
-        "id": "Bagaimana saya jadi engineer di Simple Rockets 2."
+        "id": "Bagaimana saya jadi insinyur di Simple Rockets 2."
       },
       "desc": {
         "en": "How a spaceflight sandbox taught me to see code: rockets, a space station, programs that fly themselves, and the concepts behind them.",
@@ -47,7 +51,8 @@
         "game",
         "science",
         "sandbox",
-        "rockets"
+        "rockets",
+        "engineer"
       ]
     },
     {
