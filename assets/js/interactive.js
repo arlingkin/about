@@ -557,3 +557,100 @@
   svgs.forEach(s => io.observe(s));
   addEventListener('pagehide', () => io.disconnect(), { once: true });
 })();
+
+(() => {
+  const logo = document.querySelector('.footer-logo');
+  const footer = document.querySelector('.site-footer');
+  const label = logo && logo.querySelector('.fl-text');
+  if (!logo || !footer || !label) return;
+  const WORD = label.dataset.text || label.textContent.trim();
+  const GLYPHS = '01#$%&@/<>_=+*~';
+  const VARS = ['--dx', '--dy', '--sk', '--cs', '--mx', '--lo', '--sl', '--lv', '--a1', '--a2', '--b1', '--b2', '--hotc'];
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const controller = new AbortController();
+  const opts = { signal: controller.signal };
+  let seed = (Date.now() ^ Math.floor(performance.now() * 1000)) >>> 0;
+  const rnd = () => {
+    seed = (seed + 0x6D2B79F5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  const between = (a, b) => a + rnd() * (b - a);
+  const glyph = () => GLYPHS[Math.floor(rnd() * GLYPHS.length)];
+  const scramble = (p, noise) => [...WORD].map((ch, i) => ((i + 1) / WORD.length + (rnd() - .5) * noise <= p ? ch : glyph())).join('');
+  const put = (k, v) => logo.style.setProperty(k, v);
+  let loopTimer = null, frameTimer = null, visible = false, busy = false;
+
+  const rest = () => {
+    logo.classList.remove('is-glitch');
+    VARS.forEach(k => logo.style.removeProperty(k));
+    label.textContent = WORD;
+    label.dataset.a = '';
+    label.dataset.b = '';
+    busy = false;
+  };
+
+  const burst = (power = 1) => {
+    if (busy || reduced.matches) return;
+    busy = true;
+    const frames = Math.round(between(9, 16) * (.7 + .3 * power));
+    const reach = between(10, 26) * power;
+    let f = 0;
+    logo.classList.add('is-glitch');
+    const step = () => {
+      const t = f / (frames - 1);
+      const env = Math.pow(Math.sin(Math.PI * Math.min(1, t * 1.15)), .8);
+      const kick = rnd() < .22 ? between(.2, 1) : 1;
+      const dx = (rnd() < .14 ? -.3 : between(.25, 1)) * reach * env * kick;
+      const a1 = between(0, 68), b1 = between(0, 68);
+      put('--dx', dx.toFixed(1) + 'px');
+      put('--dy', (between(-1.5, 1.5) * env * power).toFixed(1) + 'px');
+      put('--sk', (between(-9, 9) * env).toFixed(1) + 'deg');
+      put('--cs', (1 + 3.5 * env * rnd()).toFixed(1) + 'px');
+      put('--mx', ((rnd() - .5) * 8 * env).toFixed(1) + 'px');
+      put('--lo', (.55 + .4 * rnd()).toFixed(2));
+      put('--sl', (.35 + .45 * rnd()).toFixed(2));
+      put('--lv', rnd() < .7 ? '1' : '.35');
+      put('--a1', a1.toFixed(0) + '%');
+      put('--a2', Math.max(0, 100 - a1 - between(12, 34)).toFixed(0) + '%');
+      put('--b1', b1.toFixed(0) + '%');
+      put('--b2', Math.max(0, 100 - b1 - between(12, 34)).toFixed(0) + '%');
+      put('--hotc', rnd() < .25 ? 'var(--link)' : '');
+      const p = Math.min(1, t * 1.25);
+      label.textContent = scramble(p, .5);
+      label.dataset.a = scramble(p * .8, .9);
+      label.dataset.b = scramble(p * .6, .9);
+      f += 1;
+      if (f >= frames) {
+        rest();
+        if (rnd() < .25) frameTimer = setTimeout(() => burst(power * .7), between(200, 520));
+        return;
+      }
+      frameTimer = setTimeout(step, between(28, 85) + (rnd() < .18 ? between(60, 140) : 0));
+    };
+    step();
+  };
+
+  const nextDelay = () => Math.min(11000, 1800 + -Math.log(1 - rnd()) * 4200);
+  const loop = first => {
+    clearTimeout(loopTimer);
+    if (!visible || document.hidden || reduced.matches) return;
+    loopTimer = setTimeout(() => { burst(between(.6, 1)); loop(false); }, first ? between(700, 1500) : nextDelay());
+  };
+
+  logo.addEventListener('pointerenter', () => burst(1), opts);
+  logo.addEventListener('focusin', () => burst(.8), opts);
+  document.addEventListener('visibilitychange', () => loop(false), opts);
+  const observer = 'IntersectionObserver' in window ? new IntersectionObserver(([entry]) => {
+    visible = entry.isIntersecting;
+    if (visible) loop(true); else clearTimeout(loopTimer);
+  }, { threshold: .15 }) : null;
+  if (observer) observer.observe(footer);
+  addEventListener('pagehide', () => {
+    clearTimeout(loopTimer);
+    clearTimeout(frameTimer);
+    if (observer) observer.disconnect();
+    controller.abort();
+  }, { once: true });
+})();
