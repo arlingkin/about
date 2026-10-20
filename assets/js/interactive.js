@@ -565,7 +565,7 @@
   if (!logo || !footer || !label) return;
   const WORD = label.dataset.text || label.textContent.trim();
   const GLYPHS = '01#$%&@/<>_=+*~';
-  const VARS = ['--dx', '--dy', '--sk', '--cs', '--mx', '--lo', '--sl', '--lv', '--a1', '--a2', '--b1', '--b2', '--hotc'];
+  const VARS = ['--dx', '--dy', '--sk', '--cs', '--mx', '--lo', '--sl', '--a1', '--a2', '--b1', '--b2', '--hotc'];
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const controller = new AbortController();
   const opts = { signal: controller.signal };
@@ -611,7 +611,6 @@
       put('--mx', ((rnd() - .5) * 8 * env).toFixed(1) + 'px');
       put('--lo', (.55 + .4 * rnd()).toFixed(2));
       put('--sl', (.35 + .45 * rnd()).toFixed(2));
-      put('--lv', rnd() < .7 ? '1' : '.35');
       put('--a1', a1.toFixed(0) + '%');
       put('--a2', Math.max(0, 100 - a1 - between(12, 34)).toFixed(0) + '%');
       put('--b1', b1.toFixed(0) + '%');

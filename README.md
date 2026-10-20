@@ -29,9 +29,9 @@ Personal site and learning journal of **Arlingga**, built with plain HTML, CSS a
 │   ├── notes.json                         # notes list, dates, tags, featured flag (EN/ID)
 │   └── projects.json                      # projects: tags, status, stack, links (EN/ID)
 ├── assets/
-│   ├── css/                               # style.css (design system), interactive.css (effects)
+│   ├── css/                               # style.css (design system), interactive.css (effects), card.css (featured card themes)
 │   └── js/                                # main.js (i18n, nav, reveal), interactive.js,
-│                                          # stats.js, filter.js, mail.js, site-config.js, valueskills.js,
+│                                          # stats.js, filter.js, card.js, mail.js, site-config.js, valueskills.js,
 │                                          # tools-i18n.js (generated)
 ├── icons/                                 # site icons and icons/tools/*.svg
 ├── scripts/

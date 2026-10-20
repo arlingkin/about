@@ -101,7 +101,7 @@ const projArt = (p) => {
 const projFeature = (p) => {
   const matrix = p.theme === 'matrix';
   return [
-    `          <article class="feature-card${matrix ? ' matrix' : ''}" ${projAttrs(p)}>`,
+    `          <article class="feature-card${matrix ? ' matrix' : ''}" ${p.theme ? `data-card-theme="${p.theme}" ` : ''}${projAttrs(p)}>`,
     '            <div class="feature-copy reveal">',
     `              <span class="tag ${matrix ? 'matrix' : 'soft'}" data-i18n="projects.${p.slug}.badge">${esc(p.badge.en)}</span>`,
     `              <h3 data-i18n="projects.${p.slug}.title">${esc(p.title.en)}</h3>`,

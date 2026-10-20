@@ -971,8 +971,7 @@ html.js .sr-map.reveal:not(.in) { filter: none; will-change: auto; }
 .fl-text::before { content: attr(data-a); color: var(--cyan); transform: translateX(calc(var(--cs, 0px) * -1)); clip-path: inset(var(--a1, 0%) 0 var(--a2, 100%) 0); }
 .fl-text::after { content: attr(data-b); color: var(--orange); transform: translateX(var(--cs, 0px)); clip-path: inset(var(--b1, 0%) 0 var(--b2, 100%) 0); }
 .footer-logo::before { content: ""; position: absolute; inset: -6px -8px; z-index: 1; pointer-events: none; opacity: var(--sl, 0); border-radius: 6px; background: repeating-linear-gradient(0deg, transparent 0 2px, color-mix(in srgb, var(--paper) 72%, transparent) 2px 3px), linear-gradient(90deg, transparent, color-mix(in srgb, var(--cyan) 18%, transparent), transparent); }
-.footer-logo::after { content: "● LIVE"; position: absolute; left: calc(100% + 14px); top: 50%; translate: 0 -50%; pointer-events: none; opacity: var(--lv, 0); font: 500 .625rem/1 var(--font-mono); letter-spacing: .1em; color: var(--orange); white-space: nowrap; }
 .footer-logo.is-glitch { transform: translate3d(var(--dx, 0px), var(--dy, 0px), 0) skewX(var(--sk, 0deg)); }
 .footer-logo.is-glitch .fl-text { color: var(--hotc, var(--ink)); text-shadow: 0 0 8px color-mix(in srgb, var(--cyan) 45%, transparent); }
 .footer-logo.is-glitch .brand-mark { transition: none; transform: translate3d(var(--mx, 0px), 0, 0); box-shadow: 0 0 14px color-mix(in srgb, var(--cyan) 55%, transparent); }
-@media (prefers-reduced-motion: reduce) { .footer-logo::before, .footer-logo::after { display: none; } }
+@media (prefers-reduced-motion: reduce) { .footer-logo::before { display: none; } }

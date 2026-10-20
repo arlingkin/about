@@ -15,6 +15,7 @@
     {
       "slug": "nufabase",
       "featured": true,
+      "theme": "rain",
       "tags": ["web", "school"],
       "status": "live",
       "url": "https://nufabase.web.app",
