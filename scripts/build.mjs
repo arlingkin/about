@@ -188,6 +188,7 @@ const idPage = (src, file) => {
   at('<meta property="og:locale" content="en_US">', () => '<meta property="og:locale" content="id_ID">');
   at('<meta property="og:locale:alternate" content="id_ID">', () => '<meta property="og:locale:alternate" content="en_US">');
   at('content="index, follow, max-image-preview:large"', () => 'content="noindex, follow"');
+  at(/((?:href|src)=")((?:assets|icons)\/)/g, (_, a, p) => `${a}/${p}`);
   return src;
 };
 
