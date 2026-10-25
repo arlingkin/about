@@ -565,7 +565,22 @@
   if (!logo || !footer || !label) return;
   const WORD = label.dataset.text || label.textContent.trim();
   const GLYPHS = '01#$%&@/<>_=+*~';
-  const VARS = ['--dx', '--dy', '--sk', '--cs', '--mx', '--lo', '--sl', '--a1', '--a2', '--b1', '--b2', '--hotc'];
+  const VARS = ['--dx', '--dy', '--sk', '--cs', '--mx', '--lo', '--sl', '--op', '--a1', '--a2', '--b1', '--b2', '--hotc', '--g1', '--g2', '--g3', '--gy'];
+  const MODES = {
+    twitch: { n: [2, 4], amp: .25, scr: 0, tear: .2, gap: [16, 34] },
+    slide: { n: [6, 10], amp: 1, scr: .55, tear: .5, gap: [28, 70], snap: 4 },
+    tear: { n: [5, 9], amp: .55, scr: .3, tear: 1, gap: [24, 60] },
+    decode: { n: [7, 12], amp: .3, scr: .95, tear: .25, gap: [45, 90] },
+    blackout: { n: [2, 3], amp: .7, scr: .2, tear: .8, gap: [30, 70], dim: true }
+  };
+  const NEXT = {
+    start: { twitch: .55, slide: .3, tear: .15 },
+    twitch: { slide: .6, tear: .3, decode: .1 },
+    slide: { tear: .3, decode: .4, end: .3 },
+    tear: { slide: .2, decode: .4, end: .4 },
+    decode: { end: .75, blackout: .25 },
+    blackout: { decode: .6, end: .4 }
+  };
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const controller = new AbortController();
   const opts = { signal: controller.signal };
@@ -576,9 +591,20 @@
     t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
+  const lattice = Array.from({ length: 64 }, rnd);
+  const noise = x => {
+    const i = Math.floor(x);
+    const f = x - i;
+    const u = f * f * (3 - 2 * f);
+    return lattice[i & 63] * (1 - u) + lattice[(i + 1) & 63] * u;
+  };
   const between = (a, b) => a + rnd() * (b - a);
   const glyph = () => GLYPHS[Math.floor(rnd() * GLYPHS.length)];
-  const scramble = (p, noise) => [...WORD].map((ch, i) => ((i + 1) / WORD.length + (rnd() - .5) * noise <= p ? ch : glyph())).join('');
+  const pick = table => {
+    let r = rnd();
+    for (const [key, weight] of Object.entries(table)) if ((r -= weight) < 0) return key;
+    return 'end';
+  };
   const put = (k, v) => logo.style.setProperty(k, v);
   let loopTimer = null, frameTimer = null, visible = false, busy = false;
 
@@ -591,42 +617,66 @@
     busy = false;
   };
 
+  const frames = power => {
+    const list = [];
+    for (let mode = pick(NEXT.start), segs = 0; mode !== 'end' && segs < 4; mode = pick(NEXT[mode]), segs++) {
+      const count = Math.round(between(...MODES[mode].n) * (.7 + .3 * power));
+      for (let k = 0; k < count; k++) list.push(mode);
+    }
+    return list;
+  };
+
   const burst = (power = 1) => {
     if (busy || reduced.matches) return;
     busy = true;
-    const frames = Math.round(between(9, 16) * (.7 + .3 * power));
+    const plan = frames(power);
+    const total = plan.length;
     const reach = between(10, 26) * power;
+    const lock = [...WORD].map(() => between(.3, 1));
+    const trail = [0, 0, 0];
     let f = 0;
+    let clock = rnd() * 100;
     logo.classList.add('is-glitch');
+    const scramble = strength => [...WORD].map((ch, i) => (rnd() < strength && f / total * 1.2 < lock[i] + .2 ? glyph() : ch)).join('');
     const step = () => {
-      const t = f / (frames - 1);
-      const env = Math.pow(Math.sin(Math.PI * Math.min(1, t * 1.15)), .8);
-      const kick = rnd() < .22 ? between(.2, 1) : 1;
-      const dx = (rnd() < .14 ? -.3 : between(.25, 1)) * reach * env * kick;
+      const m = MODES[plan[f]];
+      const env = .35 + .65 * Math.pow(Math.sin(Math.PI * Math.min(1, f / (total - 1) * 1.1)), .7);
+      clock += between(.08, .3);
+      const kick = rnd() < .2 ? between(.2, 1) : 1;
+      const snap = m.snap || 1;
+      const raw = ((rnd() < .12 ? -.3 : between(.3, 1)) * kick * m.amp * reach + (noise(clock * 3) * 2 - 1) * 2.5 * m.amp) * env;
+      const dx = Math.round(raw / snap) * snap;
       const a1 = between(0, 68), b1 = between(0, 68);
-      put('--dx', dx.toFixed(1) + 'px');
+      const band = 14 + 22 * m.tear;
+      put('--dx', dx + 'px');
       put('--dy', (between(-1.5, 1.5) * env * power).toFixed(1) + 'px');
-      put('--sk', (between(-9, 9) * env).toFixed(1) + 'deg');
-      put('--cs', (1 + 3.5 * env * rnd()).toFixed(1) + 'px');
+      put('--sk', (between(-9, 9) * env * (.4 + .6 * m.tear)).toFixed(1) + 'deg');
+      put('--cs', (1 + 3.5 * env * rnd() * (.6 + .4 * m.tear)).toFixed(1) + 'px');
       put('--mx', ((rnd() - .5) * 8 * env).toFixed(1) + 'px');
-      put('--lo', (.55 + .4 * rnd()).toFixed(2));
-      put('--sl', (.35 + .45 * rnd()).toFixed(2));
+      put('--lo', (.5 + .45 * rnd()).toFixed(2));
+      put('--sl', (.3 + .5 * rnd()).toFixed(2));
+      put('--op', m.dim && rnd() < .6 ? between(.15, .45).toFixed(2) : '1');
       put('--a1', a1.toFixed(0) + '%');
-      put('--a2', Math.max(0, 100 - a1 - between(12, 34)).toFixed(0) + '%');
+      put('--a2', Math.max(0, 100 - a1 - between(10, band)).toFixed(0) + '%');
       put('--b1', b1.toFixed(0) + '%');
-      put('--b2', Math.max(0, 100 - b1 - between(12, 34)).toFixed(0) + '%');
+      put('--b2', Math.max(0, 100 - b1 - between(10, band)).toFixed(0) + '%');
       put('--hotc', rnd() < .25 ? 'var(--link)' : '');
-      const p = Math.min(1, t * 1.25);
-      label.textContent = scramble(p, .5);
-      label.dataset.a = scramble(p * .8, .9);
-      label.dataset.b = scramble(p * .6, .9);
+      put('--g1', trail[0] - dx + 'px');
+      put('--g2', trail[1] - trail[0] + 'px');
+      put('--g3', trail[2] - trail[1] + 'px');
+      put('--gy', between(-1, 1).toFixed(1) + 'px');
+      trail.unshift(dx);
+      trail.length = 3;
+      label.textContent = scramble(m.scr);
+      label.dataset.a = scramble(Math.min(1, m.scr + .25));
+      label.dataset.b = scramble(Math.min(1, m.scr + .25));
       f += 1;
-      if (f >= frames) {
+      if (f >= total) {
         rest();
         if (rnd() < .25) frameTimer = setTimeout(() => burst(power * .7), between(200, 520));
         return;
       }
-      frameTimer = setTimeout(step, between(28, 85) + (rnd() < .18 ? between(60, 140) : 0));
+      frameTimer = setTimeout(step, between(...MODES[plan[f]].gap) + (rnd() < .15 ? between(50, 120) : 0));
     };
     step();
   };
