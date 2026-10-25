@@ -561,6 +561,7 @@
 (() => {
   const logo = document.querySelector('.footer-logo');
   const footer = document.querySelector('.site-footer');
+  const status = document.querySelector('.footer-status');
   const label = logo && logo.querySelector('.fl-text');
   if (!logo || !footer || !label) return;
   const WORD = label.dataset.text || label.textContent.trim();
@@ -568,6 +569,8 @@
   const SITE_REPO = 'arlingkin/about';
   const SHA_KEY = 'arlingkin-sha-v1';
   const SHA_TTL = 15 * 60e3;
+  const HOLD_MS = 2800;
+  const HOLD_LINGER = 1600;
   const VARS = ['--dx', '--dy', '--sk', '--cs', '--mx', '--lo', '--sl', '--op', '--a1', '--a2', '--b1', '--b2', '--hotc', '--g1', '--g2', '--g3', '--gy', '--hud', '--hs', '--eye'];
   const MODES = {
     twitch: { n: [2, 4], amp: .25, scr: 0, tear: .2, gap: [16, 34] },
@@ -605,6 +608,7 @@
   };
   const between = (a, b) => a + rnd() * (b - a);
   const glyph = () => GLYPHS[Math.floor(rnd() * GLYPHS.length)];
+  const hex = () => Math.floor(rnd() * 16).toString(16);
   const pick = table => {
     let r = rnd();
     for (const [key, weight] of Object.entries(table)) if ((r -= weight) < 0) return key;
@@ -615,7 +619,7 @@
   hud.className = 'fl-hud';
   hud.setAttribute('aria-hidden', 'true');
   logo.append(hud);
-  const hex = () => Math.floor(rnd() * 16).toString(16);
+
   let sha = '';
   let shaRequested = false;
   const loadSha = async () => {
@@ -640,29 +644,86 @@
     shaRequested = true;
     loadSha();
   };
-  const shaLine = (n, locked) => {
+  const shaLine = (shown, locked) => {
     if (locked && !sha) return 'MAIN ???????';
-    const shown = locked ? 7 : Math.min(6, Math.floor(n * .6));
     return 'MAIN ' + Array.from({ length: 7 }, (_, i) => (sha && i < shown ? sha[i] : hex())).join('');
   };
   const readout = (n, locked) => [
     `SCAN [${'#'.repeat(Math.min(6, n + 1)).padEnd(6, '-')}]`,
     'ID ARLINGKIN',
     locked ? 'TARGET LOCKED' : `MATCH ${Math.min(99, 38 + n * 9 + Math.floor(rnd() * 6))}%`,
-    shaLine(n, locked)
+    shaLine(locked ? 7 : Math.min(6, Math.floor(n * .6)), locked)
   ].slice(0, locked ? 4 : Math.min(4, 1 + Math.floor(n / 2))).join('\n') + (locked ? '' : '_');
+  const holdReadout = p => {
+    const done = p >= 1;
+    return [
+      `SCAN [${'#'.repeat(Math.round(p * 10)).padEnd(10, '-')}]`,
+      `MATCH ${Math.floor(p * 100)}%`,
+      p > .12 ? 'ID ARLINGKIN' : '',
+      p > .4 ? shaLine(done ? 7 : Math.floor((p - .4) / .6 * 7), done) : '',
+      done ? 'TARGET LOCKED' : ''
+    ].filter(Boolean).join('\n') + (done ? '' : '_');
+  };
 
-  let loopTimer = null, frameTimer = null, visible = false, busy = false;
+  let loopTimer = null, frameTimer = null, holdTimer = null;
+  let visible = false, busy = false, hold = null;
+  let trail = [0, 0, 0];
+  let clock = rnd() * 100;
+  let lock = [];
 
   const rest = () => {
     logo.classList.remove('is-glitch', 'is-scan');
     footer.classList.remove('is-scan');
-    hud.textContent = '';
     VARS.forEach(k => logo.style.removeProperty(k));
     label.textContent = WORD;
     label.dataset.a = '';
     label.dataset.b = '';
+    hud.textContent = '';
     busy = false;
+  };
+
+  const scramble = (strength, progress) => [...WORD].map((ch, i) => (rnd() < strength && progress * 1.2 < lock[i] + .2 ? glyph() : ch)).join('');
+
+  const render = ({ m, env, progress, reach, power, scan, calm }) => {
+    clock += between(.08, .3);
+    const kick = rnd() < .2 ? between(.2, 1) : 1;
+    const snap = m.snap || 1;
+    const raw = ((rnd() < .12 ? -.3 : between(.3, 1)) * kick * m.amp * reach + (noise(clock * 3) * 2 - 1) * 2.5 * m.amp) * env;
+    const dx = Math.round(raw / snap) * snap;
+    const a1 = between(0, 68), b1 = between(0, 68);
+    const band = 14 + 22 * m.tear;
+    put('--dx', dx + 'px');
+    put('--dy', (between(-1.5, 1.5) * env * power).toFixed(1) + 'px');
+    put('--sk', (between(-9, 9) * env * (.4 + .6 * m.tear)).toFixed(1) + 'deg');
+    put('--cs', calm ? '0px' : (1 + 3.5 * env * rnd() * (.6 + .4 * m.tear)).toFixed(1) + 'px');
+    put('--mx', ((rnd() - .5) * 8 * env).toFixed(1) + 'px');
+    put('--lo', calm ? '0' : (.5 + .45 * rnd()).toFixed(2));
+    put('--sl', calm ? '.2' : (.3 + .5 * rnd()).toFixed(2));
+    put('--op', m.dim && rnd() < .6 ? between(.15, .45).toFixed(2) : '1');
+    put('--a1', a1.toFixed(0) + '%');
+    put('--a2', Math.max(0, 100 - a1 - between(10, band)).toFixed(0) + '%');
+    put('--b1', b1.toFixed(0) + '%');
+    put('--b2', Math.max(0, 100 - b1 - between(10, band)).toFixed(0) + '%');
+    put('--hotc', scan ? 'var(--orange)' : rnd() < .25 ? 'var(--link)' : '');
+    put('--g1', trail[0] - dx + 'px');
+    put('--g2', trail[1] - trail[0] + 'px');
+    put('--g3', trail[2] - trail[1] + 'px');
+    put('--gy', between(-1, 1).toFixed(1) + 'px');
+    trail.unshift(dx);
+    trail.length = 3;
+    label.textContent = scramble(m.scr, progress);
+    label.dataset.a = scramble(Math.min(1, m.scr + .25), progress);
+    label.dataset.b = scramble(Math.min(1, m.scr + .25), progress);
+  };
+
+  const setScan = (on, scale, text, flicker, steady) => {
+    logo.classList.toggle('is-scan', on);
+    footer.classList.toggle('is-scan', on);
+    put('--hud', on && rnd() < flicker ? '1' : '0');
+    if (!on) return;
+    put('--hs', Math.max(1, scale).toFixed(2));
+    put('--eye', steady ? '1' : (.5 + .5 * rnd()).toFixed(2));
+    hud.textContent = text;
   };
 
   const frames = power => {
@@ -680,55 +741,16 @@
     const plan = frames(power);
     const total = plan.length;
     const reach = between(10, 26) * power;
-    const lock = [...WORD].map(() => between(.3, 1));
-    const trail = [0, 0, 0];
     let f = 0;
     let scanned = 0;
-    let clock = rnd() * 100;
+    lock = [...WORD].map(() => between(.3, 1));
     logo.classList.add('is-glitch');
-    const scramble = strength => [...WORD].map((ch, i) => (rnd() < strength && f / total * 1.2 < lock[i] + .2 ? glyph() : ch)).join('');
     const step = () => {
-      const m = MODES[plan[f]];
       const scan = plan[f] === 'scan';
       const env = .35 + .65 * Math.pow(Math.sin(Math.PI * Math.min(1, f / (total - 1) * 1.1)), .7);
-      clock += between(.08, .3);
-      const kick = rnd() < .2 ? between(.2, 1) : 1;
-      const snap = m.snap || 1;
-      const raw = ((rnd() < .12 ? -.3 : between(.3, 1)) * kick * m.amp * reach + (noise(clock * 3) * 2 - 1) * 2.5 * m.amp) * env;
-      const dx = Math.round(raw / snap) * snap;
-      const a1 = between(0, 68), b1 = between(0, 68);
-      const band = 14 + 22 * m.tear;
-      put('--dx', dx + 'px');
-      put('--dy', (between(-1.5, 1.5) * env * power).toFixed(1) + 'px');
-      put('--sk', (between(-9, 9) * env * (.4 + .6 * m.tear)).toFixed(1) + 'deg');
-      put('--cs', (1 + 3.5 * env * rnd() * (.6 + .4 * m.tear)).toFixed(1) + 'px');
-      put('--mx', ((rnd() - .5) * 8 * env).toFixed(1) + 'px');
-      put('--lo', (.5 + .45 * rnd()).toFixed(2));
-      put('--sl', (.3 + .5 * rnd()).toFixed(2));
-      put('--op', m.dim && rnd() < .6 ? between(.15, .45).toFixed(2) : '1');
-      put('--a1', a1.toFixed(0) + '%');
-      put('--a2', Math.max(0, 100 - a1 - between(10, band)).toFixed(0) + '%');
-      put('--b1', b1.toFixed(0) + '%');
-      put('--b2', Math.max(0, 100 - b1 - between(10, band)).toFixed(0) + '%');
-      put('--hotc', scan ? 'var(--orange)' : rnd() < .25 ? 'var(--link)' : '');
-      logo.classList.toggle('is-scan', scan);
-      footer.classList.toggle('is-scan', scan);
-      put('--hud', scan && rnd() < .9 ? '1' : '0');
-      if (scan) {
-        put('--hs', Math.max(1, 1.45 - scanned * .12 + (rnd() - .5) * .04).toFixed(2));
-        put('--eye', (.5 + .5 * rnd()).toFixed(2));
-        hud.textContent = readout(scanned, plan[f + 1] !== 'scan');
-        scanned += 1;
-      }
-      put('--g1', trail[0] - dx + 'px');
-      put('--g2', trail[1] - trail[0] + 'px');
-      put('--g3', trail[2] - trail[1] + 'px');
-      put('--gy', between(-1, 1).toFixed(1) + 'px');
-      trail.unshift(dx);
-      trail.length = 3;
-      label.textContent = scramble(m.scr);
-      label.dataset.a = scramble(Math.min(1, m.scr + .25));
-      label.dataset.b = scramble(Math.min(1, m.scr + .25));
+      render({ m: MODES[plan[f]], env, progress: f / total, reach, power, scan });
+      setScan(scan, 1.45 - scanned * .12 + (rnd() - .5) * .04, scan ? readout(scanned, plan[f + 1] !== 'scan') : '', .9);
+      if (scan) scanned += 1;
       f += 1;
       if (f >= total) {
         rest();
@@ -740,6 +762,57 @@
     step();
   };
 
+  const finishHold = () => {
+    clearTimeout(holdTimer);
+    hold = null;
+    if (status) {
+      status.classList.remove('is-holding');
+      status.style.removeProperty('--hold');
+    }
+    rest();
+  };
+
+  const holdTick = () => {
+    if (!hold) return;
+    const now = performance.now();
+    if (hold.releasedAt && now - hold.releasedAt > HOLD_LINGER) { finishHold(); return; }
+    const p = Math.min(1, (now - hold.start) / HOLD_MS);
+    const done = p >= 1;
+    if (done && !hold.done) {
+      hold.done = true;
+      if (navigator.vibrate) navigator.vibrate(24);
+    }
+    render({ m: { amp: .1 + .45 * p, scr: done ? 0 : .95 * (1 - p) + .05, tear: .2 + .5 * p }, env: done ? 0 : .35 + .65 * p, progress: p, reach: 20, power: 1, scan: true, calm: done || reduced.matches });
+    setScan(true, done ? 1 : 1.45 - p * .45, holdReadout(p), 1, done);
+    status.style.setProperty('--hold', p.toFixed(3));
+    holdTimer = setTimeout(holdTick, done ? 120 : 33);
+  };
+
+  const holdRelease = () => {
+    document.removeEventListener('pointerup', holdRelease);
+    document.removeEventListener('pointercancel', holdRelease);
+    if (!hold) return;
+    status.classList.remove('is-holding');
+    if (hold.done) hold.releasedAt = performance.now();
+    else finishHold();
+  };
+
+  const holdPress = e => {
+    if (e.button > 0) return;
+    if (hold) finishHold();
+    ensureSha();
+    clearTimeout(frameTimer);
+    rest();
+    busy = true;
+    lock = [...WORD].map(() => between(.3, 1));
+    hold = { start: performance.now(), done: false, releasedAt: 0 };
+    logo.classList.add('is-glitch');
+    status.classList.add('is-holding');
+    document.addEventListener('pointerup', holdRelease);
+    document.addEventListener('pointercancel', holdRelease);
+    holdTick();
+  };
+
   const nextDelay = () => Math.min(11000, 1800 + -Math.log(1 - rnd()) * 4200);
   const loop = first => {
     clearTimeout(loopTimer);
@@ -749,6 +822,10 @@
 
   logo.addEventListener('pointerenter', () => { ensureSha(); burst(1); }, opts);
   logo.addEventListener('focusin', () => { ensureSha(); burst(.8); }, opts);
+  if (status) {
+    status.addEventListener('pointerdown', holdPress, opts);
+    status.addEventListener('contextmenu', e => e.preventDefault(), opts);
+  }
   document.addEventListener('visibilitychange', () => loop(false), opts);
   const observer = 'IntersectionObserver' in window ? new IntersectionObserver(([entry]) => {
     visible = entry.isIntersecting;
@@ -758,6 +835,7 @@
   addEventListener('pagehide', () => {
     clearTimeout(loopTimer);
     clearTimeout(frameTimer);
+    clearTimeout(holdTimer);
     if (observer) observer.disconnect();
     controller.abort();
   }, { once: true });
