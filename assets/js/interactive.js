@@ -565,7 +565,6 @@
   const label = logo && logo.querySelector('.fl-text');
   if (!logo || !footer || !label) return;
   const WORD = label.dataset.text || label.textContent.trim();
-  const GLYPHS = '01#$%&@/<>_=+*~';
   const SITE_REPO = 'arlingkin/about';
   const SHA_KEY = 'arlingkin-sha-v1';
   const SHA_TTL = 15 * 60e3;
@@ -573,7 +572,12 @@
   const HOLD_LINGER = 3200;
   const SWAP_EVERY = 1900;
   const SWAP_MS = 520;
-  const TAGS = ['TARGET LOCKED', `FROM GITHUB ${SITE_REPO}`.toUpperCase()];
+  const REPO_TAG = `FROM GITHUB ${SITE_REPO}`.toUpperCase();
+  const FX = {
+    orange: { glyphs: '01#$%&@/<>_=+*~', scan: 'SCAN', key: 'MATCH', id: 'ID ARLINGKIN', tag: 'TARGET LOCKED' },
+    blue: { glyphs: '0123456789ABCDEF<>/_', scan: 'DECRYPT', key: 'KEY', id: 'UID 0 ROOT', tag: 'ACCESS GRANTED' }
+  };
+  let fx = 'orange';
   const VARS = ['--dx', '--dy', '--sk', '--cs', '--mx', '--lo', '--sl', '--op', '--a1', '--a2', '--b1', '--b2', '--hotc', '--g1', '--g2', '--g3', '--gy', '--hud', '--hs', '--eye'];
   const MODES = {
     twitch: { n: [2, 4], amp: .25, scr: 0, tear: .2, gap: [16, 34] },
@@ -610,7 +614,7 @@
     return lattice[i & 63] * (1 - u) + lattice[(i + 1) & 63] * u;
   };
   const between = (a, b) => a + rnd() * (b - a);
-  const glyph = () => GLYPHS[Math.floor(rnd() * GLYPHS.length)];
+  const glyph = () => FX[fx].glyphs[Math.floor(rnd() * FX[fx].glyphs.length)];
   const hex = () => Math.floor(rnd() * 16).toString(16);
   const pick = table => {
     let r = rnd();
@@ -618,6 +622,11 @@
     return 'end';
   };
   const put = (k, v) => logo.style.setProperty(k, v);
+  const nextFx = () => {
+    fx = fx === 'orange' ? 'blue' : 'orange';
+    footer.dataset.fx = fx;
+  };
+  footer.dataset.fx = fx;
   const hud = document.createElement('span');
   const hudText = document.createElement('span');
   const hudTag = document.createElement('span');
@@ -656,15 +665,15 @@
     return 'MAIN ' + Array.from({ length: 7 }, (_, i) => (sha && i < shown ? sha[i] : hex())).join('');
   };
   const readout = (n, locked) => [
-    `SCAN [${'#'.repeat(Math.min(6, n + 1)).padEnd(6, '-')}]`,
-    'ID ARLINGKIN',
-    `MATCH ${locked ? 100 : Math.min(99, 38 + n * 9 + Math.floor(rnd() * 6))}%`,
+    `${FX[fx].scan} [${'#'.repeat(Math.min(6, n + 1)).padEnd(6, '-')}]`,
+    FX[fx].id,
+    `${FX[fx].key} ${locked ? 100 : Math.min(99, 38 + n * 9 + Math.floor(rnd() * 6))}%`,
     shaLine(locked ? 7 : Math.min(6, Math.floor(n * .6)), locked)
   ].slice(0, locked ? 4 : Math.min(4, 1 + Math.floor(n / 2))).join('\n') + (locked ? '' : '_');
   const holdReadout = p => [
-    `SCAN [${'#'.repeat(Math.round(p * 10)).padEnd(10, '-')}]`,
-    `MATCH ${Math.floor(p * 100)}%`,
-    p > .12 ? 'ID ARLINGKIN' : '',
+    `${FX[fx].scan} [${'#'.repeat(Math.round(p * 10)).padEnd(10, '-')}]`,
+    `${FX[fx].key} ${Math.floor(p * 100)}%`,
+    p > .12 ? FX[fx].id : '',
     p > .4 ? shaLine(p >= 1 ? 7 : Math.floor((p - .4) / .6 * 7), p >= 1) : ''
   ].filter(Boolean).join('\n') + (p >= 1 ? '' : '_');
   const morph = ({ from, to, stagger }, q) => stagger.map((s, i) => (q < s ? from[i] || ' ' : q < s + .3 ? glyph() : to[i] || ' ')).join('');
@@ -756,13 +765,14 @@
     let f = 0;
     let scanned = 0;
     lock = [...WORD].map(() => between(.3, 1));
+    if (plan.includes('scan')) nextFx();
     logo.classList.add('is-glitch');
     const step = () => {
       const scan = plan[f] === 'scan';
       const env = .35 + .65 * Math.pow(Math.sin(Math.PI * Math.min(1, f / (total - 1) * 1.1)), .7);
       render({ m: MODES[plan[f]], env, progress: f / total, reach, power, scan });
       const last = plan[f + 1] !== 'scan';
-      setScan(scan, 1.45 - scanned * .12 + (rnd() - .5) * .04, scan ? readout(scanned, last) : '', scan && last ? TAGS[0] : '', .9);
+      setScan(scan, 1.45 - scanned * .12 + (rnd() - .5) * .04, scan ? readout(scanned, last) : '', scan && last ? FX[fx].tag : '', .9);
       if (scan) scanned += 1;
       f += 1;
       if (f >= total) {
@@ -793,7 +803,7 @@
     const done = p >= 1;
     if (done && !hold.done) {
       hold.done = true;
-      hold.tag = { idx: 0, text: TAGS[0], since: now, swap: null };
+      hold.tag = { idx: 0, text: hold.tags[0], since: now, swap: null };
       flash();
       if (navigator.vibrate) navigator.vibrate(24);
     }
@@ -803,8 +813,8 @@
       const t = hold.tag;
       if (!t.swap && now - t.since > SWAP_EVERY) {
         t.idx = 1 - t.idx;
-        const len = Math.max(t.text.length, TAGS[t.idx].length);
-        t.swap = { from: t.text, to: TAGS[t.idx], start: now, stagger: Array.from({ length: len }, (_, i) => (i / len) * .45 + rnd() * .2) };
+        const len = Math.max(t.text.length, hold.tags[t.idx].length);
+        t.swap = { from: t.text, to: hold.tags[t.idx], start: now, stagger: Array.from({ length: len }, (_, i) => (i / len) * .45 + rnd() * .2) };
         flash();
       }
       let shown = t.text;
@@ -839,7 +849,8 @@
     rest();
     busy = true;
     lock = [...WORD].map(() => between(.3, 1));
-    hold = { start: performance.now(), done: false, releasedAt: 0, tag: null };
+    nextFx();
+    hold = { start: performance.now(), done: false, releasedAt: 0, tag: null, tags: [FX[fx].tag, REPO_TAG] };
     logo.classList.add('is-glitch');
     status.classList.add('is-holding');
     document.addEventListener('pointerup', holdRelease);
