@@ -570,7 +570,10 @@
   const SHA_KEY = 'arlingkin-sha-v1';
   const SHA_TTL = 15 * 60e3;
   const HOLD_MS = 2800;
-  const HOLD_LINGER = 1600;
+  const HOLD_LINGER = 3200;
+  const SWAP_EVERY = 1900;
+  const SWAP_MS = 520;
+  const TAGS = ['TARGET LOCKED', `FROM GITHUB ${SITE_REPO}`.toUpperCase()];
   const VARS = ['--dx', '--dy', '--sk', '--cs', '--mx', '--lo', '--sl', '--op', '--a1', '--a2', '--b1', '--b2', '--hotc', '--g1', '--g2', '--g3', '--gy', '--hud', '--hs', '--eye'];
   const MODES = {
     twitch: { n: [2, 4], amp: .25, scr: 0, tear: .2, gap: [16, 34] },
@@ -616,8 +619,12 @@
   };
   const put = (k, v) => logo.style.setProperty(k, v);
   const hud = document.createElement('span');
+  const hudText = document.createElement('span');
+  const hudTag = document.createElement('span');
   hud.className = 'fl-hud';
+  hudTag.className = 'fl-hud-tag';
   hud.setAttribute('aria-hidden', 'true');
+  hud.append(hudText, hudTag);
   logo.append(hud);
 
   let sha = '';
@@ -651,18 +658,20 @@
   const readout = (n, locked) => [
     `SCAN [${'#'.repeat(Math.min(6, n + 1)).padEnd(6, '-')}]`,
     'ID ARLINGKIN',
-    locked ? 'TARGET LOCKED' : `MATCH ${Math.min(99, 38 + n * 9 + Math.floor(rnd() * 6))}%`,
+    `MATCH ${locked ? 100 : Math.min(99, 38 + n * 9 + Math.floor(rnd() * 6))}%`,
     shaLine(locked ? 7 : Math.min(6, Math.floor(n * .6)), locked)
   ].slice(0, locked ? 4 : Math.min(4, 1 + Math.floor(n / 2))).join('\n') + (locked ? '' : '_');
-  const holdReadout = p => {
-    const done = p >= 1;
-    return [
-      `SCAN [${'#'.repeat(Math.round(p * 10)).padEnd(10, '-')}]`,
-      `MATCH ${Math.floor(p * 100)}%`,
-      p > .12 ? 'ID ARLINGKIN' : '',
-      p > .4 ? shaLine(done ? 7 : Math.floor((p - .4) / .6 * 7), done) : '',
-      done ? 'TARGET LOCKED' : ''
-    ].filter(Boolean).join('\n') + (done ? '' : '_');
+  const holdReadout = p => [
+    `SCAN [${'#'.repeat(Math.round(p * 10)).padEnd(10, '-')}]`,
+    `MATCH ${Math.floor(p * 100)}%`,
+    p > .12 ? 'ID ARLINGKIN' : '',
+    p > .4 ? shaLine(p >= 1 ? 7 : Math.floor((p - .4) / .6 * 7), p >= 1) : ''
+  ].filter(Boolean).join('\n') + (p >= 1 ? '' : '_');
+  const morph = ({ from, to, stagger }, q) => stagger.map((s, i) => (q < s ? from[i] || ' ' : q < s + .3 ? glyph() : to[i] || ' ')).join('');
+  const flash = () => {
+    hudTag.classList.remove('is-flash');
+    void hudTag.offsetWidth;
+    hudTag.classList.add('is-flash');
   };
 
   let loopTimer = null, frameTimer = null, holdTimer = null;
@@ -678,7 +687,9 @@
     label.textContent = WORD;
     label.dataset.a = '';
     label.dataset.b = '';
-    hud.textContent = '';
+    hudText.textContent = '';
+    hudTag.textContent = '';
+    hudTag.classList.remove('is-flash');
     busy = false;
   };
 
@@ -716,14 +727,15 @@
     label.dataset.b = scramble(Math.min(1, m.scr + .25), progress);
   };
 
-  const setScan = (on, scale, text, flicker, steady) => {
+  const setScan = (on, scale, lines, tag, flicker, steady) => {
     logo.classList.toggle('is-scan', on);
     footer.classList.toggle('is-scan', on);
     put('--hud', on && rnd() < flicker ? '1' : '0');
     if (!on) return;
     put('--hs', Math.max(1, scale).toFixed(2));
     put('--eye', steady ? '1' : (.5 + .5 * rnd()).toFixed(2));
-    hud.textContent = text;
+    hudText.textContent = lines;
+    hudTag.textContent = tag;
   };
 
   const frames = power => {
@@ -749,7 +761,8 @@
       const scan = plan[f] === 'scan';
       const env = .35 + .65 * Math.pow(Math.sin(Math.PI * Math.min(1, f / (total - 1) * 1.1)), .7);
       render({ m: MODES[plan[f]], env, progress: f / total, reach, power, scan });
-      setScan(scan, 1.45 - scanned * .12 + (rnd() - .5) * .04, scan ? readout(scanned, plan[f + 1] !== 'scan') : '', .9);
+      const last = plan[f + 1] !== 'scan';
+      setScan(scan, 1.45 - scanned * .12 + (rnd() - .5) * .04, scan ? readout(scanned, last) : '', scan && last ? TAGS[0] : '', .9);
       if (scan) scanned += 1;
       f += 1;
       if (f >= total) {
@@ -780,12 +793,33 @@
     const done = p >= 1;
     if (done && !hold.done) {
       hold.done = true;
+      hold.tag = { idx: 0, text: TAGS[0], since: now, swap: null };
+      flash();
       if (navigator.vibrate) navigator.vibrate(24);
     }
+    let tag = '';
+    let ping = 0;
+    if (done) {
+      const t = hold.tag;
+      if (!t.swap && now - t.since > SWAP_EVERY) {
+        t.idx = 1 - t.idx;
+        const len = Math.max(t.text.length, TAGS[t.idx].length);
+        t.swap = { from: t.text, to: TAGS[t.idx], start: now, stagger: Array.from({ length: len }, (_, i) => (i / len) * .45 + rnd() * .2) };
+        flash();
+      }
+      let shown = t.text;
+      if (t.swap) {
+        const q = reduced.matches ? 1 : Math.min(1, (now - t.swap.start) / SWAP_MS);
+        shown = q >= 1 ? t.swap.to : morph(t.swap, q);
+        ping = Math.max(0, 1 - (now - t.swap.start) / 420);
+        if (q >= 1) { t.text = t.swap.to; t.swap = null; t.since = now; }
+      }
+      tag = shown.trimEnd();
+    }
     render({ m: { amp: .1 + .45 * p, scr: done ? 0 : .95 * (1 - p) + .05, tear: .2 + .5 * p }, env: done ? 0 : .35 + .65 * p, progress: p, reach: 20, power: 1, scan: true, calm: done || reduced.matches });
-    setScan(true, done ? 1 : 1.45 - p * .45, holdReadout(p), 1, done);
+    setScan(true, done ? 1 + .14 * ping : 1.45 - p * .45, holdReadout(p), tag, 1, done);
     status.style.setProperty('--hold', p.toFixed(3));
-    holdTimer = setTimeout(holdTick, done ? 120 : 33);
+    holdTimer = setTimeout(holdTick, done && !hold.tag.swap ? 120 : 33);
   };
 
   const holdRelease = () => {
@@ -805,7 +839,7 @@
     rest();
     busy = true;
     lock = [...WORD].map(() => between(.3, 1));
-    hold = { start: performance.now(), done: false, releasedAt: 0 };
+    hold = { start: performance.now(), done: false, releasedAt: 0, tag: null };
     logo.classList.add('is-glitch');
     status.classList.add('is-holding');
     document.addEventListener('pointerup', holdRelease);
