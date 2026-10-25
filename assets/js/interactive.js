@@ -565,6 +565,9 @@
   if (!logo || !footer || !label) return;
   const WORD = label.dataset.text || label.textContent.trim();
   const GLYPHS = '01#$%&@/<>_=+*~';
+  const SITE_REPO = 'arlingkin/about';
+  const SHA_KEY = 'arlingkin-sha-v1';
+  const SHA_TTL = 15 * 60e3;
   const VARS = ['--dx', '--dy', '--sk', '--cs', '--mx', '--lo', '--sl', '--op', '--a1', '--a2', '--b1', '--b2', '--hotc', '--g1', '--g2', '--g3', '--gy', '--hud', '--hs', '--eye'];
   const MODES = {
     twitch: { n: [2, 4], amp: .25, scr: 0, tear: .2, gap: [16, 34] },
@@ -612,13 +615,43 @@
   hud.className = 'fl-hud';
   hud.setAttribute('aria-hidden', 'true');
   logo.append(hud);
-  const hex = () => Math.floor(rnd() * 65536).toString(16).padStart(4, '0');
+  const hex = () => Math.floor(rnd() * 16).toString(16);
+  let sha = '';
+  let shaRequested = false;
+  const loadSha = async () => {
+    try {
+      const cached = JSON.parse(localStorage.getItem(SHA_KEY));
+      if (cached && /^[0-9a-f]{7}$/.test(cached.sha)) {
+        sha = cached.sha;
+        if (Date.now() - cached.t < SHA_TTL) return;
+      }
+    } catch {}
+    try {
+      const res = await fetch(`https://api.github.com/repos/${SITE_REPO}/commits/main`, { headers: { Accept: 'application/vnd.github.sha' }, signal: controller.signal });
+      if (!res.ok) return;
+      const full = (await res.text()).trim();
+      if (!/^[0-9a-f]{40}$/.test(full)) return;
+      sha = full.slice(0, 7);
+      try { localStorage.setItem(SHA_KEY, JSON.stringify({ sha, t: Date.now() })); } catch {}
+    } catch {}
+  };
+  const ensureSha = () => {
+    if (shaRequested) return;
+    shaRequested = true;
+    loadSha();
+  };
+  const shaLine = (n, locked) => {
+    if (locked && !sha) return 'MAIN ???????';
+    const shown = locked ? 7 : Math.min(6, Math.floor(n * .6));
+    return 'MAIN ' + Array.from({ length: 7 }, (_, i) => (sha && i < shown ? sha[i] : hex())).join('');
+  };
   const readout = (n, locked) => [
     `SCAN [${'#'.repeat(Math.min(6, n + 1)).padEnd(6, '-')}]`,
     'ID ARLINGKIN',
     locked ? 'TARGET LOCKED' : `MATCH ${Math.min(99, 38 + n * 9 + Math.floor(rnd() * 6))}%`,
-    `${hex()} ${hex()}`
-  ].slice(0, locked ? 4 : Math.min(4, 1 + Math.floor(n / 2))).join('\n');
+    shaLine(n, locked)
+  ].slice(0, locked ? 4 : Math.min(4, 1 + Math.floor(n / 2))).join('\n') + (locked ? '' : '_');
+
   let loopTimer = null, frameTimer = null, visible = false, busy = false;
 
   const rest = () => {
@@ -714,12 +747,12 @@
     loopTimer = setTimeout(() => { burst(between(.6, 1)); loop(false); }, first ? between(700, 1500) : nextDelay());
   };
 
-  logo.addEventListener('pointerenter', () => burst(1), opts);
-  logo.addEventListener('focusin', () => burst(.8), opts);
+  logo.addEventListener('pointerenter', () => { ensureSha(); burst(1); }, opts);
+  logo.addEventListener('focusin', () => { ensureSha(); burst(.8); }, opts);
   document.addEventListener('visibilitychange', () => loop(false), opts);
   const observer = 'IntersectionObserver' in window ? new IntersectionObserver(([entry]) => {
     visible = entry.isIntersecting;
-    if (visible) loop(true); else clearTimeout(loopTimer);
+    if (visible) { ensureSha(); loop(true); } else clearTimeout(loopTimer);
   }, { threshold: .15 }) : null;
   if (observer) observer.observe(footer);
   addEventListener('pagehide', () => {

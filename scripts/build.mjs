@@ -221,6 +221,7 @@ for (const [path, active] of Object.entries(pages)) {
 write('sitemap.xml', read('sitemap.xml').replace(/<loc>https?:\/\/[^\/<]+/g, `<loc>${origin}`));
 write('robots.txt', read('robots.txt').replace(/(Sitemap: )https?:\/\/[^\/\s]+/, `$1${origin}`));
 write('assets/js/stats.js', read('assets/js/stats.js').replace(/const REPO = '[^']*';/, `const REPO = '${site.statsRepo}';`));
+write('assets/js/interactive.js', read('assets/js/interactive.js').replace(/const SITE_REPO = '[^']*';/, `const SITE_REPO = '${site.repo}';`));
 
 const entries = [];
 for (const g of data.groups) {

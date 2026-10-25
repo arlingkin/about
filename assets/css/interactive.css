@@ -999,7 +999,8 @@ html.js .sr-map.reveal:not(.in) { filter: none; will-change: auto; }
     linear-gradient(var(--orange), var(--orange)) 0 100% / 9px 1px no-repeat, linear-gradient(var(--orange), var(--orange)) 0 100% / 1px 9px no-repeat,
     linear-gradient(var(--orange), var(--orange)) 100% 100% / 9px 1px no-repeat, linear-gradient(var(--orange), var(--orange)) 100% 100% / 1px 9px no-repeat;
 }
-.fl-hud { position: absolute; left: calc(100% + 18px); top: 50%; translate: 0 -50%; pointer-events: none; opacity: var(--hud, 0); white-space: pre; font: 500 .625rem/1.45 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--orange); }
+.fl-hud { position: absolute; left: calc(100% + 18px); top: 50%; translate: 0 -50%; padding-left: 10px; border-left: 1px solid color-mix(in srgb, var(--orange) 60%, transparent); pointer-events: none; opacity: var(--hud, 0); white-space: pre; font: 500 .625rem/1.45 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--orange); text-shadow: 0 0 6px color-mix(in srgb, var(--orange) 55%, transparent); }
+@media (max-width: 420px) { .fl-hud { left: calc(100% + 12px); padding-left: 8px; letter-spacing: .04em; } }
 .footer-logo.is-scan { filter: drop-shadow(var(--g1, 0px) var(--gy, 0px) 0 color-mix(in srgb, var(--orange) 55%, transparent)) drop-shadow(var(--g2, 0px) 0 0 color-mix(in srgb, var(--orange) 34%, transparent)) drop-shadow(var(--g3, 0px) 0 0 color-mix(in srgb, var(--orange) 20%, transparent)); }
 .footer-logo.is-scan .brand-mark { background: radial-gradient(circle, color-mix(in srgb, var(--ink) 85%, var(--orange)) 0 14%, var(--orange) 32%, color-mix(in srgb, var(--orange) 55%, var(--paper)) 70%, var(--paper) 100%); box-shadow: 0 0 calc(10px + 16px * var(--eye, 1)) var(--orange); }
 .site-footer.is-scan {
