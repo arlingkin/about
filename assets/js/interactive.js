@@ -565,21 +565,23 @@
   if (!logo || !footer || !label) return;
   const WORD = label.dataset.text || label.textContent.trim();
   const GLYPHS = '01#$%&@/<>_=+*~';
-  const VARS = ['--dx', '--dy', '--sk', '--cs', '--mx', '--lo', '--sl', '--op', '--a1', '--a2', '--b1', '--b2', '--hotc', '--g1', '--g2', '--g3', '--gy'];
+  const VARS = ['--dx', '--dy', '--sk', '--cs', '--mx', '--lo', '--sl', '--op', '--a1', '--a2', '--b1', '--b2', '--hotc', '--g1', '--g2', '--g3', '--gy', '--hud', '--hs', '--eye'];
   const MODES = {
     twitch: { n: [2, 4], amp: .25, scr: 0, tear: .2, gap: [16, 34] },
     slide: { n: [6, 10], amp: 1, scr: .55, tear: .5, gap: [28, 70], snap: 4 },
     tear: { n: [5, 9], amp: .55, scr: .3, tear: 1, gap: [24, 60] },
     decode: { n: [7, 12], amp: .3, scr: .95, tear: .25, gap: [45, 90] },
-    blackout: { n: [2, 3], amp: .7, scr: .2, tear: .8, gap: [30, 70], dim: true }
+    blackout: { n: [2, 3], amp: .7, scr: .2, tear: .8, gap: [30, 70], dim: true },
+    scan: { n: [8, 13], amp: .12, scr: .15, tear: .1, gap: [55, 95] }
   };
   const NEXT = {
-    start: { twitch: .55, slide: .3, tear: .15 },
-    twitch: { slide: .6, tear: .3, decode: .1 },
-    slide: { tear: .3, decode: .4, end: .3 },
-    tear: { slide: .2, decode: .4, end: .4 },
-    decode: { end: .75, blackout: .25 },
-    blackout: { decode: .6, end: .4 }
+    start: { twitch: .4, slide: .25, tear: .1, scan: .25 },
+    twitch: { slide: .45, tear: .2, decode: .1, scan: .25 },
+    slide: { tear: .25, decode: .3, scan: .2, end: .25 },
+    tear: { slide: .15, decode: .3, scan: .2, end: .35 },
+    decode: { end: .65, blackout: .2, scan: .15 },
+    blackout: { decode: .5, scan: .2, end: .3 },
+    scan: { decode: .55, end: .35, blackout: .1 }
   };
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const controller = new AbortController();
@@ -606,10 +608,23 @@
     return 'end';
   };
   const put = (k, v) => logo.style.setProperty(k, v);
+  const hud = document.createElement('span');
+  hud.className = 'fl-hud';
+  hud.setAttribute('aria-hidden', 'true');
+  logo.append(hud);
+  const hex = () => Math.floor(rnd() * 65536).toString(16).padStart(4, '0');
+  const readout = (n, locked) => [
+    `SCAN [${'#'.repeat(Math.min(6, n + 1)).padEnd(6, '-')}]`,
+    'ID ARLINGKIN',
+    locked ? 'TARGET LOCKED' : `MATCH ${Math.min(99, 38 + n * 9 + Math.floor(rnd() * 6))}%`,
+    `${hex()} ${hex()}`
+  ].slice(0, locked ? 4 : Math.min(4, 1 + Math.floor(n / 2))).join('\n');
   let loopTimer = null, frameTimer = null, visible = false, busy = false;
 
   const rest = () => {
-    logo.classList.remove('is-glitch');
+    logo.classList.remove('is-glitch', 'is-scan');
+    footer.classList.remove('is-scan');
+    hud.textContent = '';
     VARS.forEach(k => logo.style.removeProperty(k));
     label.textContent = WORD;
     label.dataset.a = '';
@@ -635,11 +650,13 @@
     const lock = [...WORD].map(() => between(.3, 1));
     const trail = [0, 0, 0];
     let f = 0;
+    let scanned = 0;
     let clock = rnd() * 100;
     logo.classList.add('is-glitch');
     const scramble = strength => [...WORD].map((ch, i) => (rnd() < strength && f / total * 1.2 < lock[i] + .2 ? glyph() : ch)).join('');
     const step = () => {
       const m = MODES[plan[f]];
+      const scan = plan[f] === 'scan';
       const env = .35 + .65 * Math.pow(Math.sin(Math.PI * Math.min(1, f / (total - 1) * 1.1)), .7);
       clock += between(.08, .3);
       const kick = rnd() < .2 ? between(.2, 1) : 1;
@@ -660,7 +677,16 @@
       put('--a2', Math.max(0, 100 - a1 - between(10, band)).toFixed(0) + '%');
       put('--b1', b1.toFixed(0) + '%');
       put('--b2', Math.max(0, 100 - b1 - between(10, band)).toFixed(0) + '%');
-      put('--hotc', rnd() < .25 ? 'var(--link)' : '');
+      put('--hotc', scan ? 'var(--orange)' : rnd() < .25 ? 'var(--link)' : '');
+      logo.classList.toggle('is-scan', scan);
+      footer.classList.toggle('is-scan', scan);
+      put('--hud', scan && rnd() < .9 ? '1' : '0');
+      if (scan) {
+        put('--hs', Math.max(1, 1.45 - scanned * .12 + (rnd() - .5) * .04).toFixed(2));
+        put('--eye', (.5 + .5 * rnd()).toFixed(2));
+        hud.textContent = readout(scanned, plan[f + 1] !== 'scan');
+        scanned += 1;
+      }
       put('--g1', trail[0] - dx + 'px');
       put('--g2', trail[1] - trail[0] + 'px');
       put('--g3', trail[2] - trail[1] + 'px');

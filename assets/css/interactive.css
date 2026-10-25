@@ -990,3 +990,23 @@ html.js .sr-map.reveal:not(.in) { filter: none; will-change: auto; }
 .footer-logo.is-glitch .fl-text { color: var(--hotc, var(--ink)); text-shadow: 0 0 8px color-mix(in srgb, var(--cyan) 45%, transparent); }
 .footer-logo.is-glitch .brand-mark { transition: none; transform: translate3d(var(--mx, 0px), 0, 0); box-shadow: 0 0 14px color-mix(in srgb, var(--cyan) 55%, transparent); }
 @media (prefers-reduced-motion: reduce) { .footer-logo::before { display: none; } }
+
+.footer-logo::after {
+  content: ""; position: absolute; inset: -7px -10px; pointer-events: none; opacity: var(--hud, 0); transform: scale(var(--hs, 1.4));
+  background:
+    linear-gradient(var(--orange), var(--orange)) 0 0 / 9px 1px no-repeat, linear-gradient(var(--orange), var(--orange)) 0 0 / 1px 9px no-repeat,
+    linear-gradient(var(--orange), var(--orange)) 100% 0 / 9px 1px no-repeat, linear-gradient(var(--orange), var(--orange)) 100% 0 / 1px 9px no-repeat,
+    linear-gradient(var(--orange), var(--orange)) 0 100% / 9px 1px no-repeat, linear-gradient(var(--orange), var(--orange)) 0 100% / 1px 9px no-repeat,
+    linear-gradient(var(--orange), var(--orange)) 100% 100% / 9px 1px no-repeat, linear-gradient(var(--orange), var(--orange)) 100% 100% / 1px 9px no-repeat;
+}
+.fl-hud { position: absolute; left: calc(100% + 18px); top: 50%; translate: 0 -50%; pointer-events: none; opacity: var(--hud, 0); white-space: pre; font: 500 .625rem/1.45 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--orange); }
+.footer-logo.is-scan { filter: drop-shadow(var(--g1, 0px) var(--gy, 0px) 0 color-mix(in srgb, var(--orange) 55%, transparent)) drop-shadow(var(--g2, 0px) 0 0 color-mix(in srgb, var(--orange) 34%, transparent)) drop-shadow(var(--g3, 0px) 0 0 color-mix(in srgb, var(--orange) 20%, transparent)); }
+.footer-logo.is-scan .brand-mark { background: radial-gradient(circle, color-mix(in srgb, var(--ink) 85%, var(--orange)) 0 14%, var(--orange) 32%, color-mix(in srgb, var(--orange) 55%, var(--paper)) 70%, var(--paper) 100%); box-shadow: 0 0 calc(10px + 16px * var(--eye, 1)) var(--orange); }
+.site-footer.is-scan {
+  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--orange) 22%, transparent) 50%, transparent) 0 0 / 100% 90px no-repeat, linear-gradient(180deg, color-mix(in srgb, var(--orange) 9%, transparent), transparent 96px);
+  animation: footer-scan 1.2s linear infinite;
+}
+.site-footer.is-scan::after {
+  background: linear-gradient(90deg, transparent, var(--orange) 60%, var(--ink)) 0 0 / 100% 1px no-repeat, radial-gradient(ellipse 40% 100% at 72% 0, color-mix(in srgb, var(--orange) 34%, transparent), transparent 70%);
+}
+@keyframes footer-scan { from { background-position: 0 0, 0 0; } to { background-position: 0 100%, 0 0; } }
