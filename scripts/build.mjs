@@ -222,7 +222,7 @@ for (const [path, active] of Object.entries(pages)) {
 write('sitemap.xml', read('sitemap.xml').replace(/<loc>https?:\/\/[^\/<]+/g, `<loc>${origin}`));
 write('robots.txt', read('robots.txt').replace(/(Sitemap: )https?:\/\/[^\/\s]+/, `$1${origin}`));
 write('assets/js/stats.js', read('assets/js/stats.js').replace(/const REPO = '[^']*';/, `const REPO = '${site.statsRepo}';`));
-write('assets/js/interactive.js', read('assets/js/interactive.js').replace(/const SITE_REPO = '[^']*';/, `const SITE_REPO = '${site.repo}';`));
+write('assets/src/footer-fx.js', read('assets/src/footer-fx.js').replace(/const SITE_REPO = '[^']*';/, `const SITE_REPO = '${site.repo}';`));
 
 const entries = [];
 for (const g of data.groups) {
@@ -266,6 +266,10 @@ const hashes = [
 ].join(' ');
 write('vercel.json', read('vercel.json').replace(/script-src [^;]*;/, `script-src 'self' ${hashes} 'inline-speculation-rules';`));
 
+const stamp = (text) => createHash('sha256').update(text).digest('hex').slice(0, 12);
+const stale = JSON.parse(read('data/minify.json')).targets.filter(({ src, out }) => !existsSync(out) || !read(out).startsWith(`/*src:${stamp(read(src))}*/`)).map(({ out }) => out);
+if (stale.length) console.log(`minified output out of date, run: node scripts/minify.mjs (${stale.join(', ')})`);
+
 if (changed.length) console.log(`${check ? 'out of date' : 'updated'}: ${changed.join(', ')}`);
 else console.log('up to date');
-if (check && changed.length) process.exit(1);
+if (check && (changed.length || stale.length)) process.exit(1);
