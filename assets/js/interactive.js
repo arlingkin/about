@@ -1002,3 +1002,68 @@
   });
   paint();
 })();
+
+(() => {
+  const body = document.querySelector('.note-body');
+  if (!body) return;
+  const meta = document.querySelector('.note-meta');
+  const isId = () => document.documentElement.lang === 'id';
+
+  const stamp = meta ? Object.assign(document.createElement('span'), { className: 'read-time' }) : null;
+  stamp && meta.querySelector('time')?.after(stamp);
+  const updateTime = () => {
+    if (!stamp) return;
+    const words = (body.textContent.match(/\S+/g) || []).length;
+    const min = Math.max(1, Math.round(words / 200));
+    stamp.textContent = isId() ? `${min} menit baca` : `${min} min read`;
+  };
+
+  const heads = [...body.querySelectorAll('h2, h3')];
+  let toc = null, links = [], title = null;
+  if (heads.length >= 2) {
+    const used = new Set();
+    const slug = s => (s.toLowerCase().normalize('NFKD').replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '-') || 'section');
+    toc = document.createElement('aside');
+    toc.className = 'note-toc';
+    const inner = document.createElement('div');
+    inner.className = 'note-toc-inner';
+    title = document.createElement('p');
+    title.className = 'note-toc-title';
+    const list = document.createElement('ol');
+    heads.forEach(h => {
+      let id = h.id || slug(h.textContent);
+      for (let n = 2; used.has(id); n++) id = `${id.replace(/-\d+$/, '')}-${n}`;
+      used.add(id);
+      h.id = id;
+      const li = document.createElement('li');
+      if (h.tagName === 'H3') li.className = 'sub';
+      const a = document.createElement('a');
+      a.href = `#${id}`;
+      li.append(a);
+      list.append(li);
+      links.push([h, a]);
+    });
+    inner.append(title, list);
+    toc.append(inner);
+    body.prepend(toc);
+
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        links.forEach(([h, a]) => a.classList.toggle('on', h === e.target));
+      });
+    }, { rootMargin: '-96px 0px -65% 0px' });
+    heads.forEach(h => io.observe(h));
+  }
+  const updateToc = () => {
+    if (!toc) return;
+    const label = isId() ? 'Di halaman ini' : 'On this page';
+    title.textContent = label;
+    toc.setAttribute('aria-label', label);
+    links.forEach(([h, a]) => { a.textContent = h.textContent; });
+  };
+  const update = () => { updateTime(); updateToc(); };
+  update();
+  document.addEventListener('DOMContentLoaded', update, { once: true });
+  new MutationObserver(update).observe(document.documentElement, { attributes: true, attributeFilter: ['lang', 'data-lang'] });
+})();

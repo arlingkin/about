@@ -1102,3 +1102,26 @@ html.lite .nav-indicator { box-shadow: none; transition: transform .2s linear, w
 html.lite .top-fab { -webkit-backdrop-filter: none; backdrop-filter: none; }
 @media (prefers-reduced-motion: reduce) { .nav-indicator, .top-fab { transition: none; } }
 @media print { .top-fab { display: none; } }
+
+/* ── Notes: reading time + table of contents ── */
+.read-time { font: 500 .75rem/1 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; color: var(--faint); white-space: nowrap; }
+.read-time::before { content: "·"; margin-right: 8px; color: var(--line); }
+.note-body { position: relative; }
+.note-body :is(h2, h3) { scroll-margin-top: 96px; color: var(--ink); }
+.note-body h2 { margin: 52px 0 16px; font: 600 clamp(1.5rem, 2.6vw, 1.875rem)/1.15 var(--font-display); letter-spacing: -.03em; }
+.note-body h3 { margin: 36px 0 12px; font: 600 1.125rem/1.3 var(--font-sans); letter-spacing: -.01em; }
+.note-toc { margin: 0 0 40px; padding: 16px 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); }
+.note-toc-title { margin: 0 0 10px; font: 500 .6875rem/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+.note-toc ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 2px; }
+.note-toc a {
+  display: block; padding: 6px 0 6px 12px; border-left: 2px solid var(--line-soft); color: var(--muted);
+  font-size: .8125rem; line-height: 1.4; transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), padding-left var(--dur) var(--ease);
+}
+.note-toc li.sub a { padding-left: 24px; }
+.note-toc a:hover { color: var(--ink); }
+.note-toc a.on { color: var(--link); border-left-color: var(--link); }
+@media (min-width: 1240px) {
+  .note-toc { position: absolute; top: 0; right: calc(100% + 48px); width: 210px; height: 100%; margin: 0; padding: 0; border: 0; background: none; pointer-events: none; }
+  .note-toc-inner { position: sticky; top: 96px; pointer-events: auto; }
+}
+@media (prefers-reduced-motion: reduce) { .note-toc a { transition: none; } }
