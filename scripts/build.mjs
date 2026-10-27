@@ -153,6 +153,16 @@ const pages = {
   'notes/simple-rockets-2.html': null,
 };
 
+const i18nPages = JSON.parse(read('data/i18n.json')).pages;
+const injectI18n = (html, file) => {
+  const mods = i18nPages[file];
+  if (!mods) return html;
+  const bare = html.replace(/[ \t]*<script src="\/?assets\/js\/i18n\/[^"]*"><\/script>\n?/g, '');
+  return bare.replace(/<script src="(\/?)assets\/js\/main\.js"><\/script>/, (tag, slash) =>
+    ['core', ...mods].map((m) => `<script src="${slash}assets/js/i18n/${m}.js"></script>`).join('\n  ') + `\n  ${tag}`);
+};
+const pageSrc = new Map();
+
 const header = read('partials/header.html').trimEnd();
 const footer = read('partials/footer.html').trimEnd();
 const activate = (html, href) =>
@@ -211,6 +221,8 @@ for (const [path, active] of Object.entries(pages)) {
   src = replaceInner(src, '<div data-build="projects-featured">', LIST_END, projFeaturedHtml);
   src = replaceInner(src, '<div data-build="projects-archive">', LIST_END, projArchiveHtml);
   src = replaceInner(src, '<span class="chips-gen" data-build="projects-tags">', '</span>', projTagHtml);
+  src = injectI18n(src, path);
+  pageSrc.set(path, src);
   src = syncHead(src, path);
   if (path === 'stats.html') src = syncStats(src);
   write(path, src);
@@ -242,6 +254,24 @@ for (const p of projects) {
 }
 const i18n = `Object.assign(T, {\n${entries.map(([key, value]) => `  ${JSON.stringify(key)}: ${JSON.stringify(value)},`).join('\n')}\n});\n`;
 write('assets/js/tools-i18n.js', i18n);
+
+const keysOf = (text) => new Set([...text.matchAll(/^\s*["']([^"']+)["']\s*:/gm)].map((m) => m[1]));
+const generatedKeys = new Set(entries.map(([key]) => key));
+const missing = [];
+for (const [file, html] of pageSrc) {
+  const have = new Set();
+  for (const m of html.matchAll(/<script src="\/?(assets\/js\/[^"]+\.js)"/g)) {
+    if (m[1] === 'assets/js/tools-i18n.js') generatedKeys.forEach((k) => have.add(k));
+    else if (m[1].startsWith('assets/js/i18n/') || m[1] === 'assets/js/404.js') keysOf(read(m[1])).forEach((k) => have.add(k));
+  }
+  for (const m of html.matchAll(/data-i18n(?:-alt)?="([^"]+)"/g)) {
+    if (!have.has(m[1]) || (m[1].startsWith('about.fact.') && !have.has(`${m[1]}v`))) missing.push(`${file}: ${m[1]}`);
+  }
+}
+if (missing.length) {
+  console.error(`missing i18n keys (add them to a module in assets/js/i18n/ listed for the page in data/i18n.json):\n${[...new Set(missing)].join('\n')}`);
+  process.exit(1);
+}
 
 const xml = (text) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const items = sortedNotes
