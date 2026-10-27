@@ -4,6 +4,7 @@ Object.assign(T, {
   'e404.path': { en: "You tried to open", id: "Kamu mencoba membuka" },
   'e404.mean': { en: "Did you mean", id: "Maksudmu" },
   'e404.jump': { en: "Or jump to", id: "Atau langsung ke" },
+  'e404.play':    { en:'PLAY THE GAME →', id:'MAINKAN GAME →' },
   'e404.help': { en: "Still stuck?", id: "Masih bingung?" }
 });
 
