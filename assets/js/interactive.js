@@ -494,13 +494,3 @@
   trail.appendChild(ol);
   header.insertAdjacentElement('afterend', trail);
 })();
-
-(() => {
-  const svgs = [...document.querySelectorAll('.sr-fig svg')];
-  if (!svgs.length || !svgs[0].pauseAnimations) return;
-  svgs.forEach(s => s.pauseAnimations());
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
-  const io = new IntersectionObserver(entries => entries.forEach(e => (e.isIntersecting ? e.target.unpauseAnimations() : e.target.pauseAnimations())), { threshold: .2 });
-  svgs.forEach(s => io.observe(s));
-  addEventListener('pagehide', () => io.disconnect(), { once: true });
-})();
