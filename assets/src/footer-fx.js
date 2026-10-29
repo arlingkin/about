@@ -5,221 +5,43 @@
   const finePointer = matchMedia('(pointer: fine)');
   const controller = new AbortController();
   const opts = { signal: controller.signal };
-  const GLYPHS = '01#$%&@/<>_=+*~[]{}';
-  const HEX = '0123456789ABCDEF';
-  const FRAME_MS = 33;
-  const BOOT = { beamDelay: 250, beamMs: 1500, lead: 260, settle: 450, guard: 6000 };
-  const BAR = 10;
-  const INDONESIA = new Set(['Asia/Jakarta', 'Asia/Pontianak', 'Asia/Makassar', 'Asia/Jayapura']);
-  const WIB_OFFSET = 420;
-
-  const el = (tag, className, parent, text) => {
-    const node = document.createElement(tag);
-    node.className = className;
-    if (text) node.textContent = text;
-    if (parent) parent.append(node);
-    return node;
-  };
-  const pool = chars => chars[Math.floor(Math.random() * chars.length)];
-
-  const chars = [...mark.textContent.trim()];
+  const letters = [...mark.textContent.trim()];
   mark.textContent = '';
-  const spans = chars.map((ch, i) => {
-    const span = el('span', 'fm-l', mark, ch);
+  letters.forEach((ch, i) => {
+    const span = document.createElement('span');
+    span.className = 'fm-l';
+    span.textContent = ch;
     span.style.setProperty('--i', i);
     span.style.setProperty('--r', i % 2 ? 1 : -1);
     if (ch === 'i') span.dataset.hero = '';
-    return span;
+    mark.appendChild(span);
   });
   const last = mark.lastElementChild;
-
-  const field = el('div', 'fm-field');
-  mark.before(field);
-  const glow = el('span', 'fm-glow');
-  const beam = el('span', 'fm-beam');
-  const corners = ['tl', 'tr', 'bl', 'rb'].map(c => el('i', `fm-br fm-br--${c}`));
-  const hud = el('div', 'fm-hud');
-  const hudLeft = el('div', 'fm-hud-l', hud);
-  const scanEl = el('span', 'fm-scan', hudLeft);
-  const tagEl = el('span', 'fm-tag', hudLeft);
-  const hudRight = el('div', 'fm-hud-r', hud);
-  const timeEl = el('span', 'fm-time', hudRight);
-  const zoneEl = el('span', 'fm-zone', hudRight);
-  [glow, beam, ...corners, hud].forEach(node => node.setAttribute('aria-hidden', 'true'));
-  field.append(glow, mark, beam, ...corners, hud);
-
-  const centers = [];
-  const measure = () => {
-    const size = parseFloat(getComputedStyle(mark).fontSize) || 16;
-    const total = mark.offsetWidth;
-    spans.forEach((span, i) => {
-      span.style.setProperty('--w', `${(span.offsetWidth / size).toFixed(3)}em`);
-      centers[i] = total ? (span.offsetLeft + span.offsetWidth / 2) / total : i / Math.max(1, spans.length - 1);
-    });
-  };
-  (document.fonts?.ready || Promise.resolve()).then(measure);
-
-  const zone = (() => {
-    let name = '';
-    try { name = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch {}
-    return { name, indonesia: INDONESIA.has(name) };
-  })();
-  const timeFormat = new Intl.DateTimeFormat('en-GB', {
-    hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23',
-    ...(zone.indonesia ? { timeZone: 'Asia/Jakarta' } : {})
-  });
-  const utcLabel = minutes => {
-    const abs = Math.abs(minutes);
-    const mm = abs % 60;
-    return `UTC${minutes < 0 ? '-' : '+'}${Math.floor(abs / 60)}${mm ? `:${String(mm).padStart(2, '0')}` : ''}`;
-  };
-  const timeText = () => timeFormat.format(new Date());
-  const zoneText = () => (zone.indonesia
-    ? `WIB · ${utcLabel(WIB_OFFSET)}`
-    : [utcLabel(-new Date().getTimezoneOffset()), zone.name.replace(/_/g, ' ')].filter(Boolean).join(' · '));
-
-  const decodes = new Map();
-  const decode = (node, read, ms, chars = HEX) => {
-    cancelAnimationFrame(decodes.get(node) || 0);
-    if (reduced.matches) { node.textContent = read(); decodes.delete(node); return; }
-    const start = performance.now();
-    const count = [...read()].length;
-    const locks = Array.from({ length: count }, (_, i) => Math.min(ms * .95, ms * (.2 + .8 * i / count) * (.85 + Math.random() * .3)));
-    let lastFrame = -FRAME_MS;
-    const frame = now => {
-      const t = now - start;
-      if (t >= ms) { node.textContent = read(); decodes.delete(node); return; }
-      if (t - lastFrame >= FRAME_MS) {
-        lastFrame = t;
-        node.textContent = [...read()].map((ch, i) => (/[\s:·]/.test(ch) || t >= (locks[i] ?? 0) ? ch : pool(chars))).join('');
-      }
-      decodes.set(node, requestAnimationFrame(frame));
-    };
-    decodes.set(node, requestAnimationFrame(frame));
-  };
-  const decodeClock = ms => {
-    decode(timeEl, timeText, ms);
-    decode(zoneEl, zoneText, ms * 1.3, GLYPHS);
-  };
-
-  const clock = { timer: 0, minute: -1 };
-  const paintClock = () => {
-    if (!decodes.has(timeEl)) timeEl.textContent = timeText();
-    const zoneNow = zoneText();
-    if (!decodes.has(zoneEl) && zoneEl.textContent !== zoneNow) zoneEl.textContent = zoneNow;
-  };
-  const tick = () => {
-    clock.timer = setTimeout(tick, 1000 - (Date.now() % 1000) + 5);
-    const minute = new Date().getMinutes();
-    const changed = clock.minute !== -1 && minute !== clock.minute;
-    clock.minute = minute;
-    if (changed && !reduced.matches) decodeClock(520);
-    else paintClock();
-  };
-  const startClock = () => {
-    if (clock.timer || document.hidden) return;
-    clock.minute = -1;
-    paintClock();
-    tick();
-  };
-  const stopClock = () => {
-    clearTimeout(clock.timer);
-    clock.timer = 0;
-  };
-  paintClock();
-  hudRight.addEventListener('pointerenter', () => decodeClock(600), opts);
-
-  const flashTag = text => {
-    tagEl.textContent = text;
-    tagEl.classList.remove('is-flash');
-    void tagEl.offsetWidth;
-    tagEl.classList.add('is-flash');
-  };
-  const scanLine = p => {
-    const filled = Math.round(p * BAR);
-    return `SCAN [${'#'.repeat(filled).padEnd(BAR, '-')}] ${String(Math.round(p * 100)).padStart(3, ' ')}%`;
-  };
-  const lockedLine = () => 'LOCK 100% · ID ARLINGKIN';
-
-  let running = false, seen = false, inView = false, guard = null, frame = null, raf = 0;
-  const settleField = () => {
-    field.classList.remove('is-boot');
-    field.classList.add('is-live');
-  };
+  let running = false, seen = false, inView = false, guard = null, frame = null;
   const release = () => {
     clearTimeout(guard);
-    cancelAnimationFrame(raf);
     mark.classList.remove('is-hopping', 'is-entering');
-    field.classList.remove('is-hot');
-    spans.forEach(span => span.classList.remove('is-scr', 'is-lock'));
-    settleField();
     running = false;
   };
   const hop = () => {
     if (running || reduced.matches || !last) return;
     running = true;
     mark.classList.add('is-hopping');
-    field.classList.add('is-hot');
     guard = setTimeout(release, 3500);
-  };
-
-  const boot = onDone => {
-    const count = spans.length;
-    const lockAt = spans.map((_, i) => {
-      const f = centers[i] ?? i / Math.max(1, count - 1);
-      return BOOT.beamDelay + BOOT.beamMs * Math.min(1, Math.max(0, (f + .02) / 1.1));
-    });
-    const state = spans.map(() => 0);
-    const end = Math.max(...lockAt) + BOOT.settle;
-    const start = performance.now();
-    let lastFrame = -FRAME_MS;
-    field.classList.add('is-boot');
-    scanEl.textContent = scanLine(0);
-    decodeClock(900);
-    const step = now => {
-      const t = now - start;
-      if (t - lastFrame >= FRAME_MS) {
-        lastFrame = t;
-        spans.forEach((span, i) => {
-          if (state[i] === 2) return;
-          if (t >= lockAt[i]) {
-            state[i] = 2;
-            span.textContent = chars[i];
-            span.classList.remove('is-scr');
-            span.classList.add('is-lock');
-          } else if (t >= lockAt[i] - BOOT.lead) {
-            state[i] = 1;
-            span.classList.add('is-scr');
-            span.textContent = pool(GLYPHS);
-          }
-        });
-        scanEl.textContent = scanLine(Math.min(1, Math.max(0, (t - BOOT.beamDelay) / BOOT.beamMs)));
-      }
-      if (t < end) { raf = requestAnimationFrame(step); return; }
-      scanEl.textContent = lockedLine();
-      flashTag('TARGET LOCKED');
-      onDone();
-    };
-    raf = requestAnimationFrame(step);
   };
   const enter = () => {
     if (running || reduced.matches || !last) return;
     running = true;
     mark.classList.remove('is-armed');
     mark.classList.add('is-entering');
-    guard = setTimeout(release, BOOT.guard);
-    boot(() => { release(); hop(); });
+    guard = setTimeout(release, 4500);
   };
-
-  if (reduced.matches) {
-    scanEl.textContent = lockedLine();
-    settleField();
-  } else if (last) {
-    mark.classList.add('is-armed');
-  }
+  if (!reduced.matches && last) mark.classList.add('is-armed');
   mark.addEventListener('click', hop, opts);
   mark.addEventListener('animationend', event => {
-    if (event.target === last && event.animationName.startsWith('fm-hop')) release();
+    if (event.target !== last) return;
+    if (event.animationName === 'fm-in') { release(); hop(); }
+    else if (event.animationName.startsWith('fm-hop')) release();
   }, opts);
 
   if (finePointer.matches && !reduced.matches) {
@@ -248,20 +70,10 @@
     inView = true;
   }, { threshold: 0.55 });
   observer.observe(mark);
-  const vis = new IntersectionObserver(([e]) => {
-    mark.classList.toggle('is-visible', e.isIntersecting);
-    if (e.isIntersecting) startClock(); else stopClock();
-  });
+  const vis = new IntersectionObserver(([e]) => mark.classList.toggle('is-visible', e.isIntersecting));
   vis.observe(mark);
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) stopClock();
-    else if (mark.classList.contains('is-visible')) startClock();
-  }, opts);
   addEventListener('pagehide', () => {
     clearTimeout(guard);
-    cancelAnimationFrame(raf);
-    stopClock();
-    decodes.forEach(id => cancelAnimationFrame(id));
     if (frame !== null) cancelAnimationFrame(frame);
     observer.disconnect(); vis.disconnect();
     controller.abort();

@@ -115,8 +115,6 @@ node scripts/build.mjs
 
 The minified files in `assets/js/` and `assets/css/` carry a `/*src:<hash>*/` header; `build.mjs --check` (CI) fails when a source changed without re-minifying. Targets are listed in `data/minify.json`.
 
-The big footer wordmark plays a boot sequence (scan beam, letter decode) and shows a HUD clock: Indonesian time zones are shown as WIB (UTC+7), any other visitor sees their own local time and zone. The clock only ticks while the wordmark is on screen.
-
 ## Site config variables
 
 `assets/js/site-config.js` holds `__SITE_*__` placeholders. In CI, `scripts/inject-config.mjs` replaces them with GitHub Actions variables (**Settings → Secrets and variables → Actions → Variables**). A missing variable simply keeps the default text.
