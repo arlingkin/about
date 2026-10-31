@@ -36,6 +36,10 @@
     "notes/trading.html": {
       "title": "Arlingkin - Saat saya berhenti menatap chart",
       "desc": "Catatan pribadi tentang belajar menjauh dari chart, dan kenapa berhenti sejenak juga bagian dari proses."
+    },
+    "welcome.html": {
+      "title": "Arlingkin - Selamat datang",
+      "desc": "Mulai di sini: pilih bahasa dan tema arlingkin, lalu pilih mau ke mana."
     }
   }
 }

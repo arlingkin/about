@@ -151,6 +151,7 @@ const pages = {
   'notes/mindustry.html': null,
   'notes/trading.html': null,
   'notes/simple-rockets-2.html': null,
+  'welcome.html': null,
 };
 
 const i18nPages = JSON.parse(read('data/i18n.json')).pages;

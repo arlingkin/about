@@ -46,6 +46,10 @@
     "notes/simple-rockets-2.html": [
       "common",
       "note-simple-rockets-2"
+    ],
+    "welcome.html": [
+      "common",
+      "welcome"
     ]
   }
 }
