@@ -10,6 +10,7 @@ Personal site and learning journal of **Arlingga**, built with plain HTML, CSS a
 
 - Pages: home, about, skills, projects, stats, contact, notes and a custom 404
 - Notes (a short learning journal) with an RSS feed at `/feed.xml`
+- First-visit onboarding at `/welcome` (wizard: language, theme, intent). `/` redirects new visitors there once; kill switch: set `V=''` in the boot script of every page, then run `node scripts/build.mjs`
 - English / Indonesian switcher and a dark / light theme, both remembered per visitor
 - Live GitHub stats and a countdown to the next scheduled workflow run
 - Responsive layout, reduced-motion support and a lighter mode for low-end devices
