@@ -21,8 +21,8 @@
 
   const pinBtn = header.querySelector('.nav-pin');
   const PIN_KEY = 'arlingkin-pin';
-  let pinOn = true;
-  try { pinOn = localStorage.getItem(PIN_KEY) !== 'off'; } catch {}
+  let pinOn = false;
+  try { pinOn = localStorage.getItem(PIN_KEY) === 'on'; } catch {}
   const applyPin = () => {
     document.documentElement.dataset.pin = pinOn ? 'on' : 'off';
     pinBtn?.setAttribute('aria-checked', String(pinOn));
