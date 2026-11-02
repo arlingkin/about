@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script>(function(){var d=document.documentElement,L;d.classList.add('js');try{var q=new URLSearchParams(location.search).get('lang');if(q==='id'||q==='en'){L=q;localStorage.setItem('arlingkin-lang',q);}}catch(e){}try{L=L||localStorage.getItem('arlingkin-lang');d.dataset.theme=localStorage.getItem('arlingkin-theme')==='light'?'light':'dark';}catch(e){}if(L==='id'){d.lang='id';d.dataset.lang='id';}})();</script>
+  <script>(function(){var d=document.documentElement,L;d.classList.add('js');try{var q=new URLSearchParams(location.search).get('lang');if(q==='id'||q==='en'){L=q;localStorage.setItem('arlingkin-lang',q);}}catch(e){}try{L=L||localStorage.getItem('arlingkin-lang');d.dataset.theme=localStorage.getItem('arlingkin-theme')==='light'?'light':'dark';}catch(e){}if(L==='id'){d.lang='id';d.dataset.lang='id';}try{var p=location.pathname,s=localStorage,K='arlingkin-welcome',V='1';if(/^\/(id\/)?welcome(\.html)?$/.test(p)){if(!s.getItem(K)&&!s.getItem('arlingkin-lang')&&!s.getItem('arlingkin-theme'))d.dataset.wlFresh='1';s.setItem(K,V);}else if(V&&p==='/'&&!navigator.webdriver&&!/bot|crawl|spider|preview|lighthouse|slurp|facebookexternalhit/i.test(navigator.userAgent)&&!/[?&](lang|welcome|utm_\w+)=/.test(location.search)&&!(document.referrer&&document.referrer.indexOf(location.origin)===0)){s.setItem('arlingkin-t','1');s.removeItem('arlingkin-t');if(s.getItem(K)!==V&&!s.getItem('arlingkin-lang')&&!s.getItem('arlingkin-theme'))location.replace('/welcome');}}catch(e){}})();</script>
   <meta name="description" content="Start here: pick your language and theme on arlingkin, then choose where to go.">>
   <meta name="keywords" content="welcome, onboarding, arlingkin, Arlingga">
   <meta name="author" content="Arlingga">
@@ -63,62 +63,85 @@
       <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="primary-nav"><span aria-hidden="true"></span></button>
     </header>
 
-    <main id="main" tabindex="-1" class="wl">
-      <section class="page-head wl-hero reveal reveal-zoom" aria-labelledby="wl-title">
-        <span class="wl-meta" aria-hidden="true">0x57 1010 0111</span>
-        <p class="eyebrow" data-i18n="welcome.eyebrow" data-decode>00 - Welcome</p>
-        <h1 id="wl-title" data-i18n="welcome.h1">Welcome to<br><em data-shake>arlingkin.</em></h1>
-        <p class="intro" data-i18n="welcome.intro">Three quick steps to set this site up your way, then pick where to go.</p>
-        <ol class="wl-progress" aria-label="Setup progress" data-i18n-aria="welcome.progress">
-          <li data-wl-dot="lang"><span>01</span></li>
-          <li data-wl-dot="theme"><span>02</span></li>
-          <li data-wl-dot="go"><span>03</span></li>
-        </ol>
-      </section>
-
-      <div class="wl-steps">
-        <section class="wl-box wl-trace reveal" aria-labelledby="wl-s1">
-          <span class="wl-meta" aria-hidden="true">1010</span>
-          <h2 id="wl-s1" data-i18n="welcome.s1.title">Pick a language</h2>
-          <p data-i18n="welcome.s1.desc">Everything on the site switches instantly. You can change it later from the header.</p>
-          <div class="wl-opts" role="group" aria-labelledby="wl-s1">
-            <button class="wl-opt" type="button" data-wl-lang="en" aria-pressed="false">English</button>
-            <button class="wl-opt" type="button" data-wl-lang="id" aria-pressed="false">Indonesia</button>
+    <main id="main" tabindex="-1" class="wl" data-step="1">
+      <div class="wl-boot" data-wl-boot aria-hidden="true" hidden><pre data-wl-boot-text></pre></div>
+      <div class="wl-wiz" data-wl-wiz>
+        <div class="wl-top">
+          <div class="wl-track" role="progressbar" aria-valuemin="1" aria-valuemax="4" aria-valuenow="1" aria-label="Setup progress" data-wl-track>
+            <i class="wl-bar" aria-hidden="true"></i>
+            <svg class="wl-fig" viewBox="0 0 32 40" width="32" height="40" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-wl-fig data-pose="wave" data-dir="1">
+              <circle cx="16" cy="7" r="4"/><path d="M16 11V25"/>
+              <g data-p="run-a"><path d="M16 14L9 19M16 14L23 11M16 25L10 34H6M16 25L22 31V38"/></g>
+              <g data-p="run-b"><path d="M16 14L23 19M16 14L9 11M16 25L22 34H26M16 25L10 31V38"/></g>
+              <g data-p="wave"><path d="M16 14L8 20M16 14L24 6M16 25L11 38M16 25L21 38"/></g>
+              <g data-p="type"><path d="M16 14L25 20H28M16 25L10 31V38M16 25L22 31V38M26 21H31V27H26"/></g>
+              <g data-p="win"><path d="M16 14L8 5M16 14L24 5M16 25L11 38M16 25L21 38"/></g>
+            </svg>
           </div>
-        </section>
+          <a class="wl-skip" href="/" data-wl-skip data-i18n="welcome.skip">skip</a>
+        </div>
 
-        <section class="wl-box wl-scan reveal" aria-labelledby="wl-s2">
-          <span class="wl-meta" aria-hidden="true">0101</span>
-          <h2 id="wl-s2" data-i18n="welcome.s2.title">Pick a theme</h2>
-          <p data-i18n="welcome.s2.desc">Dark is the default. Light is easier in bright rooms.</p>
-          <div class="wl-opts" role="group" aria-labelledby="wl-s2">
-            <button class="wl-opt" type="button" data-wl-theme="dark" aria-pressed="false" data-i18n="welcome.theme.dark">Dark</button>
-            <button class="wl-opt" type="button" data-wl-theme="light" aria-pressed="false" data-i18n="welcome.theme.light">Light</button>
-          </div>
-        </section>
+        <div class="wl-panel">
+          <span class="wl-meta" aria-hidden="true" data-wl-count>01 / 04</span>
 
-        <section class="wl-box wl-wide reveal" aria-labelledby="wl-s3">
-          <span class="wl-meta" aria-hidden="true">0011</span>
-          <h2 id="wl-s3" data-i18n="welcome.s3.title">Pick where to go</h2>
-          <p data-i18n="welcome.s3.desc">Not sure? Start with the notes, that's where this site began.</p>
-          <div class="wl-cards">
-            <a class="wl-card" href="/notes" data-wl-go><span class="wl-idx" aria-hidden="true">0x01</span><h3 data-i18n="welcome.go.notes" data-decode-hover>Notes</h3><p data-i18n="welcome.go.notes.d">Short write-ups from what I'm learning.</p></a>
-            <a class="wl-card" href="/projects" data-wl-go><span class="wl-idx" aria-hidden="true">0x02</span><h3 data-i18n="welcome.go.projects" data-decode-hover>Projects</h3><p data-i18n="welcome.go.projects.d">Things I built, from school apps to games.</p></a>
-            <a class="wl-card" href="/skills" data-wl-go><span class="wl-idx" aria-hidden="true">0x03</span><h3 data-i18n="welcome.go.skills" data-decode-hover>Skills</h3><p data-i18n="welcome.go.skills.d">The toolbox I build with.</p></a>
-            <a class="wl-card" href="/contact" data-wl-go><span class="wl-idx" aria-hidden="true">0x04</span><h3 data-i18n="welcome.go.contact" data-decode-hover>Contact</h3><p data-i18n="welcome.go.contact.d">Say hello or start a project together.</p></a>
-          </div>
-          <a class="read-link wl-skip" href="/" data-wl-go data-i18n="welcome.skip">skip, go home →</a>
-        </section>
+          <section class="wl-step" data-wl-step="1" aria-labelledby="wl-t1">
+            <p class="eyebrow" data-i18n="welcome.e1" data-decode>01 - Language</p>
+            <h1 id="wl-t1" tabindex="-1" data-i18n="welcome.h1">Welcome to<br><em data-shake>arlingkin.</em></h1>
+            <p class="intro" data-i18n="welcome.s1.desc">Pick a language. Everything on the site switches instantly.</p>
+            <div class="wl-opts" role="group" aria-labelledby="wl-t1">
+              <button class="wl-choice" type="button" data-wl-lang="en" aria-pressed="false"><b>English</b><span>EN</span></button>
+              <button class="wl-choice" type="button" data-wl-lang="id" aria-pressed="false"><b>Indonesia</b><span>ID</span></button>
+            </div>
+            <p class="wl-hint" data-i18n="welcome.hint">Picked from your browser. Change it if you like.</p>
+            <div class="wl-pv" aria-hidden="true">
+              <div class="dots"><i></i><i></i><i></i></div>
+              <div class="wl-pv-nav"><span data-i18n="nav.home">home</span><span data-i18n="nav.about">about</span><span data-i18n="nav.skills">skills</span><span data-i18n="nav.projects">projects</span></div>
+              <p class="wl-pv-h" data-i18n="welcome.pv.h">Making sense of <b>code.</b></p>
+              <p class="wl-pv-p" data-i18n="welcome.pv.p">Personal notes and things I build.</p>
+            </div>
+          </section>
 
-        <section class="wl-box wl-stream wl-wide reveal" aria-labelledby="wl-s4">
-          <div class="wl-rail" aria-hidden="true" data-wl-rail></div>
-          <h2 id="wl-s4" class="wl-term-title" data-i18n="welcome.term">session</h2>
-          <dl class="wl-term" aria-live="polite">
-            <div><dt data-i18n="welcome.t.lang">lang</dt><dd data-wl-v="lang">-</dd></div>
-            <div><dt data-i18n="welcome.t.theme">theme</dt><dd data-wl-v="theme">-</dd></div>
-            <div><dt data-i18n="welcome.t.status">status</dt><dd data-wl-v="status">-</dd></div>
-          </dl>
-        </section>
+          <section class="wl-step" data-wl-step="2" aria-labelledby="wl-t2" hidden>
+            <p class="eyebrow" data-i18n="welcome.e2" data-decode>02 - Theme</p>
+            <h2 id="wl-t2" tabindex="-1" data-i18n="welcome.s2.title">Pick a theme</h2>
+            <p class="intro" data-i18n="welcome.s2.desc">Dark is the default. Light is easier in bright rooms.</p>
+            <div class="wl-opts" role="group" aria-labelledby="wl-t2">
+              <button class="wl-choice" type="button" data-wl-theme="dark" aria-pressed="false"><b data-i18n="welcome.theme.dark">Dark</b><span>0101</span></button>
+              <button class="wl-choice" type="button" data-wl-theme="light" aria-pressed="false"><b data-i18n="welcome.theme.light">Light</b><span>1010</span></button>
+            </div>
+            <p class="wl-hint" data-i18n="welcome.hint">Picked from your browser. Change it if you like.</p>
+            <div class="wl-pv" aria-hidden="true">
+              <div class="dots"><i></i><i></i><i></i></div>
+              <div class="wl-pv-nav"><span data-i18n="nav.home">home</span><span data-i18n="nav.about">about</span><span data-i18n="nav.skills">skills</span><span data-i18n="nav.projects">projects</span></div>
+              <p class="wl-pv-h" data-i18n="welcome.pv.h">Making sense of <b>code.</b></p>
+              <p class="wl-pv-p" data-i18n="welcome.pv.p">Personal notes and things I build.</p>
+            </div>
+          </section>
+
+          <section class="wl-step" data-wl-step="3" aria-labelledby="wl-t3" hidden>
+            <p class="eyebrow" data-i18n="welcome.e3" data-decode>03 - Intent</p>
+            <h2 id="wl-t3" tabindex="-1" data-i18n="welcome.s3.title">What brings you here?</h2>
+            <p class="intro" data-i18n="welcome.s3.desc">I'll point you to the right page.</p>
+            <div class="wl-opts wl-opts-col" role="group" aria-labelledby="wl-t3">
+              <button class="wl-choice" type="button" data-wl-intent="browse" aria-pressed="true"><b data-i18n="welcome.i.browse">Just looking around</b><span>/</span></button>
+              <button class="wl-choice" type="button" data-wl-intent="projects" aria-pressed="false"><b data-i18n="welcome.i.projects">See the projects</b><span>/projects</span></button>
+              <button class="wl-choice" type="button" data-wl-intent="notes" aria-pressed="false"><b data-i18n="welcome.i.notes">Read the notes</b><span>/notes</span></button>
+            </div>
+          </section>
+
+          <section class="wl-step" data-wl-step="4" aria-labelledby="wl-t4" hidden>
+            <p class="eyebrow" data-i18n="welcome.e4" data-decode>04 - Ready</p>
+            <h2 id="wl-t4" tabindex="-1" data-wl-granted data-i18n="welcome.f.title">Access granted.</h2>
+            <p class="intro" data-wl-to aria-live="polite"></p>
+            <div class="wl-count" aria-hidden="true"></div>
+            <button class="wl-btn" type="button" data-wl-enter data-i18n="welcome.enter">Enter now →</button>
+          </section>
+        </div>
+
+        <div class="wl-nav">
+          <button class="wl-btn wl-ghost" type="button" data-wl-back data-i18n="welcome.back" disabled>Back</button>
+          <button class="wl-btn" type="button" data-wl-next data-i18n="welcome.next">Continue</button>
+        </div>
       </div>
     </main>
 
