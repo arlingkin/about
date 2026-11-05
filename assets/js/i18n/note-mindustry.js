@@ -7,4 +7,7 @@ Object.assign(T, {
   'note3.p4': { en:"The save data is ready to import into your Mindustry. Give it a try.", id:"Data save-nya siap diimpor ke Mindustry Anda. Silakan dicoba." },
   'note3.p5': { en:"I also played well. I finished the campaign without mods and took every sector at 15.", id:"Saya juga bermain dengan lihai: kampanye tamat tanpa mod, dan seluruh sektor saya kuasai di usia 15 tahun." },
   'note3.link': { en:"Get my save data ↗", id:"Ambil data save saya ↗" },
+  'note3.cap': { en:"A tiny Mindustry base: drills feed copper and lead down the belt to the core and the duo turrets, Alpha ferries ore, and flares keep dying over the base. Move over the scene and tap to fire.", id:"Pangkalan Mindustry mini: drill mengalirkan tembaga dan timbal lewat konveyor ke core dan turret duo, Alpha mengantar bijih, dan flare terus hancur di atas pangkalan. Gerakkan kursor di scene lalu ketuk untuk menembak." },
+  'note3.pause': { en:"PAUSE", id:"JEDA" },
+  'note3.play': { en:"PLAY", id:"MAIN" },
 });

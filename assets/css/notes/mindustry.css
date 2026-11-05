@@ -1,0 +1,53 @@
+.md-fig { margin: 8px 0 40px; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; content-visibility: auto; contain-intrinsic-size: auto 260px; background: var(--panel); }
+.md-fig svg { display: block; width: 100%; height: auto; cursor: crosshair; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.md-fig figcaption { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 18px; padding: 12px 18px; border-top: 1px solid var(--line-soft); font: 400 .75rem/1.55 var(--font-mono); letter-spacing: .02em; color: var(--muted); }
+.md-ctl { flex-shrink: 0; padding: 7px 13px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--ink); cursor: pointer; font: 500 .75rem/1 var(--font-mono); letter-spacing: .04em; transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease); }
+.md-ctl:hover { border-color: var(--link); color: var(--link); }
+.md-ctl[aria-pressed="true"] { background: var(--link); border-color: transparent; color: #10152a; }
+.md-gl { fill: none; stroke: var(--line-soft); stroke-width: 1; }
+.md-cu { fill: color-mix(in srgb, var(--orange) 26%, transparent); }
+.md-pb { fill: color-mix(in srgb, var(--blue) 28%, transparent); }
+.md-sp { fill: var(--ink); opacity: .45; }
+.md-belt { fill: color-mix(in srgb, var(--ink) 7%, transparent); stroke: var(--line); stroke-width: 1; }
+.md-feed { stroke: none; }
+.md-chev { fill: none; stroke: var(--faint); opacity: .4; }
+.md-i-cu, .md-i-pb, .md-i-gr { fill: none; }
+.md-i-cu { stroke: var(--orange); }
+.md-i-pb { stroke: var(--blue); }
+.md-i-gr { stroke: var(--ink); opacity: .7; }
+.md-stub { stroke: var(--line); stroke-width: 6; }
+.md-drill { fill: color-mix(in srgb, var(--ink) 10%, var(--paper)); stroke: var(--faint); stroke-width: 1.5; }
+.md-gear { fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linecap: round; opacity: .6; }
+.md-gear2 { stroke-width: 1.6; opacity: .35; }
+.md-hub { fill: var(--link); }
+.md-tbase { fill: color-mix(in srgb, var(--ink) 9%, var(--paper)); stroke: var(--blue); stroke-width: 1.5; }
+.md-tring { fill: color-mix(in srgb, var(--blue) 24%, var(--paper)); stroke: var(--blue); stroke-width: 1.5; }
+.md-barrel { fill: color-mix(in srgb, var(--link) 30%, var(--paper)); stroke: var(--link); stroke-width: 1.2; }
+.md-flash, .md-expf { fill: var(--orange); }
+.md-bul { fill: var(--link); }
+.md-hit { fill: var(--ink); opacity: .8; }
+.md-core { fill: color-mix(in srgb, var(--blue) 16%, var(--paper)); stroke: var(--blue); stroke-width: 2; }
+.md-core2 { fill: none; stroke: var(--blue); stroke-width: 1.2; opacity: .6; }
+.md-core3 { fill: var(--link); opacity: .85; }
+.md-bolt { fill: var(--blue); }
+.md-pulse { fill: none; stroke: var(--link); stroke-width: 1.5; }
+.md-coreflash { fill: var(--link); }
+.md-fl { fill: color-mix(in srgb, var(--orange) 55%, var(--paper)); stroke: var(--orange); stroke-width: 1.4; stroke-linejoin: round; }
+.md-fire { fill: var(--orange); opacity: .5; }
+.md-expr { fill: none; stroke: var(--orange); stroke-width: 1.5; }
+.md-spk { fill: var(--orange); }
+.md-halo { fill: var(--link); opacity: .14; }
+.md-ship { fill: color-mix(in srgb, var(--link) 40%, var(--paper)); stroke: var(--link); stroke-width: 1.5; stroke-linejoin: round; }
+.md-eng { fill: var(--orange); }
+.md-beam { stroke: var(--link); stroke-width: 1.6; stroke-linecap: round; }
+.md-beamsp, .md-carry { fill: var(--orange); }
+.md-hudbox { fill: color-mix(in srgb, var(--paper) 70%, transparent); stroke: var(--line); }
+.md-hdot { fill: var(--orange); }
+.md-trk { fill: var(--line-soft); }
+.md-bar { fill: var(--orange); }
+.md-me { display: none; pointer-events: none; }
+.md-fig.is-manual .md-auto { display: none; }
+.md-fig.is-manual .md-me { display: inline; }
+.md-fx { pointer-events: none; }
+.md-fx .md-spark { fill: none; stroke: var(--orange); stroke-width: 1.5; transform-box: fill-box; transform-origin: center; }
+html.js .md-fig.reveal:not(.in) { filter: none; will-change: auto; }
