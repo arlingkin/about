@@ -18,11 +18,11 @@ const monoClass = (tool) => (tool.mono ? ' class="ico-mono"' : '');
 const link = (tool) => `href="${tool.url}" target="_blank" rel="noreferrer"`;
 
 const chip = (tool) =>
-  `            <a class="tool-chip" ${link(tool)} aria-label="${tool.name}"><img${monoClass(tool)} src="${iconUrl(tool)}" alt="" width="42" height="42"><span>${esc(tool.name)}</span></a>`;
+  `            <a class="tool-chip" ${link(tool)} aria-label="${tool.name}"><img${monoClass(tool)} src="${iconUrl(tool)}" alt="" width="42" height="42" decoding="async"><span>${esc(tool.name)}</span></a>`;
 
 const card = (tool) => {
   const glyph = tool.icon
-    ? `<img${monoClass(tool)} src="${iconUrl(tool)}" alt="" width="22" height="22">`
+    ? `<img${monoClass(tool)} src="${iconUrl(tool)}" alt="" width="22" height="22" loading="lazy" decoding="async">`
     : esc(tool.glyph);
   return `          <a class="skill reveal" ${link(tool)} aria-label="${tool.name}" data-skill="${tool.id}"><span class="ico">${glyph}</span><h3 data-i18n="skills.${tool.key}.title">${esc(tool.name)}</h3><p data-i18n="skills.${tool.key}.desc">${esc(tool.desc.en)}</p><span class="bar"><i></i></span></a>`;
 };
