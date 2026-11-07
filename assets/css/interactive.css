@@ -898,3 +898,19 @@ html.js .contact-card.reveal.reveal-instant { animation: none; }
 @keyframes sr-chip-twinkle { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .chip[data-tag="rockets"], .chip-btn[data-filter-tag="rockets"], .chip[data-tag="rockets"]::before, .chip-btn[data-filter-tag="rockets"]::before { animation: none; } }
 
+.site-header { transition: box-shadow .3s var(--ease), background-color .3s var(--ease); }
+@media (max-width: 700px) {
+  html.js .site-header.nav-open nav { animation: nav-drop .28s var(--ease); }
+  .site-header .nav-pin { transition: color .2s ease; }
+  .nav-pin:hover { color: var(--ink); }
+  .nav-pin::after { transition: border-color .25s ease, background .25s ease; }
+  html[data-pin="on"] .site-header { -webkit-transform: translateZ(0); transform: translateZ(0); }
+  html[data-pin="on"] .site-header.is-stuck { box-shadow: 0 10px 30px -18px rgba(0,0,0,.65); }
+  html[data-pin="on"][data-theme="light"] .site-header.is-stuck { box-shadow: 0 10px 30px -18px rgba(16,21,42,.3); }
+}
+@media (max-width: 480px) {
+  .lang-switch, .lang-switch:has(.lang-btn[data-lang="en"].on), .lang-switch:has(.lang-btn[data-lang="id"].on) { width: 78px; }
+  .lang-btn.on .lang-long { display: none; }
+  .lang-btn.on .lang-short { max-width: 3ch; opacity: 1; transform: none; }
+}
+@keyframes nav-drop { from { opacity: 0; transform: translateY(-6px); } }

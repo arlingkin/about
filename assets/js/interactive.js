@@ -26,8 +26,14 @@
   const applyPin = () => {
     document.documentElement.dataset.pin = pinOn ? 'on' : 'off';
     pinBtn?.setAttribute('aria-checked', String(pinOn));
+    stick();
   };
+  const stick = () => header.classList.toggle('is-stuck', pinOn && scrollY > 8);
+  const setHeaderH = () => document.documentElement.style.setProperty('--header-h', `${header.offsetHeight}px`);
+  new ResizeObserver(setHeaderH).observe(header);
+  addEventListener('scroll', stick, { ...opts, passive: true });
   applyPin();
+  setHeaderH();
   pinBtn?.addEventListener('click', () => {
     pinOn = !pinOn;
     applyPin();
