@@ -1,8 +1,14 @@
+<div align="center">
+<a href="https://arlingkin.vercel.app">
+  <img src="icons/icon.svg" width="120%" height="120%"></a>
+
+  
 # Arlingkin
 
 Personal site and learning journal of **Arlingga**, built with plain HTML, CSS and a bit of JavaScript. No framework, no bundler.
 
 **Live:** [arlingkin.vercel.app](https://arlingkin.vercel.app)
+</div>
 
 > "Let's learn to code without AI."
 
