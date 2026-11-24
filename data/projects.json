@@ -4,7 +4,11 @@
     "game": { "en": "Game", "id": "Game" },
     "mobile": { "en": "Mobile", "id": "Mobile" },
     "school": { "en": "School", "id": "Sekolah" },
-    "automation": { "en": "Automation", "id": "Otomasi" }
+    "automation": { "en": "Automation", "id": "Otomasi" },
+    "website": { "en": "Website", "id": "Situs web" },
+    "markdown": { "en": "Markdown", "id": "Markdown" },
+    "code": { "en": "Code", "id": "Kode" },
+    "compiler": { "en": "Compiler", "id": "Compiler" }
   },
   "status": {
     "live": { "en": "live", "id": "live" },
@@ -12,6 +16,29 @@
     "ongoing": { "en": "ongoing", "id": "berjalan" }
   },
   "projects": [
+    {
+      "slug": "mdstudio",
+      "featured": true,
+      "tags": ["website", "markdown", "code", "compiler"],
+      "status": "live",
+      "url": "https://mdstudios.vercel.app",
+      "repo": "https://github.com/arlingkin/mdstudio",
+      "image": "https://raw.githubusercontent.com/arlingkin/mdstudio/main/assets/icons/logo.svg",
+      "stack": ["JavaScript"],
+      "title": { "en": "mdstudio", "id": "mdstudio" },
+      "desc": {
+        "en": "A Markdown workspace in plain HTML, CSS and vanilla JS: write, preview, organize and sync.",
+        "id": "Workspace Markdown berbasis HTML, CSS, dan JS vanilla: tulis, pratinjau, kelola, dan sinkronkan."
+      },
+      "badge": { "en": "MARKDOWN APP · LIVE", "id": "APLIKASI MARKDOWN · LIVE" },
+      "cta": { "en": "VISIT SITE →", "id": "KUNJUNGI SITUS →" },
+      "repoCta": { "en": "SOURCE ↗", "id": "SUMBER ↗" },
+      "art": {
+        "name": "project",
+        "props": { "name": "mdstudio", "type": "markdown workspace", "stack": "vanilla JS" },
+        "comment": "write · preview · sync"
+      }
+    },
     {
       "slug": "nufabase",
       "featured": true,

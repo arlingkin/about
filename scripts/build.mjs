@@ -84,6 +84,7 @@ const projAttrs = (p) => {
   return `data-item data-q="${escAttr(q)}" data-tags="${p.tags.join(' ')}"`;
 };
 const projLink = (p) => `href="${escAttr(p.url)}"${p.external === false ? '' : ' target="_blank" rel="noreferrer"'}`;
+const projImg = (p, cls, size) => (p.image ? `<img class="proj-logo${cls}" src="${escAttr(p.image)}" alt="" width="${size}" height="${size}">` : '');
 const projArt = (p) => {
   const props = Object.entries(p.art.props)
     .map(([k, v], i, all) => `              &nbsp;&nbsp;<span class="green">${esc(k)}</span>: <span class="purple">'${esc(v)}'</span>${i < all.length - 1 ? ',' : ''}<br>`)
@@ -91,6 +92,7 @@ const projArt = (p) => {
   return [
     '            <div class="code-window">',
     '              <div class="dots"><i></i><i></i><i></i></div>',
+    ...(p.image ? [`              ${projImg(p, ' proj-logo--art', 56)}<br>`] : []),
     `              <span class="pink">const</span> ${esc(p.art.name)} = {<br>`,
     props,
     '              };<br><br>',
@@ -104,10 +106,17 @@ const projFeature = (p) => {
     `          <article class="feature-card${matrix ? ' matrix' : ''}" ${p.theme ? `data-card-theme="${p.theme}" ` : ''}${projAttrs(p)}>`,
     '            <div class="feature-copy reveal">',
     `              <span class="tag ${matrix ? 'matrix' : 'soft'}" data-i18n="projects.${p.slug}.badge">${esc(p.badge.en)}</span>`,
-    `              <h3 data-i18n="projects.${p.slug}.title">${esc(p.title.en)}</h3>`,
+    `              <h3>${projImg(p, '', 40)}<span data-i18n="projects.${p.slug}.title">${esc(p.title.en)}</span></h3>`,
     `              <p data-i18n="projects.${p.slug}.desc">${esc(p.desc.en)}</p>`,
     `              ${projMeta(p)}`,
-    `              <a class="read-link" ${projLink(p)} data-i18n="projects.${p.slug}.cta">${esc(p.cta.en)}</a>`,
+    ...(p.repo
+      ? [
+          '              <div class="link-row">',
+          `                <a class="read-link" ${projLink(p)} data-i18n="projects.${p.slug}.cta">${esc(p.cta.en)}</a>`,
+          `                <a class="read-link" href="${escAttr(p.repo)}" target="_blank" rel="noreferrer" data-i18n="projects.${p.slug}.repo">${esc(p.repoCta.en)}</a>`,
+          '              </div>',
+        ]
+      : [`              <a class="read-link" ${projLink(p)} data-i18n="projects.${p.slug}.cta">${esc(p.cta.en)}</a>`]),
     '            </div>',
     '            <div class="code-art reveal" aria-label="Decorative code illustration">',
     projArt(p),
@@ -252,6 +261,7 @@ for (const [id, label] of Object.entries(projStatus)) entries.push([`projects.st
 for (const p of projects) {
   entries.push([`projects.${p.slug}.title`, p.title], [`projects.${p.slug}.desc`, p.desc], [`projects.${p.slug}.cta`, p.cta]);
   if (p.badge) entries.push([`projects.${p.slug}.badge`, p.badge]);
+  if (p.repo) entries.push([`projects.${p.slug}.repo`, p.repoCta]);
 }
 const i18n = `Object.assign(T, {\n${entries.map(([key, value]) => `  ${JSON.stringify(key)}: ${JSON.stringify(value)},`).join('\n')}\n});\n`;
 write('assets/js/tools-i18n.js', i18n);
