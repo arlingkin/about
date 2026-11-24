@@ -142,6 +142,9 @@ Pushing to `main` triggers the workflows in `.github/workflows/`:
 | `vercel-deploy.yml` | Vercel (`arlingkin.vercel.app`) | secret `VERCEL_TOKEN` |
 | `firebase-hosting.yml` | Firebase Hosting (main site and `app` subdomain) | secret `FIREBASE_TOKEN` |
 | `github-pages.yml` | GitHub Pages | Pages source set to GitHub Actions |
+| `codeql.yml` | CodeQL scan of the JavaScript and the workflows (push, PR, weekly) | nothing (turn off "default setup" in Settings → Code security) |
+
+`.github/dependabot.yml` opens weekly grouped PRs for GitHub Actions versions.
 
 The Vercel and Firebase workflows skip themselves when their secret is not set. Full step-by-step instructions are in [SETUP.md](SETUP.md).
 

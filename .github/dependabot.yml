@@ -1,0 +1,15 @@
+version: 2
+updates:
+  # Repo ini tidak punya package.json/requirements, jadi hanya GitHub Actions
+  # yang bisa dipantau. Tambah ecosystem lain kalau manifest-nya ada.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "ci"
+    groups:
+      github-actions-dependencies:
+        patterns:
+          - "*"
